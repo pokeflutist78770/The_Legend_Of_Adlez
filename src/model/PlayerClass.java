@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Class for the playable main character.
  * @author Tito Vasquez

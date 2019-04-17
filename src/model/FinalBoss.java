@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Class for the enemy type "FinalBoss".
  * @author Tito Vasquez

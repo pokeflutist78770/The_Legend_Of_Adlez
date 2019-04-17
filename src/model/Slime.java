@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Class for the enemy type "Slime".
  * @author Tito Vasquez

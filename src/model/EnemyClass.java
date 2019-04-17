@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Class for all enemies in the game.
  * @author Tito Vasquez

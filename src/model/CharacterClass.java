@@ -1,3 +1,4 @@
+package model;
 /**
  * Object for any "character" that can appear on the map.
  * @author Tito Vasquez

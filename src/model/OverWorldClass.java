@@ -1,3 +1,4 @@
+package model;
 /**
  * Class for all things that would appear on the overworld that are not enemies or the player character.
  * @author Tito Vasquez
