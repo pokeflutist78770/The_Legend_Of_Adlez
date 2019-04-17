@@ -1,8 +1,9 @@
 package Items;
 
 public abstract class Weapon extends Item {
-	private static int DAMAGE;
-	private static int RANGE;
+	protected int DAMAGE;
+	protected int RANGE;
+	
 	
 	/**
 	 * Performs an attack with this weapon. This method takes a current position
@@ -14,5 +15,9 @@ public abstract class Weapon extends Item {
 	public boolean attactk() {
 		
 	}
-	
+
+
+	public int getRange() {
+		return RANGE;
+	}
 }

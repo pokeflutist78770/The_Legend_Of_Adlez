@@ -2,6 +2,9 @@ package Items;
 
 
 public abstract class Item {
-	private static int COST;
-	private static int WEIGHT;
+	protected static int COST;
+	protected static int WEIGHT;
+
+	protected static String name;
+	
 }
