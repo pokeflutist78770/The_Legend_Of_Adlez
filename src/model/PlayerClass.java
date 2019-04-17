@@ -41,6 +41,9 @@ public class PlayerClass extends CharacterClass {
 	 */
 	public void setCurrentMoney(int amount) {
 		currentMoney = amount;
+		if (currentMoney > maxMoney) {
+			currentMoney = maxMoney;
+		}
 	}
 	
 	/**
