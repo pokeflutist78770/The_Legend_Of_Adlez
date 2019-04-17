@@ -1,4 +1,4 @@
-package model;
+package player_enemies;
 /**
  * Superclass for all game objects, mostly to determine what has hitboxes on the overworld.
  * @author Tito Vasquez

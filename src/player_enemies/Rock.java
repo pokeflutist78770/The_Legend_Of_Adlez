@@ -1,4 +1,4 @@
-package model;
+package player_enemies;
 
 /**
  * Class for the OverWorld object type "Rock".
