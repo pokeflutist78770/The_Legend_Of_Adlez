@@ -1,4 +1,4 @@
-package model;
+package player_enemies;
 
 /**
  * Class for all enemies in the game.

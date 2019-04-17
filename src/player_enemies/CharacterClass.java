@@ -1,4 +1,5 @@
-package model;
+package player_enemies;
+
 /**
  * Object for any "character" that can appear on the map.
  * @author Tito Vasquez
