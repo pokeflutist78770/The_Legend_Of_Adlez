@@ -1,3 +1,4 @@
+package model;
 /**
  * Class for the OverWorld object type "NPC".
  * @author Tito Vasquez

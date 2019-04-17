@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Class for the OverWorld object type "Rock".
  * @author Tito Vasquez

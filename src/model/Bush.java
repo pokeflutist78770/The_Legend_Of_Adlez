@@ -1,5 +1,4 @@
-
-
+package model;
 /**
  * Class for the OverWorld object type "Bush".
  * @author Tito Vasquez
