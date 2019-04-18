@@ -4,6 +4,6 @@ package Items;
 
 public interface Consumable {
 
-	boolean use();
+	boolean use(CharacterClass person);
 	
 }

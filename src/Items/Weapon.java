@@ -1,23 +1,34 @@
 package Items;
 
+import Enums.Attack;
+
 public abstract class Weapon extends Item {
 	protected int DAMAGE;
 	protected int RANGE;
-	
-	
+	protected Attack attackType;
+
 	/**
-	 * Performs an attack with this weapon. This method takes a current position
-	 * that is where the attack will be performed from, as well as a direction for the
-	 * attack. It then calculates is anything is located within the range of the weapon,
-	 * and deals the attack onto the items.
-	 * @return boolean determining if the attack was successful.
+	 * Gets the range of the current weapon
+	 * @return int representing how many blocks the 
 	 */
-	public boolean attactk() {
-		
-	}
-
-
 	public int getRange() {
 		return RANGE;
+	}
+	
+	/**
+	 * Get the damage a weapon can do
+	 * @return int representing amount of damage a weapon can do
+	 */
+	public int getDamage() {
+		return DAMAGE;
+	}
+	
+	/**
+	 * Gets the weapon attack type
+	 * @return Attack enum representing what type of attack
+	 * the weapon does
+	 */
+	public Attack getAttackType() {
+		return attackType;
 	}
 }
