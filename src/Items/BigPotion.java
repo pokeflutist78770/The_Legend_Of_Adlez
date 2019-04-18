@@ -2,6 +2,13 @@ package Items;
 
 import player_enemies.CharacterClass;
 
+
+/**
+ * BigPotion class. This item heals player health by a big amount,
+ * proving to cost more than a SmallPotion and healing more health in
+ * the long run.
+ * @author Angel Aguayo
+ */
 public class BigPotion extends Item implements Consumable{
 	private static final int HEAL=20;
 	

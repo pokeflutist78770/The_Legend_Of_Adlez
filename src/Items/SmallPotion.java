@@ -2,6 +2,14 @@ package Items;
 
 import player_enemies.CharacterClass;
 
+
+
+/**
+ * SmallPotion class. This potion only heals a small amount, and is
+ * relatively cheap compared to BigPotion
+ * @author Angel Aguayo
+ *
+ */
 public class SmallPotion extends Item implements Consumable{
 	private static final int HEAL=5;
 	

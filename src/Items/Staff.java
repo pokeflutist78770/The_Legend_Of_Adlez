@@ -2,6 +2,14 @@ package Items;
 
 import Enums.Attack;
 
+
+
+/**
+ * Staff weapon. This weapon can attack two blocks ahead of the current
+ * Direction, damaging anything that resides in those two blocks
+ * @author Angel Aguayo
+ *
+ */
 public class Staff extends Weapon{
 	
 	/**

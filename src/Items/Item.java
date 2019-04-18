@@ -1,6 +1,13 @@
 package Items;
 
 
+
+/**
+ * Item abstract class. Serves as the base item class, where every item
+ * has a cost and name attached to them.
+ * @author Angel Aguayo
+ *
+ */
 public abstract class Item {
 	protected static int COST;
 

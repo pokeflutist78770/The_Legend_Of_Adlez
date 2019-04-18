@@ -2,6 +2,15 @@ package Items;
 
 import Enums.Attack;
 
+
+
+/**
+ * Weapon base class. Serves as the base weapon, storing all common characteristics
+ * such as damage and range (represented by blocks). It also stores what type 
+ * of attack the weapon performs.
+ * @author ANgel Aguayo
+ *
+ */
 public abstract class Weapon extends Item {
 	protected int DAMAGE;
 	protected int RANGE;
