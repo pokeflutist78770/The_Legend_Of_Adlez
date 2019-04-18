@@ -1,5 +1,7 @@
 package Items;
 
+import player_enemies.CharacterClass;
+
 public class BigPotion extends Item implements Consumable{
 	private static final int HEAL=20;
 	
@@ -21,7 +23,7 @@ public class BigPotion extends Item implements Consumable{
 	public boolean use(CharacterClass person) {
 		
 		//health is full, can't use potion
-		if(person.getCurrentHP()==person.getTotalHP()) {
+		if(person.getcurrentHP()==person.getTotalHP()) {
 			return false;
 		}
 		
