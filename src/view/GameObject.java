@@ -54,6 +54,10 @@ public class GameObject {
 		position = new Point2D(x, y);
 	}
 	
+	public void setPosition(Point2D point) {
+		position = point;
+	}
+	
 	public boolean isActive() {
 		return active;
 	}

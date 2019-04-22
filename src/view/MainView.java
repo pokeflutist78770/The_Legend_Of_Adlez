@@ -8,6 +8,7 @@ import javafx.animation.*;
 import javafx.application.Application;
 import javafx.beans.property.*;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.*;
 import javafx.scene.canvas.*;
 import javafx.scene.control.Label;
@@ -28,9 +29,11 @@ public class MainView extends Application {
 	int HEIGHT = 9, WIDTH = 9, BLOCK = 40;
 	private Pane pane;
 	private Player player;
-	private GameObject weapon;
+	private Weapon weapon;
+	private Potion potion;
 	private int score = 0;
 	Label scoreLabel;
+	Label healthLabel;
 	private List<Enemy> enemies = new ArrayList<>();
 	
 	/*
@@ -38,8 +41,22 @@ public class MainView extends Application {
 	 */
 	private class Player extends GameObject{
 		private Boolean weapon = false;
+		private int health;
 		Player(){
 			super(new Circle(0,0,15, Color.GREEN));
+			health = 100;
+		}
+		
+		public void damange (int dmg) {
+			health = Math.max(0, health - dmg);
+		}
+		
+		public void heal (int amt) {
+			health = Math.min(100, health + amt);
+		}
+		
+		public int getHealth() {
+			return health;
 		}
 		
 		public Boolean hasWeapon() {
@@ -69,12 +86,25 @@ public class MainView extends Application {
 			super(new Rectangle(20,20, Color.BLUE));
 		}
 	}
-
+	private class Potion extends GameObject{
+		private int health;
+		Potion(int amt) {
+			super(new Rectangle(20,20, Color.DEEPPINK));
+			health = amt;
+		}
+		public int getHealth() {
+			return health;
+		}
+	}
+	
     public void start(Stage stage) {
     	BorderPane window = new BorderPane();
     	pane = new Pane();
     	window.setCenter(pane);
+    	
     	scoreLabel = new Label();
+    	healthLabel = new Label();
+    	window.setTop(healthLabel);
     	window.setBottom(scoreLabel);
     	pane.setPrefSize(360,360);
     	
@@ -84,7 +114,9 @@ public class MainView extends Application {
     	weapon = new Weapon();
     	weapon.setPosition(5,0);
     	addObject(weapon, weapon.getPosition().getX() * BLOCK + 10, weapon.getPosition().getY() * BLOCK + 10);
- 
+    	potion = new Potion(10);
+    	potion.setPosition(0, 5);
+    	addObject(potion, potion.getPosition().getX() * BLOCK + 10, potion.getPosition().getY() * BLOCK + 10);
     	/*
     	 * Continous loop functioning as the games internal "clock". Screen updates on each tick.
     	 */
@@ -125,20 +157,20 @@ public class MainView extends Application {
 					player.move(Direction.SOUTH);
 				}
 				break;
-			case A:
-			case LEFT:
-				if(dir != Direction.WEST)
-					player.setDirection(Direction.WEST);
-				else if(player.getPosition().getX() > 0){
-					player.move(Direction.WEST);
-				}
-				break;
 			case D:
 			case RIGHT:
 				if(dir != Direction.EAST)
 					player.setDirection(Direction.EAST);
 				else if(player.getPosition().getX() < WIDTH - 1){
 					player.move(Direction.EAST);
+				}
+				break;
+			case A:
+			case LEFT:
+				if(dir != Direction.WEST)
+					player.setDirection(Direction.WEST);
+				else if(player.getPosition().getX() > 0){
+					player.move(Direction.WEST);
 				}
 				break;
 			case SPACE:
@@ -157,6 +189,12 @@ public class MainView extends Application {
      * allows enemies to be defeated.
      */
     public void onUpdate() {
+    	if(player.collision(potion)) {
+    		player.heal(potion.getHealth());
+    		potion.setActive(false);
+    		pane.getChildren().remove(potion.getNode());
+    		newPotion();
+    	}
     	if(player.collision(weapon)) {
 			player.getWeapon();
 			weapon.setActive(false);
@@ -169,6 +207,7 @@ public class MainView extends Application {
     			pane.getChildren().remove(enemy.getNode());
     		}
     		else if(player.collision(enemy) && !player.hasWeapon()) {
+    			player.damange(10);
     			switch(player.getDirection()) {
     			case NORTH:
     				player.move(Direction.SOUTH);
@@ -183,8 +222,7 @@ public class MainView extends Application {
     				player.move(Direction.EAST);
     				break;
     			}
-    		}
-    			
+    		}    			
     	}
     	enemies.removeIf(e-> !e.isActive());
     	if(enemies.size() == 0) {
@@ -194,25 +232,32 @@ public class MainView extends Application {
     		newEnemy();
     	}
     	scoreLabel.setText("Enemies defeated: " + Integer.toString(score));
+    	healthLabel.setText("Health: " + player.getHealth());
     	
     }
     
-    /*
+    private void newPotion() {
+		potion = new Potion(10);
+		Random coord = new Random();
+    	Point2D loc = new Point2D(coord.nextInt(WIDTH),coord.nextInt(HEIGHT));
+    	while(loc.equals(player.getPosition()) || loc.equals(weapon.getPosition()) || loc.equals(potion.getPosition())) {
+    		loc = new Point2D(coord.nextInt(WIDTH),coord.nextInt(HEIGHT));
+    	}
+    	potion.setPosition(loc);
+    	addObject(potion, potion.getPosition().getX() * BLOCK + 10, potion.getPosition().getY() * BLOCK + 10);
+	}
+
+	/*
      * Generates new enemy randomly on board. Prevents initial collision with player and weapon
      */
     public void newEnemy() {
     	Enemy enemy = new Enemy();
     	Random coord = new Random();
-    	int eX = coord.nextInt(WIDTH);
-    	int eY = coord.nextInt(HEIGHT);
-    	while((eX == player.getPosition().getX() &&
-    		  eY == player.getPosition().getY()) ||
-    		  (eX == weapon.getPosition().getX() &&
-    		  eY == weapon.getPosition().getY())) {
-    		eX = coord.nextInt(WIDTH);
-        	eY = coord.nextInt(HEIGHT);
+    	Point2D loc = new Point2D(coord.nextInt(WIDTH),coord.nextInt(HEIGHT));
+    	while(loc.equals(player.getPosition()) || loc.equals(weapon.getPosition()) || loc.equals(potion.getPosition())) {
+    		loc = new Point2D(coord.nextInt(WIDTH),coord.nextInt(HEIGHT));
     	}
-    	enemy.setPosition(eX, eY);
+    	enemy.setPosition(loc);
     	enemies.add(enemy);
     	addObject(enemy, enemy.getPosition().getX() * BLOCK + 5, enemy.getPosition().getY() * BLOCK + 5);
     	
