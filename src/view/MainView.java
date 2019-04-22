@@ -22,6 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import view.GameObject.Direction;
 
 public class MainView extends Application {
 	int HEIGHT = 9, WIDTH = 9, BLOCK = 40;
@@ -31,6 +32,10 @@ public class MainView extends Application {
 	private int score = 0;
 	Label scoreLabel;
 	private List<Enemy> enemies = new ArrayList<>();
+	
+	/*
+	 * TODO Remove temporary classes on merge with master
+	 */
 	private class Player extends GameObject{
 		private Boolean weapon = false;
 		Player(){
@@ -43,7 +48,7 @@ public class MainView extends Application {
 		
 		public void getWeapon() {
 			Circle circle = (Circle) this.getNode();
-			circle.setFill(Color.DEEPPINK);
+			circle.setFill(Color.BLUE);
 			weapon = true;
 		}
 		
@@ -64,7 +69,7 @@ public class MainView extends Application {
 			super(new Rectangle(20,20, Color.BLUE));
 		}
 	}
-	int count = 0;
+
     public void start(Stage stage) {
     	BorderPane window = new BorderPane();
     	pane = new Pane();
@@ -79,6 +84,10 @@ public class MainView extends Application {
     	weapon = new Weapon();
     	weapon.setPosition(5,0);
     	addObject(weapon, weapon.getPosition().getX() * BLOCK + 10, weapon.getPosition().getY() * BLOCK + 10);
+ 
+    	/*
+    	 * Continous loop functioning as the games internal "clock". Screen updates on each tick.
+    	 */
     	AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -86,53 +95,72 @@ public class MainView extends Application {
             }
         };
         timer.start();
+        
     	Scene scene = new Scene(window);
+
+    	/*
+    	 * Controlls: Move player using either WASD or Arrows
+    	 * 			  If Player is not facing the direction, the player will "turn"
+    	 * 			  otherwise the player will move in the specified direction
+    	 *            Space drops the weapon and leaves player vulnerable
+    	 */
     	scene.setOnKeyPressed(e -> {
+    		Direction dir = player.getDirection();
     		switch(e.getCode()) {
 			default:
 				break;
 			case W:
 			case UP:
-				player.move(0, -1);
-				if(player.getPosition().getY() < 0) {
-					player.move(0, HEIGHT);
-					player.dropWeapon();
+				if(dir != Direction.NORTH)
+					player.setDirection(Direction.NORTH);
+				else if(player.getPosition().getY() > 0){
+					player.move(Direction.NORTH);
 				}
 				break;
 			case S:
 			case DOWN:
-				player.move(0, 1);
-				if(player.getPosition().getY() >= HEIGHT) {
-					player.move(0, -HEIGHT);
-					player.dropWeapon();
+				if(dir != Direction.SOUTH)
+					player.setDirection(Direction.SOUTH);
+				else if(player.getPosition().getY() < HEIGHT - 1){
+					player.move(Direction.SOUTH);
 				}
 				break;
 			case A:
 			case LEFT:
-				player.move(-1, 0);
-				if(player.getPosition().getX() < 0) {
-					player.move(WIDTH, 0);
-					player.dropWeapon();
+				if(dir != Direction.WEST)
+					player.setDirection(Direction.WEST);
+				else if(player.getPosition().getX() > 0){
+					player.move(Direction.WEST);
 				}
 				break;
 			case D:
 			case RIGHT:
-				player.move(1, 0);
-				if(player.getPosition().getX() >= WIDTH) {
-					player.move(-WIDTH, 0);
-					player.dropWeapon();
+				if(dir != Direction.EAST)
+					player.setDirection(Direction.EAST);
+				else if(player.getPosition().getX() < WIDTH - 1){
+					player.move(Direction.EAST);
 				}
 				break;
+			case SPACE:
+				player.dropWeapon();
+				weapon.setActive(true);
+				pane.getChildren().add(weapon.getNode());
     		}
     	});
         stage.setScene(scene);
         stage.show();
     }
 
-    
+    /*
+     * Checks for collision between the player and any weapons or enemies.
+     * If player is colliding with a weapon, player picks it up. Having weapon
+     * allows enemies to be defeated.
+     */
     public void onUpdate() {
     	if(player.collision(weapon)) {
 			player.getWeapon();
+			weapon.setActive(false);
+			pane.getChildren().remove(weapon.getNode());
 		}
     	for(Enemy enemy : enemies) {
     		if(player.collision(enemy) && player.hasWeapon()) {
@@ -140,6 +168,23 @@ public class MainView extends Application {
     			enemy.setActive(false);
     			pane.getChildren().remove(enemy.getNode());
     		}
+    		else if(player.collision(enemy) && !player.hasWeapon()) {
+    			switch(player.getDirection()) {
+    			case NORTH:
+    				player.move(Direction.SOUTH);
+    				break;
+    			case SOUTH:
+    				player.move(Direction.NORTH);
+    				break;
+    			case EAST:
+    				player.move(Direction.WEST);
+    				break;
+    			case WEST:
+    				player.move(Direction.EAST);
+    				break;
+    			}
+    		}
+    			
     	}
     	enemies.removeIf(e-> !e.isActive());
     	if(enemies.size() == 0) {
@@ -151,6 +196,10 @@ public class MainView extends Application {
     	scoreLabel.setText("Enemies defeated: " + Integer.toString(score));
     	
     }
+    
+    /*
+     * Generates new enemy randomly on board. Prevents initial collision with player and weapon
+     */
     public void newEnemy() {
     	Enemy enemy = new Enemy();
     	Random coord = new Random();
@@ -168,11 +217,17 @@ public class MainView extends Application {
     	addObject(enemy, enemy.getPosition().getX() * BLOCK + 5, enemy.getPosition().getY() * BLOCK + 5);
     	
     }
+    
+    /*
+     * Adds object to view at specified x/y coordinate on grid.
+     */
     public void addObject(GameObject object, double x, double y) {
     	object.getNode().setTranslateX(x);
     	object.getNode().setTranslateY(y);
     	pane.getChildren().add(object.getNode());
     }
 
-    public static void main(String[] args) { launch(args); }
+    public static void main(String[] args) {
+    	launch(args);
+    }
 }  
