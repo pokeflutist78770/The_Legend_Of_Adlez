@@ -42,8 +42,8 @@ public class GameObject {
 			break;	
 		}
 		position = position.add(x, y);
-		node.setTranslateX(node.getTranslateX() + x * 40);
-		node.setTranslateY(node.getTranslateY() + y * 40);
+		node.setTranslateX(node.getTranslateX() + x * 48);
+		node.setTranslateY(node.getTranslateY() + y * 48);
 	}
 	
 	public Point2D getPosition() {

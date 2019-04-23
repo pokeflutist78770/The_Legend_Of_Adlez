@@ -17,6 +17,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -26,7 +27,7 @@ import javafx.util.Duration;
 import view.GameObject.Direction;
 
 public class MainView extends Application {
-	int HEIGHT = 9, WIDTH = 9, BLOCK = 40;
+	int HEIGHT = 14, WIDTH = 18, BLOCK = 48;
 	private Pane pane;
 	private Player player;
 	private Weapon weapon;
@@ -34,12 +35,13 @@ public class MainView extends Application {
 	private int score = 0;
 	Label scoreLabel;
 	Label healthLabel;
+	Label dirLabel;
 	private List<Enemy> enemies = new ArrayList<>();
 	
 	/*
 	 * TODO Remove temporary classes on merge with master
 	 */
-	private class Player extends GameObject{
+	public class Player extends GameObject{
 		private Boolean weapon = false;
 		private int health;
 		Player(){
@@ -76,17 +78,17 @@ public class MainView extends Application {
 		}
 		
 	}
-	private class Enemy extends GameObject {
+	public class Enemy extends GameObject {
 		Enemy(){
 			super(new Rectangle(30, 30 , Color.RED));
 		}
 	}
-	private class Weapon extends GameObject{
+	public class Weapon extends GameObject{
 		Weapon(){
 			super(new Rectangle(20,20, Color.BLUE));
 		}
 	}
-	private class Potion extends GameObject{
+	public class Potion extends GameObject{
 		private int health;
 		Potion(int amt) {
 			super(new Rectangle(20,20, Color.DEEPPINK));
@@ -102,11 +104,13 @@ public class MainView extends Application {
     	pane = new Pane();
     	window.setCenter(pane);
     	
+    	TilePane tilePane = new TilePane();
     	scoreLabel = new Label();
     	healthLabel = new Label();
-    	window.setTop(healthLabel);
-    	window.setBottom(scoreLabel);
-    	pane.setPrefSize(360,360);
+    	dirLabel = new Label();
+    	tilePane.getChildren().addAll(scoreLabel, healthLabel, dirLabel);
+    	window.setBottom(tilePane);
+    	pane.setPrefSize(WIDTH * BLOCK, HEIGHT * BLOCK);
     	
     	player = new Player();
     	player.setPosition(0,0);
@@ -233,6 +237,7 @@ public class MainView extends Application {
     	}
     	scoreLabel.setText("Enemies defeated: " + Integer.toString(score));
     	healthLabel.setText("Health: " + player.getHealth());
+    	dirLabel.setText("Direction: " + player.getDirection());
     	
     }
     
