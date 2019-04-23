@@ -4,27 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javafx.animation.*;
+import gameObjects.*;
+import enums.*;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.beans.property.*;
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.scene.*;
-import javafx.scene.canvas.*;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import view.GameObject.Direction;
 
 public class MainView extends Application {
 	int HEIGHT = 14, WIDTH = 18, BLOCK = 48;
@@ -41,48 +33,6 @@ public class MainView extends Application {
 	/*
 	 * TODO Remove temporary classes on merge with master
 	 */
-	public class Player extends GameObject{
-		private Boolean weapon = false;
-		private int health;
-		Player(){
-			super(new Circle(0,0,15, Color.GREEN));
-			health = 100;
-		}
-		
-		public void damange (int dmg) {
-			health = Math.max(0, health - dmg);
-		}
-		
-		public void heal (int amt) {
-			health = Math.min(100, health + amt);
-		}
-		
-		public int getHealth() {
-			return health;
-		}
-		
-		public Boolean hasWeapon() {
-			return weapon;
-		}
-		
-		public void getWeapon() {
-			Circle circle = (Circle) this.getNode();
-			circle.setFill(Color.BLUE);
-			weapon = true;
-		}
-		
-		public void dropWeapon() {
-			Circle circle = (Circle) this.getNode();
-			circle.setFill(Color.GREEN);
-			weapon = false;
-		}
-		
-	}
-	public class Enemy extends GameObject {
-		Enemy(){
-			super(new Rectangle(30, 30 , Color.RED));
-		}
-	}
 	public class Weapon extends GameObject{
 		Weapon(){
 			super(new Rectangle(20,20, Color.BLUE));
