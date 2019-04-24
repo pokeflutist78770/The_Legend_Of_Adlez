@@ -1,15 +1,16 @@
 package player_enemies;
 
+import javafx.geometry.Point2D;
+
 /**
  * Object for any "character" that can appear on the map.
  * @author Tito Vasquez
  *
  */
-public class CharacterClass extends GameObjectClass {
+public class CharacterClass extends GameObject {
 	private int currentHP;
 	private int totalHP;
 	private int attack;
-	private int[] position;
 	
 	/**
 	 * Sets all the values that a possible character can have.
@@ -18,19 +19,19 @@ public class CharacterClass extends GameObjectClass {
 	 * @param position int[] An array of length 2 that gives the x and y coordinate of the character's
 	 * position on the overworld.
 	 */
-	public CharacterClass(int currentHP, int totalHP, int attack, int[] position) {
+	public CharacterClass(int currentHP, int totalHP, int attack, Point2D position) {
+		super(position);
 		this.currentHP = currentHP;
 		this.totalHP = totalHP;
 		this.attack = attack;
-		this.position = position.clone();
 	}
 	
 	/**
 	 * Alternate constructor mainly used for the EnemyClass
 	 * @param position int[] The current position of the character on the game map.
 	 */
-	public CharacterClass(int[] position) {
-		this.position = position.clone();
+	public CharacterClass(Point2D position) {
+		super(position);
 	}
 	
 	/**
@@ -72,14 +73,6 @@ public class CharacterClass extends GameObjectClass {
 	}
 	
 	/**
-	 * Setter for the character's position.
-	 * @param position int[] The x and y coordinate in an array of length 2.
-	 */
-	public void setPosition(int[] position) {
-		this.position = position.clone();
-	}
-	
-	/**
 	 * Getter for character's HP.
 	 * @return currentHP int The character's current HP.
 	 */
@@ -103,11 +96,4 @@ public class CharacterClass extends GameObjectClass {
 		return attack;
 	}
 	
-	/**
-	 * Getter for the character's position on the overworld map.
-	 * @return position int[] Array of length 2 with x and y coordinate.
-	 */
-	public int[] getPosition() {
-		return position;
-	}
 }

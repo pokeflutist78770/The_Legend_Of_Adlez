@@ -1,4 +1,4 @@
-package gameObjects;
+package player_enemies;
 
 import enums.Direction;
 import javafx.geometry.Point2D;

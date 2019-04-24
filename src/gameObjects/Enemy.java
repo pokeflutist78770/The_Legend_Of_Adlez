@@ -8,6 +8,7 @@ public class Enemy extends Character{
 
 	public Enemy(){
 		super(new Rectangle(30, 30 , Color.RED));
+	super.setImage("kjhsafkjahsf");
 	}
 
 }
