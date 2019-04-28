@@ -8,6 +8,12 @@ import javafx.geometry.Point2D;
  *
  */
 public class EnemyClass extends CharacterClass {
+	
+	private Direction[] horizontal = {EAST, EAST, EAST, EAST, EAST};
+	private Direction[] horizontal_rev = {WEST, WEST, WEST, WEST, WEST}; 
+	private Direction [] vertical = {SOUTH, SOUTH, SOUTH, SOUTH, SOUTH};
+	private Direction [] vertical_rev = {NORTH, NORTH, NORTH, NORTH, NORTH};
+	private boolean reverse = false;
 
 	/**
 	 * Constructor for the EnemyClass of enemies.
