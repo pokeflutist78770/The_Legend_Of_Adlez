@@ -4,19 +4,19 @@ import enums.Direction;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 
-public class Character extends GameObject{
+public class Creature extends GameObject{
 	private int currentHP;
 	private int totalHP;
 	private int attack;
 	private Direction direction;
 	
-	public Character(Node node) {
+	public Creature(Node node) {
 		super(node);
 		direction = Direction.SOUTH;
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Character(Point2D position) {
+	public Creature(Point2D position) {
 		super(position);
 	}
 	
