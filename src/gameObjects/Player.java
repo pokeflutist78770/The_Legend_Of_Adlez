@@ -4,7 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class Player extends Character{
+public class Player extends Creature{
 	private Boolean weapon = false;
 	private int health;
 	public Player(){

@@ -11,6 +11,9 @@ import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
@@ -19,7 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class MainView extends Application {
-	int HEIGHT = 14, WIDTH = 18, BLOCK = 48;
+	int HEIGHT = 14, WIDTH = 18, BLOCK = 48, BLOCKHEIGHT = 40, BLOCKWIDTH = 30;
 	private Pane pane;
 	private Player player;
 	private Weapon weapon;
@@ -28,6 +31,7 @@ public class MainView extends Application {
 	Label scoreLabel;
 	Label healthLabel;
 	Label dirLabel;
+	private List<GameObject> objects;
 	private List<Enemy> enemies = new ArrayList<>();
 	
 	/*
@@ -52,6 +56,7 @@ public class MainView extends Application {
     public void start(Stage stage) {
     	BorderPane window = new BorderPane();
     	pane = new Pane();
+    	pane.setBackground(new Background(new BackgroundImage(new Image("assets/Map_1.png"), null, null, null, null)));
     	window.setCenter(pane);
     	
     	TilePane tilePane = new TilePane();
@@ -227,7 +232,4 @@ public class MainView extends Application {
     	pane.getChildren().add(object.getNode());
     }
 
-    public static void main(String[] args) {
-    	launch(args);
-    }
 }  

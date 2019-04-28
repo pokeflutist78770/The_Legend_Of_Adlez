@@ -25,6 +25,7 @@ public class PlayerClass extends CharacterClass {
 		super(currentHP, totalHP, attack, position);
 		currentMoney = 0;
 		maxMoney = 500;
+		setImage("idleDark.png");
 	}
 	
 	/**
