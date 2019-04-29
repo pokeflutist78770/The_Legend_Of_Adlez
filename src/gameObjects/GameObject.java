@@ -1,57 +1,41 @@
 package gameObjects;
 
-import enums.Direction;
 import javafx.geometry.Point2D;
-import javafx.scene.*;
-
 
 public class GameObject {
-	private Node node;
+	private Point2D prevPosition;
 	private Point2D position;
-	private boolean active;
 	private String image;
-	
-	public GameObject(Node node) {
-		this.node = node;
-		this.position = new Point2D(0,0);
-		active = true;
-	}
-	
+	private boolean active;
+		
 	public GameObject(Point2D position) {
+		prevPosition = position;
 		this.position = position;
 		image = null;
 	}
-	
+
+	public void setPosition(Point2D point) {
+		prevPosition = position;
+		position = point;
+	}	
 	public Point2D getPosition() {
 		return position;
 	}
-	
-	public void setImage(String image) {
-		this.image = image;
+	public Point2D getPrevPositon() {
+		return prevPosition;
 	}
 	
-	public void setPosition(int x, int y) {
-		position = new Point2D(x, y);
+	public void setImage(String imageString) {
+		this.image = imageString;
+	}	
+	public String getImage() {
+		return image;
 	}
-	
-	public void setPosition(Point2D point) {
-		position = point;
-	}
-	
-	public boolean isActive() {
-		return active;
-	}
-	
 	
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
-	public Node getNode() {
-		return node;
-	}
-	
-	public boolean collision(GameObject other) {
-		return position.equals(other.getPosition());
+	public boolean getActive() {
+		return active;
 	}
 }

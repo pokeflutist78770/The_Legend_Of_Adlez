@@ -1,4 +1,4 @@
-package Items;
+package gameObjects;
 
 import enums.Attack;
 
@@ -20,7 +20,6 @@ public class Sword extends Weapon{
 		COST=5;
 		name="sword";
 		
-		RANGE=1;
 		DAMAGE=3;
 		attackType=Attack.SWEEP;
 	}

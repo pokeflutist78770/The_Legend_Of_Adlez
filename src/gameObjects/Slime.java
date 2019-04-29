@@ -1,4 +1,4 @@
-package player_enemies;
+package gameObjects;
 
 import javafx.geometry.Point2D;
 
@@ -7,7 +7,7 @@ import javafx.geometry.Point2D;
  * @author Tito Vasquez
  *
  */
-public class Slime extends EnemyClass {
+public class Slime extends Enemy {
 
 	/**
 	 * Constructor for the Slime class.
@@ -26,7 +26,7 @@ public class Slime extends EnemyClass {
 	 */
 	public Slime(Point2D position) {
 		super(position);
-		this.setHP(10);
+		this.setCurrentHP(10);
 		this.setAttack(1);
 		this.setImage(null);		
 	}

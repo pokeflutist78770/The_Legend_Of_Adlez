@@ -1,4 +1,4 @@
-package player_enemies;
+package gameObjects;
 
 import javafx.geometry.Point2D;
 
