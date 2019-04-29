@@ -1,5 +1,9 @@
 package model;
 
+import java.util.ArrayList;
+
+import gameObjects.GameObject;
+
 /**
  * Constructs all the maps of the game using GameObjects, Enemies, and Player.
  */
