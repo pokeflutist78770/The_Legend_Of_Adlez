@@ -1,4 +1,4 @@
-package view;
+
 
 import java.util.HashMap;
 
@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import view.StartMenuView;
 
 public class LegendOfAdlezView extends Application{
 	private static StackPane mainPane;

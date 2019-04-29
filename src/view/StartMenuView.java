@@ -193,7 +193,7 @@ public class StartMenuView extends StackPane{
 			
 			//boot up a new game
 			else if(button.getId().equals("New Game")) {
-				
+				LegendOfAdlezView.changeView(new MainView());
 			}
 			
 			//display controls

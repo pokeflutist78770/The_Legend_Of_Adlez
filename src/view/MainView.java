@@ -21,7 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class MainView extends Application {
+public class MainView extends BorderPane {
 	int HEIGHT = 14, WIDTH = 18, BLOCK = 48, BLOCKHEIGHT = 40, BLOCKWIDTH = 30;
 	private Pane pane;
 	private Player player;
@@ -53,18 +53,17 @@ public class MainView extends Application {
 		}
 	}
 	
-    public void start(Stage stage) {
-    	BorderPane window = new BorderPane();
+    public MainView() {
     	pane = new Pane();
     	pane.setBackground(new Background(new BackgroundImage(new Image("assets/homeOutside.png"), null, null, null, null)));
-    	window.setCenter(pane);
+    	this.setCenter(pane);
     	
     	TilePane tilePane = new TilePane();
     	scoreLabel = new Label();
     	healthLabel = new Label();
     	dirLabel = new Label();
     	tilePane.getChildren().addAll(scoreLabel, healthLabel, dirLabel);
-    	window.setBottom(tilePane);
+    	this.setBottom(tilePane);
     	pane.setPrefSize(WIDTH * BLOCK, HEIGHT * BLOCK);
     	
     	player = new Player();
@@ -87,7 +86,6 @@ public class MainView extends Application {
         };
         timer.start();
         
-    	Scene scene = new Scene(window);
 
     	/*
     	 * Controlls: Move player using either WASD or Arrows
@@ -95,7 +93,7 @@ public class MainView extends Application {
     	 * 			  otherwise the player will move in the specified direction
     	 *            Space drops the weapon and leaves player vulnerable
     	 */
-    	scene.setOnKeyPressed(e -> {
+    	LegendOfAdlezView.mainScene.setOnKeyPressed(e -> {
     		Direction dir = player.getDirection();
     		switch(e.getCode()) {
 			default:
@@ -138,8 +136,6 @@ public class MainView extends Application {
 				pane.getChildren().add(weapon.getNode());
     		}
     	});
-        stage.setScene(scene);
-        stage.show();
     }
 
     /*
