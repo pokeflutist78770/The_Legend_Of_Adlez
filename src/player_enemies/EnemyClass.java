@@ -9,11 +9,12 @@ import javafx.geometry.Point2D;
  */
 public class EnemyClass extends CharacterClass {
 	
-	private Direction[] horizontal = {EAST, EAST, EAST, EAST, EAST};
-	private Direction[] horizontal_rev = {WEST, WEST, WEST, WEST, WEST}; 
-	private Direction [] vertical = {SOUTH, SOUTH, SOUTH, SOUTH, SOUTH};
-	private Direction [] vertical_rev = {NORTH, NORTH, NORTH, NORTH, NORTH};
-	private boolean reverse = false;
+	private Direction[] horizontal = {EAST, EAST, EAST, EAST, EAST, WEST, WEST, WEST, WEST, WEST};
+	private Direction[] vertical = {SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, NORTH, NORTH, NORTH, NORTH, NORTH};
+	private Direction[] square = {SOUTH, SOUTH, EAST, EAST, NORTH, NORTH, WEST, WEST};
+	private Direction[] current; 
+	private int index = 0;
+	
 
 	/**
 	 * Constructor for the EnemyClass of enemies.
@@ -33,5 +34,34 @@ public class EnemyClass extends CharacterClass {
 	public EnemyClass(Point2D position) {
 		super(position);
 	}
+	
+	/**
+	 * Sets the movement pattern of the enemy given an integer.
+	 */
+	public void setMovementPattern(int n) {
+		if (n == 0)
+			current = horizontal;
+		else if (n == 1)
+			current = vertical;
+		else if (n == 2) 
+			current = square;
+	}
+	
+	/**
+	 * Gets the movment pattern of the enemy.
+	 * @return Direction[] The specific movement pattern that the enemy will follow.
+	 */
+	public Direction[] getMovementPattern() {
+		return current;
+	}
 		
+	/**
+	 * Gets the next move of the enemy based on a specific pattern. 
+	 * @return Direction The next direction that the enmy will move.
+	 */ 
+	public Direction getNextMove() { 
+		if (index == current.length)
+			index = 0;
+		return current[index];
+	}
 }
