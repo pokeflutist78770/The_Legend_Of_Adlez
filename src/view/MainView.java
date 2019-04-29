@@ -56,7 +56,7 @@ public class MainView extends Application {
     public void start(Stage stage) {
     	BorderPane window = new BorderPane();
     	pane = new Pane();
-    	pane.setBackground(new Background(new BackgroundImage(new Image("assets/Map_1.png"), null, null, null, null)));
+    	pane.setBackground(new Background(new BackgroundImage(new Image("assets/homeOutside.png"), null, null, null, null)));
     	window.setCenter(pane);
     	
     	TilePane tilePane = new TilePane();

@@ -1,5 +1,6 @@
 package player_enemies;
 
+import enums.Direction;
 import javafx.geometry.Point2D;
 
 /**
@@ -9,9 +10,9 @@ import javafx.geometry.Point2D;
  */
 public class EnemyClass extends CharacterClass {
 	
-	private Direction[] horizontal = {EAST, EAST, EAST, EAST, EAST, WEST, WEST, WEST, WEST, WEST};
-	private Direction[] vertical = {SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, NORTH, NORTH, NORTH, NORTH, NORTH};
-	private Direction[] square = {SOUTH, SOUTH, EAST, EAST, NORTH, NORTH, WEST, WEST};
+	private Direction[] horizontal = {Direction.EAST, Direction.EAST, Direction.EAST, Direction.EAST, Direction.EAST, Direction.WEST, Direction.WEST, Direction.WEST, Direction.WEST, Direction.WEST};
+	private Direction[] vertical = {Direction.SOUTH, Direction.SOUTH, Direction.SOUTH, Direction.SOUTH, Direction.SOUTH, Direction.NORTH, Direction.NORTH, Direction.NORTH, Direction.NORTH, Direction.NORTH};
+	private Direction[] square = {Direction.SOUTH, Direction.SOUTH, Direction.EAST, Direction.EAST, Direction.NORTH, Direction.NORTH, Direction.WEST, Direction.WEST};
 	private Direction[] current; 
 	private int index = 0;
 	
