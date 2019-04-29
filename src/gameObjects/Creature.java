@@ -8,7 +8,7 @@ public class Creature extends GameObject{
 	private int currentHP;
 	private int totalHP;
 	private int attack;
-	private Direction direction;
+	private Direction direction = Direction.SOUTH;
 	
 	public Creature(Point2D position) {
 		super(position);

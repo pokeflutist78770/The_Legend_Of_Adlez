@@ -30,7 +30,7 @@ public class MainView extends Application {
 	private List<GameObject> objects;
 	private Map<Creature, ImageView> creatureMap;
 	private GameController controller;
-		
+
     public void start(Stage stage) {
     	controller = new GameController();
     	creatureMap = new HashMap<Creature, ImageView>();
@@ -44,24 +44,13 @@ public class MainView extends Application {
     	window.setBottom(tilePane);
 
     	objects = controller.getMapLayout();
+    	player = new Player(new Point2D(2,3));
+    	creatureMap.put(player, new ImageView(new Image("assets/idleDark.png")));
+    	addObject(player);
     	for(GameObject object : objects) {
-    		if(object instanceof Player) {
-    			player = (Player) object;
-    		
-    			creatureMap.put(player, new ImageView(new Image("assets/idleDark.png")));
-    		}
     		addObject(object);
     	}
     	
-//    	player = new Player();
-//    	player.setPosition(0,0);
-//    	addObject(player, player.getPosition().getX() * BLOCK + BLOCK / 2, player.getPosition().getY() * BLOCK + BLOCK / 2);
-//    	weapon = new Weapon();
-//    	weapon.setPosition(5,0);
-//    	addObject(weapon, weapon.getPosition().getX() * BLOCK + 10, weapon.getPosition().getY() * BLOCK + 10);
-//    	potion = new Potion(10);
-//    	potion.setPosition(0, 5);
-//    	addObject(potion, potion.getPosition().getX() * BLOCK + 10, potion.getPosition().getY() * BLOCK + 10);
     	/*
     	 * Continous loop functioning as the games internal "clock". Screen updates on each tick.
     	 */
@@ -104,11 +93,6 @@ public class MainView extends Application {
 					break;
     		}
     		if(moved) {
-    			for(GameObject object : objects) {
-    				if(controller.collision(player, object)) {
-    					
-    				}
-    			}
 	    		Point2D pos = player.getPosition();
 				creatureMap.get(player).setTranslateX(pos.getX() * BLOCKWIDTH);
 				creatureMap.get(player).setTranslateY(pos.getY() * BLOCKHEIGHT);
