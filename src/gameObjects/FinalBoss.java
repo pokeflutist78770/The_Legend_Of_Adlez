@@ -1,4 +1,4 @@
-package player_enemies;
+package gameObjects;
 
 import javafx.geometry.Point2D;
 
@@ -7,7 +7,7 @@ import javafx.geometry.Point2D;
  * @author Tito Vasquez
  *
  */
-public class FinalBoss extends EnemyClass{
+public class FinalBoss extends Enemy{
 
 	/**
 	 * Constructor for the FinalBoss Class.
@@ -26,7 +26,7 @@ public class FinalBoss extends EnemyClass{
 	 */
 	public FinalBoss(Point2D position) {
 		super(position);
-		this.setHP(255);
+		this.setCurrentHP(255);
 		this.setAttack(10);
 		this.setImage(null);
 	}

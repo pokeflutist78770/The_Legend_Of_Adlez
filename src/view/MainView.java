@@ -1,81 +1,67 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
+import controller.GameController;
 import gameObjects.*;
+import gameObjects.Creature;
 import enums.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class MainView extends Application {
-	int HEIGHT = 14, WIDTH = 18, BLOCK = 48, BLOCKHEIGHT = 40, BLOCKWIDTH = 30;
+	int MAPHEIGHT = 14, MAPWIDTH = 18;
+	int BLOCKHEIGHT = 48, BLOCKWIDTH = 48;
 	private Pane pane;
 	private Player player;
-	private Weapon weapon;
-	private Potion potion;
-	private int score = 0;
-	Label scoreLabel;
-	Label healthLabel;
-	Label dirLabel;
 	private List<GameObject> objects;
-	private List<Enemy> enemies = new ArrayList<>();
-	
-	/*
-	 * TODO Remove temporary classes on merge with master
-	 */
-	public class Weapon extends GameObject{
-		Weapon(){
-			super(new Rectangle(20,20, Color.BLUE));
-		}
-	}
-	public class Potion extends GameObject{
-		private int health;
-		Potion(int amt) {
-			super(new Rectangle(20,20, Color.DEEPPINK));
-			health = amt;
-		}
-		public int getHealth() {
-			return health;
-		}
-	}
-	
+	private Map<Creature, ImageView> creatureMap;
+	private GameController controller;
+		
     public void start(Stage stage) {
+    	controller = new GameController();
+    	creatureMap = new HashMap<Creature, ImageView>();
     	BorderPane window = new BorderPane();
     	pane = new Pane();
+    	pane.setPrefSize(MAPWIDTH * BLOCKWIDTH, MAPHEIGHT * BLOCKHEIGHT);
     	pane.setBackground(new Background(new BackgroundImage(new Image("assets/homeOutside.png"), null, null, null, null)));
     	window.setCenter(pane);
-    	
+
     	TilePane tilePane = new TilePane();
-    	scoreLabel = new Label();
-    	healthLabel = new Label();
-    	dirLabel = new Label();
-    	tilePane.getChildren().addAll(scoreLabel, healthLabel, dirLabel);
     	window.setBottom(tilePane);
-    	pane.setPrefSize(WIDTH * BLOCK, HEIGHT * BLOCK);
+
+    	objects = controller.getMapLayout();
+    	for(GameObject object : objects) {
+    		if(object instanceof Player) {
+    			player = (Player) object;
+    		
+    			creatureMap.put(player, new ImageView(new Image("assets/idleDark.png")));
+    		}
+    		addObject(object);
+    	}
     	
-    	player = new Player();
-    	player.setPosition(0,0);
-    	addObject(player, player.getPosition().getX() * BLOCK + BLOCK / 2, player.getPosition().getY() * BLOCK + BLOCK / 2);
-    	weapon = new Weapon();
-    	weapon.setPosition(5,0);
-    	addObject(weapon, weapon.getPosition().getX() * BLOCK + 10, weapon.getPosition().getY() * BLOCK + 10);
-    	potion = new Potion(10);
-    	potion.setPosition(0, 5);
-    	addObject(potion, potion.getPosition().getX() * BLOCK + 10, potion.getPosition().getY() * BLOCK + 10);
+//    	player = new Player();
+//    	player.setPosition(0,0);
+//    	addObject(player, player.getPosition().getX() * BLOCK + BLOCK / 2, player.getPosition().getY() * BLOCK + BLOCK / 2);
+//    	weapon = new Weapon();
+//    	weapon.setPosition(5,0);
+//    	addObject(weapon, weapon.getPosition().getX() * BLOCK + 10, weapon.getPosition().getY() * BLOCK + 10);
+//    	potion = new Potion(10);
+//    	potion.setPosition(0, 5);
+//    	addObject(potion, potion.getPosition().getX() * BLOCK + 10, potion.getPosition().getY() * BLOCK + 10);
     	/*
     	 * Continous loop functioning as the games internal "clock". Screen updates on each tick.
     	 */
@@ -96,47 +82,38 @@ public class MainView extends Application {
     	 *            Space drops the weapon and leaves player vulnerable
     	 */
     	scene.setOnKeyPressed(e -> {
-    		Direction dir = player.getDirection();
+    		boolean moved = false;
     		switch(e.getCode()) {
-			default:
-				break;
-			case W:
-			case UP:
-				if(dir != Direction.NORTH)
-					player.setDirection(Direction.NORTH);
-				else if(player.getPosition().getY() > 0){
-					player.move(Direction.NORTH);
-				}
-				break;
-			case S:
-			case DOWN:
-				if(dir != Direction.SOUTH)
-					player.setDirection(Direction.SOUTH);
-				else if(player.getPosition().getY() < HEIGHT - 1){
-					player.move(Direction.SOUTH);
-				}
-				break;
-			case D:
-			case RIGHT:
-				if(dir != Direction.EAST)
-					player.setDirection(Direction.EAST);
-				else if(player.getPosition().getX() < WIDTH - 1){
-					player.move(Direction.EAST);
-				}
-				break;
-			case A:
-			case LEFT:
-				if(dir != Direction.WEST)
-					player.setDirection(Direction.WEST);
-				else if(player.getPosition().getX() > 0){
-					player.move(Direction.WEST);
-				}
-				break;
-			case SPACE:
-				player.dropWeapon();
-				weapon.setActive(true);
-				pane.getChildren().add(weapon.getNode());
+				default:
+					break;
+				case W:
+				case UP:
+					moved = controller.move(player, Direction.NORTH);						
+					break;
+				case S:
+				case DOWN:
+					moved = controller.move(player, Direction.SOUTH);
+					break;
+				case D:
+				case RIGHT:
+					moved = controller.move(player, Direction.EAST);
+					break;
+				case A:
+				case LEFT:
+					moved = controller.move(player, Direction.WEST);
+					break;
     		}
+    		if(moved) {
+    			for(GameObject object : objects) {
+    				if(controller.collision(player, object)) {
+    					
+    				}
+    			}
+	    		Point2D pos = player.getPosition();
+				creatureMap.get(player).setTranslateX(pos.getX() * BLOCKWIDTH);
+				creatureMap.get(player).setTranslateY(pos.getY() * BLOCKHEIGHT);
+    		}
+    		
     	});
         stage.setScene(scene);
         stage.show();
@@ -148,88 +125,24 @@ public class MainView extends Application {
      * allows enemies to be defeated.
      */
     public void onUpdate() {
-    	if(player.collision(potion)) {
-    		player.heal(potion.getHealth());
-    		potion.setActive(false);
-    		pane.getChildren().remove(potion.getNode());
-    		newPotion();
-    	}
-    	if(player.collision(weapon)) {
-			player.getWeapon();
-			weapon.setActive(false);
-			pane.getChildren().remove(weapon.getNode());
-		}
-    	for(Enemy enemy : enemies) {
-    		if(player.collision(enemy) && player.hasWeapon()) {
-    			score++;
-    			enemy.setActive(false);
-    			pane.getChildren().remove(enemy.getNode());
-    		}
-    		else if(player.collision(enemy) && !player.hasWeapon()) {
-    			player.damange(10);
-    			switch(player.getDirection()) {
-    			case NORTH:
-    				player.move(Direction.SOUTH);
-    				break;
-    			case SOUTH:
-    				player.move(Direction.NORTH);
-    				break;
-    			case EAST:
-    				player.move(Direction.WEST);
-    				break;
-    			case WEST:
-    				player.move(Direction.EAST);
-    				break;
-    			}
-    		}    			
-    	}
-    	enemies.removeIf(e-> !e.isActive());
-    	if(enemies.size() == 0) {
-    		newEnemy();
-    		newEnemy();
-    		newEnemy();
-    		newEnemy();
-    	}
-    	scoreLabel.setText("Enemies defeated: " + Integer.toString(score));
-    	healthLabel.setText("Health: " + player.getHealth());
-    	dirLabel.setText("Direction: " + player.getDirection());
     	
     }
-    
-    private void newPotion() {
-		potion = new Potion(10);
-		Random coord = new Random();
-    	Point2D loc = new Point2D(coord.nextInt(WIDTH),coord.nextInt(HEIGHT));
-    	while(loc.equals(player.getPosition()) || loc.equals(weapon.getPosition()) || loc.equals(potion.getPosition())) {
-    		loc = new Point2D(coord.nextInt(WIDTH),coord.nextInt(HEIGHT));
-    	}
-    	potion.setPosition(loc);
-    	addObject(potion, potion.getPosition().getX() * BLOCK + 10, potion.getPosition().getY() * BLOCK + 10);
-	}
-
-	/*
-     * Generates new enemy randomly on board. Prevents initial collision with player and weapon
-     */
-    public void newEnemy() {
-    	Enemy enemy = new Enemy();
-    	Random coord = new Random();
-    	Point2D loc = new Point2D(coord.nextInt(WIDTH),coord.nextInt(HEIGHT));
-    	while(loc.equals(player.getPosition()) || loc.equals(weapon.getPosition()) || loc.equals(potion.getPosition())) {
-    		loc = new Point2D(coord.nextInt(WIDTH),coord.nextInt(HEIGHT));
-    	}
-    	enemy.setPosition(loc);
-    	enemies.add(enemy);
-    	addObject(enemy, enemy.getPosition().getX() * BLOCK + 5, enemy.getPosition().getY() * BLOCK + 5);
-    	
-    }
-    
-    /*
+        
+    /**
      * Adds object to view at specified x/y coordinate on grid.
      */
-    public void addObject(GameObject object, double x, double y) {
-    	object.getNode().setTranslateX(x);
-    	object.getNode().setTranslateY(y);
-    	pane.getChildren().add(object.getNode());
+    public void addObject(GameObject object) {
+		double x = object.getPosition().getX() * BLOCKWIDTH;
+		double y = object.getPosition().getY() * BLOCKHEIGHT;
+		ImageView image;
+		if(creatureMap.containsKey(object)) {
+			image = creatureMap.get(object);
+		}else {
+		image = new ImageView();
+		}
+		image.setTranslateX(x);
+		image.setTranslateY(y);
+	    pane.getChildren().add(image);
     }
 
 }  

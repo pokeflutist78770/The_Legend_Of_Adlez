@@ -1,7 +1,4 @@
-package Items;
-
-import player_enemies.CharacterClass;
-
+package gameObjects;
 
 /**
  * Consumable interface. This allows an item to become consumable, 
@@ -11,6 +8,6 @@ import player_enemies.CharacterClass;
  */
 public interface Consumable {
 
-	boolean use(CharacterClass person);
+	boolean use(Creature person);
 	
 }

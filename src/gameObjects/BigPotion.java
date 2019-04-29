@@ -1,7 +1,4 @@
-package Items;
-
-import player_enemies.CharacterClass;
-
+package gameObjects;
 
 /**
  * BigPotion class. This item heals player health by a big amount,
@@ -27,10 +24,10 @@ public class BigPotion extends Item implements Consumable{
 	 * @return boolean representing if item usage was successful
 	 */
 	@Override
-	public boolean use(CharacterClass person) {
+	public boolean use(Creature person) {
 		
 		//health is full, can't use potion
-		if(person.getcurrentHP()==person.getTotalHP()) {
+		if(person.getCurrentHP()==person.getTotalHP()) {
 			return false;
 		}
 		
