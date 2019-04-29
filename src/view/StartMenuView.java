@@ -171,18 +171,16 @@ public class StartMenuView extends StackPane{
 	}
 	
 	
-	private class ButtonHoverHandler implements EventHandler<MouseEvent>{
-
-		@Override
-		public void handle(MouseEvent arg0) {
-
-		}
-		
-	}
-	
-	
+	/**
+	 * Handles any button clicks
+	 * @author aagua
+	 *
+	 */
 	private class ButtonHandler implements EventHandler<ActionEvent> {
 
+		/**
+		 * handle the potential event of a button click
+		 */
 		@Override
 		public void handle(ActionEvent arg0) {
 			Button button=(Button) arg0.getSource();
