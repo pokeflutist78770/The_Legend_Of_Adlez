@@ -1,38 +1,59 @@
-package player_enemies;
+package gameObjects;
 
+import enums.Direction;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 
-/**
- * Object for any "character" that can appear on the map.
- * @author Tito Vasquez
- *
- */
-public class CharacterClass extends GameObject {
+public class Creature extends GameObject{
 	private int currentHP;
 	private int totalHP;
 	private int attack;
+	private Direction direction;
 	
-	/**
-	 * Sets all the values that a possible character can have.
-	 * @param currentHP int The amount of HP the character has.
-	 * @param attack int The attack power of the character.
-	 * @param position int[] An array of length 2 that gives the x and y coordinate of the character's
-	 * position on the overworld.
-	 */
-	public CharacterClass(int currentHP, int totalHP, int attack, Point2D position) {
-		super(position);
-		this.currentHP = currentHP;
-		this.totalHP = totalHP;
-		this.attack = attack;
+	public Creature(Node node) {
+		super(node);
+		direction = Direction.SOUTH;
+		// TODO Auto-generated constructor stub
 	}
 	
-	/**
-	 * Alternate constructor mainly used for the EnemyClass
-	 * @param position int[] The current position of the character on the game map.
-	 */
-	public CharacterClass(Point2D position) {
+	public Creature(Point2D position) {
 		super(position);
 	}
+	
+	public Direction getDirection() {
+		return direction;
+	}
+	
+	public void setDirection(Direction dir) {
+		direction = dir;
+	}
+	public void move(Direction dir) {
+		int x = 0, y = 0;
+		switch(dir) {
+		case NORTH:
+			x = 0;
+			y= -1;
+			break;
+		case SOUTH:
+			x = 0;
+			y = 1;
+			break;
+		case EAST:
+			x = 1;
+			y = 0;
+			break;
+		case WEST:
+			x = -1;
+			y = 0;
+			break;	
+		}
+		setPosition(getPosition().add(x, y));
+		Node node = getNode();
+		node.setTranslateX(node.getTranslateX() + x * 48);
+		node.setTranslateY(node.getTranslateY() + y * 48);
+	}
+	
+	
 	
 	/**
 	 * Reduces the HP of the character by a given amount.
@@ -95,5 +116,5 @@ public class CharacterClass extends GameObject {
 	public int getAttack() {
 		return attack;
 	}
-	
+
 }

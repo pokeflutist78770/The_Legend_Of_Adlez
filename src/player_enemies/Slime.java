@@ -1,5 +1,7 @@
 package player_enemies;
 
+import javafx.geometry.Point2D;
+
 /**
  * Class for the enemy type "Slime".
  * @author Tito Vasquez
@@ -14,7 +16,7 @@ public class Slime extends EnemyClass {
 	 * @param attack int The attack power of the Slime.
 	 * @param position int[] The current position of the Slime.
 	 */
-	public Slime(int currentHP, int totalHP, int attack, int[] position) {
+	public Slime(int currentHP, int totalHP, int attack, Point2D position) {
 		super(currentHP, totalHP, attack, position);
 	}
 
@@ -22,7 +24,7 @@ public class Slime extends EnemyClass {
 	 * Separate constructor that hard codes in the stats of the Slime for consistency.
 	 * @param position int[] The current position of the Slime on the game map.
 	 */
-	public Slime(int[] position) {
+	public Slime(Point2D position) {
 		super(position);
 		this.setHP(10);
 		this.setAttack(1);

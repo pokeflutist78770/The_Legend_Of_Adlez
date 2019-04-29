@@ -1,5 +1,7 @@
 package player_enemies;
 
+import javafx.geometry.Point2D;
+
 /**
  * Class for the enemy type "FinalBoss".
  * @author Tito Vasquez
@@ -14,7 +16,7 @@ public class FinalBoss extends EnemyClass{
 	 * @param attack int The boss's attack power.
 	 * @param position int[] The boss's position on the game map.
 	 */
-	public FinalBoss(int currentHP, int totalHP, int attack, int[] position) {
+	public FinalBoss(int currentHP, int totalHP, int attack, Point2D position) {
 		super(currentHP, totalHP, attack, position);
 	}
 	
@@ -22,7 +24,7 @@ public class FinalBoss extends EnemyClass{
 	 * Separate constructor that hard codes in the stats of the FinalBoss for consistency.
 	 * @param position int[] The current position of the FinalBoss on the game map.
 	 */
-	public FinalBoss(int[] position) {
+	public FinalBoss(Point2D position) {
 		super(position);
 		this.setHP(255);
 		this.setAttack(10);

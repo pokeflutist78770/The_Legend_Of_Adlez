@@ -1,23 +1,24 @@
 package player_enemies;
 
+import javafx.geometry.Point2D;
+
 /**
  * Class for the OverWorld object type "NPC".
  * @author Tito Vasquez
  *
  */
-public class NPC extends OverWorldClass {
+public class NPC extends GameObject {
 	String message;
 
 	/**
 	 * Constructs a NPC object and sets the image of it on the overworld map.
 	 * @param position int[] The position of the NPC object.
 	 */
-	public NPC(int[] position) {
+	public NPC(Point2D position) {
 		super(position);
 		this.setImage(null);
 	}
 
-	@Override
 	public String getText() {
 		return message;
 	}

@@ -1,14 +1,18 @@
 package player_enemies;
 
+import Items.Item;
+import javafx.geometry.Point2D;
+
 /**
  * Class for the playable main character.
  * @author Tito Vasquez
  *
  */
 public class PlayerClass extends CharacterClass {
-	String image; 
 	int currentMoney;
 	int maxMoney;
+	Item item;
+	//Inventory inventory = 
 	
 	/**
 	 * Constructor for the PlayerClass object.
@@ -17,21 +21,21 @@ public class PlayerClass extends CharacterClass {
 	 * @param attack int The attack power of the player.
 	 * @param position int[] The current position of the player.
 	 */
-	public PlayerClass(int currentHP, int totalHP, int attack, int[] position) {
+	public PlayerClass(int currentHP, int totalHP, int attack, Point2D position) {
 		super(currentHP, totalHP, attack, position);
 		currentMoney = 0;
 		maxMoney = 500;
+		setImage("idleDark.png");
 	}
 	
 	/**
 	 * Alternate constructor for the PlayerClass with stats hardcoded.
 	 * @param position int[] The position of the player character on the game board.
 	 */
-	public PlayerClass(int[] position) {
+	public PlayerClass(Point2D position) {
 		super(position);
 		this.setHP(20);
 		this.setAttack(1);
-		this.image = (null);
 		currentMoney = 0;
 		maxMoney = 500;
 	}
