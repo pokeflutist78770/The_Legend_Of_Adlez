@@ -19,6 +19,7 @@ public class Player extends Creature {
 	
 	
 	/**
+
 	 * Constructor for the PlayerClass object.
 	 * @param currentHP int The currentHP of the player.
 	 * @param totalHP int The totalHP of the player.
@@ -42,7 +43,8 @@ public class Player extends Creature {
 		currentMoney = 0;
 		maxMoney = 500;
 		setDirection(Direction.SOUTH);
-		setImage("assets/idleDark.png");
+
+		setImage("assets/adlez1.png");
 	}
 	
 	public void setEquippedItem(Item item) {

@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import animation.SpriteAnimation;
 import controller.GameController;
 import gameObjects.*;
 import gameObjects.Creature;
 import enums.*;
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.PathTransition;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -21,8 +24,12 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import model.GameMap;
+import javafx.util.Duration;
 
 public class MainView extends Application {
 	int MAPHEIGHT = 14, MAPWIDTH = 18;
@@ -53,6 +60,11 @@ public class MainView extends Application {
     	for(Enemy enemy : map.getEnemies()) {
     		creatureMap.put(enemy, new ImageView(new Image(enemy.getImage())));
     		addObject(enemy);
+    	
+    	player = new Player(new Point2D(2,3));
+    	creatureMap.put(player, new ImageView(new Image("assets/adlez1.png")));
+    	creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
+    	addObject(player);
     	}
     	player = controller.getPlayer();
     	creatureMap.put(player, new ImageView(new Image(player.getImage())));
@@ -79,31 +91,165 @@ public class MainView extends Application {
     	 */
     	scene.setOnKeyPressed(e -> {
     		boolean moved = false;
+    		boolean interact = false;
+    		Point2D startPos = player.getPosition();
     		switch(e.getCode()) {
 				default:
 					break;
+				case SPACE:{
+					switch(player.getDirection()) {
+						case NORTH:{
+							Animation animation = new SpriteAnimation(
+					                creatureMap.get(player),
+					                Duration.millis(250),
+					                5, 5,
+					                0, 434,
+					                60, 62
+					        );
+					        animation.setCycleCount(1);
+					        animation.play();
+					       interact = true;
+					        creatureMap.get(player).setViewport(new Rectangle2D(0,62,60,62));
+					        break;
+						}
+						case SOUTH:{
+							
+							Animation animation = new SpriteAnimation(
+					                creatureMap.get(player),
+					                Duration.millis(250),
+					                6, 6,
+					                0, 248,
+					                60, 62
+					        );
+					        animation.setCycleCount(1);
+					        animation.play();
+					        interact = true;
+					        creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
+					        break;
+						}
+						case EAST:{
+							Animation animation = new SpriteAnimation(
+					                creatureMap.get(player),
+					                Duration.millis(250),
+					                5, 5,
+					                0, 372,
+					                60, 62
+					        );
+					        animation.setCycleCount(1);
+					        animation.play();
+					        interact = true;
+					        creatureMap.get(player).setViewport(new Rectangle2D(420,186,60,62));
+					        break;
+						}
+						case WEST:{
+							Animation animation = new SpriteAnimation(
+					                creatureMap.get(player),
+					                Duration.millis(250),
+					                5, 5,
+					                0, 310,
+					                60, 62
+					        );
+					        animation.setCycleCount(1);
+					        animation.play();
+					        interact = true;
+					        creatureMap.get(player).setViewport(new Rectangle2D(0,124,60,62));
+							break;
+						}
+					}
+				}
+				if(interact)
+					break;
 				case W:
 				case UP:
-					moved = controller.move(player, Direction.NORTH);						
+					moved = controller.move(player, Direction.NORTH);
+					if(!moved) {
+						creatureMap.get(player).setViewport(new Rectangle2D(0,62,60,62));
+					}
+					else {
+						Animation animation = new SpriteAnimation(
+				                creatureMap.get(player),
+				                Duration.millis(500),
+				                8, 8,
+				                0, 62,
+				                60, 62
+				        );
+				        animation.setCycleCount(1);
+				        animation.play();
+					}
 					break;
 				case S:
 				case DOWN:
 					moved = controller.move(player, Direction.SOUTH);
+					if(!moved) {
+						creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
+					}
+					else {
+						Animation animation = new SpriteAnimation(
+				                creatureMap.get(player),
+				                Duration.millis(500),
+				                8, 8,
+				                0, 0,
+				                60, 62
+				        );
+				        animation.setCycleCount(1);
+				        animation.play();
+					}
 					break;
 				case D:
 				case RIGHT:
 					moved = controller.move(player, Direction.EAST);
+					if(!moved) {
+						creatureMap.get(player).setViewport(new Rectangle2D(420,186,60,62));
+					}
+					else {
+						Animation animation = new SpriteAnimation(
+				                creatureMap.get(player),
+				                Duration.millis(500),
+				                8, 8,
+				                0, 186,
+				                60, 62
+				        );
+				        animation.setCycleCount(1);
+				        animation.play();
+					}
 					break;
 				case A:
 				case LEFT:
 					moved = controller.move(player, Direction.WEST);
+					if(!moved) {
+						creatureMap.get(player).setViewport(new Rectangle2D(0,124,60,62));
+					}
+					else {
+						Animation animation = new SpriteAnimation(
+				                creatureMap.get(player),
+				                Duration.millis(500),
+				                8, 8,
+				                0, 124,
+				                60, 62
+				        );
+				        animation.setCycleCount(1);
+				        animation.play();
+					}
 					break;
-    		}
+    			}
     		if(moved) {
+
+    			for(GameObject object : objects) {
+    				if(controller.collision(player, object)) {
+    					
+    				}
+    			}
+
 	    		Point2D pos = player.getPosition();
-				creatureMap.get(player).setTranslateX(pos.getX() * BLOCKWIDTH);
-				creatureMap.get(player).setTranslateY(pos.getY() * BLOCKHEIGHT);
-    		}
+	    		Path path = new Path();
+	    	    path.getElements().add(new MoveTo(startPos.getX() * 48 +24, startPos.getY() * 48 + 24));
+	    	    path.getElements().add(new LineTo(pos.getX() * 48 +24, pos.getY() * 48 + 24));
+	    	    PathTransition pathTransition = new PathTransition();
+	    	    pathTransition.setDuration(Duration.millis(500));
+	    	    pathTransition.setNode(creatureMap.get(player)); // Circle is built above
+	    	    pathTransition.setPath(path);
+	    	    pathTransition.play();	
+    		}	
     	});
         stage.setScene(scene);
         stage.show();
