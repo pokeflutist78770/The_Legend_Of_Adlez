@@ -28,6 +28,7 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.stage.Stage;
+import model.GameMap;
 import javafx.util.Duration;
 
 public class MainView extends Application {
@@ -35,40 +36,41 @@ public class MainView extends Application {
 	int BLOCKHEIGHT = 48, BLOCKWIDTH = 48;
 	private Pane pane;
 	private Player player;
+	private GameMap map;
 	private List<GameObject> objects;
 	private Map<Creature, ImageView> creatureMap;
 	private GameController controller;
-		
+
     public void start(Stage stage) {
     	controller = new GameController();
+    	map = controller.getMapLayout();
     	creatureMap = new HashMap<Creature, ImageView>();
     	BorderPane window = new BorderPane();
     	pane = new Pane();
     	pane.setPrefSize(MAPWIDTH * BLOCKWIDTH, MAPHEIGHT * BLOCKHEIGHT);
-    	pane.setBackground(new Background(new BackgroundImage(new Image("assets/homeOutside.png"), null, null, null, null)));
+    	pane.setBackground(new Background(new BackgroundImage(new Image(map.getMapString()), null, null, null, null)));
     	window.setCenter(pane);
 
     	TilePane tilePane = new TilePane();
     	window.setBottom(tilePane);
-    	
-    	player = new Player(new Point2D(2,3));
-    	creatureMap.put(player, new ImageView(new Image("assets/adlez1.png")));
+
+    	for(GameObject obstacle : map.getObjects()) {
+    		addObject(obstacle);
+    	}
+    	for(Enemy enemy : map.getEnemies()) {
+    		creatureMap.put(enemy, new ImageView(new Image(enemy.getImage())));
+    		addObject(enemy);
+    	}
+//    	player = new Player(new Point2D(2,3));
+//    	creatureMap.put(player, new ImageView(new Image("assets/adlez1.png")));
+//    	creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
+//    	addObject(player);
+//    	}
+    	player = controller.getPlayer();
+    	creatureMap.put(player, new ImageView(new Image(player.getImage())));
     	creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
     	addObject(player);
-    	objects = controller.getMapLayout();
-    	for(GameObject object : objects) {
-    		addObject(object);
-    	}
     	
-//    	player = new Player();
-//    	player.setPosition(0,0);
-//    	addObject(player, player.getPosition().getX() * BLOCK + BLOCK / 2, player.getPosition().getY() * BLOCK + BLOCK / 2);
-//    	weapon = new Weapon();
-//    	weapon.setPosition(5,0);
-//    	addObject(weapon, weapon.getPosition().getX() * BLOCK + 10, weapon.getPosition().getY() * BLOCK + 10);
-//    	potion = new Potion(10);
-//    	potion.setPosition(0, 5);
-//    	addObject(potion, potion.getPosition().getX() * BLOCK + 10, potion.getPosition().getY() * BLOCK + 10);
     	/*
     	 * Continous loop functioning as the games internal "clock". Screen updates on each tick.
     	 */
@@ -88,7 +90,7 @@ public class MainView extends Application {
     	 * 			  otherwise the player will move in the specified direction
     	 *            Space drops the weapon and leaves player vulnerable
     	 */
-    	scene.setOnKeyPressed(e -> {
+    	scene.setOnKeyReleased(e -> {
     		boolean moved = false;
     		boolean interact = false;
     		Point2D startPos = player.getPosition();
@@ -167,7 +169,7 @@ public class MainView extends Application {
 					else {
 						Animation animation = new SpriteAnimation(
 				                creatureMap.get(player),
-				                Duration.millis(500),
+				                Duration.millis(250),
 				                8, 8,
 				                0, 62,
 				                60, 62
@@ -185,7 +187,7 @@ public class MainView extends Application {
 					else {
 						Animation animation = new SpriteAnimation(
 				                creatureMap.get(player),
-				                Duration.millis(500),
+				                Duration.millis(250),
 				                8, 8,
 				                0, 0,
 				                60, 62
@@ -203,7 +205,7 @@ public class MainView extends Application {
 					else {
 						Animation animation = new SpriteAnimation(
 				                creatureMap.get(player),
-				                Duration.millis(500),
+				                Duration.millis(250),
 				                8, 8,
 				                0, 186,
 				                60, 62
@@ -232,22 +234,16 @@ public class MainView extends Application {
 					break;
     			}
     		if(moved) {
-    			for(GameObject object : objects) {
-    				if(controller.collision(player, object)) {
-    					
-    				}
-    			}
-
 	    		Point2D pos = player.getPosition();
 	    		Path path = new Path();
-	    	    path.getElements().add(new MoveTo(startPos.getX() * 48 +24, startPos.getY() * 48 + 24));
-	    	    path.getElements().add(new LineTo(pos.getX() * 48 +24, pos.getY() * 48 + 24));
+	    	    path.getElements().add(new MoveTo(startPos.getX() * 48 + 24, startPos.getY() * 48 + 24));
+	    	    path.getElements().add(new LineTo(pos.getX() * 48 + 24, pos.getY() * 48 + 24));
 	    	    PathTransition pathTransition = new PathTransition();
-	    	    pathTransition.setDuration(Duration.millis(500));
+	    	    pathTransition.setDuration(Duration.millis(250));
 	    	    pathTransition.setNode(creatureMap.get(player)); // Circle is built above
 	    	    pathTransition.setPath(path);
 	    	    pathTransition.play();	
-    		}	
+    		}
     	});
         stage.setScene(scene);
         stage.show();
@@ -259,7 +255,12 @@ public class MainView extends Application {
      * allows enemies to be defeated.
      */
     public void onUpdate() {
-    	
+    	for(Enemy enemy : map.getEnemies())
+    		if(controller.enemyTurn(enemy) == Turn.MOVE) {
+    			Point2D pos = enemy.getPosition();
+				creatureMap.get(enemy).setTranslateX(pos.getX() * BLOCKWIDTH);
+				creatureMap.get(enemy).setTranslateY(pos.getY() * BLOCKHEIGHT);
+    		}
     }
         
     /**

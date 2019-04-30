@@ -24,10 +24,10 @@ public class Scorpion extends Enemy {
 	 * Separate constructor that hard codes in the stats of the Slime for consistency.
 	 * @param position int[] The current position of the Slime on the game map.
 	 */
-	public Scorpion(Point2D position) {
-		super(position);
-		this.setCurrentHP(10);
-		this.setAttack(1);
-		this.setImage(null);		
+	public Scorpion(Point2D position, int movement) {
+		super(position, movement);
+		setCurrentHP(10);
+		setAttack(1);
+		setImage("assets/idleDark.png");		
 	}
 }
