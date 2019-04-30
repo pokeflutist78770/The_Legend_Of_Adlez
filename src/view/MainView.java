@@ -60,14 +60,15 @@ public class MainView extends Application {
     	for(Enemy enemy : map.getEnemies()) {
     		creatureMap.put(enemy, new ImageView(new Image(enemy.getImage())));
     		addObject(enemy);
-    	
-    	player = new Player(new Point2D(2,3));
-    	creatureMap.put(player, new ImageView(new Image("assets/adlez1.png")));
-    	creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
-    	addObject(player);
     	}
+//    	player = new Player(new Point2D(2,3));
+//    	creatureMap.put(player, new ImageView(new Image("assets/adlez1.png")));
+//    	creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
+//    	addObject(player);
+//    	}
     	player = controller.getPlayer();
     	creatureMap.put(player, new ImageView(new Image(player.getImage())));
+    	creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
     	addObject(player);
     	
     	/*
@@ -89,7 +90,7 @@ public class MainView extends Application {
     	 * 			  otherwise the player will move in the specified direction
     	 *            Space drops the weapon and leaves player vulnerable
     	 */
-    	scene.setOnKeyPressed(e -> {
+    	scene.setOnKeyReleased(e -> {
     		boolean moved = false;
     		boolean interact = false;
     		Point2D startPos = player.getPosition();
@@ -168,7 +169,7 @@ public class MainView extends Application {
 					else {
 						Animation animation = new SpriteAnimation(
 				                creatureMap.get(player),
-				                Duration.millis(500),
+				                Duration.millis(250),
 				                8, 8,
 				                0, 62,
 				                60, 62
@@ -186,7 +187,7 @@ public class MainView extends Application {
 					else {
 						Animation animation = new SpriteAnimation(
 				                creatureMap.get(player),
-				                Duration.millis(500),
+				                Duration.millis(250),
 				                8, 8,
 				                0, 0,
 				                60, 62
@@ -204,7 +205,7 @@ public class MainView extends Application {
 					else {
 						Animation animation = new SpriteAnimation(
 				                creatureMap.get(player),
-				                Duration.millis(500),
+				                Duration.millis(250),
 				                8, 8,
 				                0, 186,
 				                60, 62
@@ -233,23 +234,16 @@ public class MainView extends Application {
 					break;
     			}
     		if(moved) {
-
-    			for(GameObject object : objects) {
-    				if(controller.collision(player, object)) {
-    					
-    				}
-    			}
-
 	    		Point2D pos = player.getPosition();
 	    		Path path = new Path();
-	    	    path.getElements().add(new MoveTo(startPos.getX() * 48 +24, startPos.getY() * 48 + 24));
-	    	    path.getElements().add(new LineTo(pos.getX() * 48 +24, pos.getY() * 48 + 24));
+	    	    path.getElements().add(new MoveTo(startPos.getX() * 48 + 24, startPos.getY() * 48 + 24));
+	    	    path.getElements().add(new LineTo(pos.getX() * 48 + 24, pos.getY() * 48 + 24));
 	    	    PathTransition pathTransition = new PathTransition();
-	    	    pathTransition.setDuration(Duration.millis(500));
+	    	    pathTransition.setDuration(Duration.millis(250));
 	    	    pathTransition.setNode(creatureMap.get(player)); // Circle is built above
 	    	    pathTransition.setPath(path);
 	    	    pathTransition.play();	
-    		}	
+    		}
     	});
         stage.setScene(scene);
         stage.show();

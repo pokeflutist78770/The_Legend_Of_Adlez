@@ -17,7 +17,7 @@ public class GameController {
 	GameMap map;
 	Player player;
 	List<GameObject> objects;
-	MapScreen currMap = MapScreen.MOUNTAIN;
+	MapScreen currMap = MapScreen.HOME_OUTSIDE;
 	
 	public GameController(){
 	}
