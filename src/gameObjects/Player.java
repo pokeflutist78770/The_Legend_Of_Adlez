@@ -29,9 +29,8 @@ public class Player extends Creature {
 		super(currentHP, totalHP, attack, position);
 		currentMoney = 0;
 		maxMoney = 500;
-		setImage("idleDark.png");
+		setImage("assets/idleDark.png");
 	}
-	
 	/**
 	 * Alternate constructor for the PlayerClass with stats hardcoded.
 	 * @param position int[] The position of the player character on the game board.
@@ -43,6 +42,7 @@ public class Player extends Creature {
 		currentMoney = 0;
 		maxMoney = 500;
 		setDirection(Direction.SOUTH);
+		setImage("assets/idleDark.png");
 	}
 	
 	public void setEquippedItem(Item item) {

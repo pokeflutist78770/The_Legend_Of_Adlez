@@ -5,23 +5,23 @@ import java.util.List;
 import enums.*;
 import gameObjects.*;
 import javafx.geometry.Point2D;
-import model.GameMap;
+import model.*;
 
 /**
  * Controller for the GameBoard including interactions with the character and enemies, etc.
- * @author Tito Vasquez
+ * @author Tito Vasquez & Timothy Lyons
  *
  */
 
 public class GameController {
-	GameMap maps;
+	GameMap map;
 	Player player;
 	List<GameObject> objects;
-	int currMap = 1;
+	MapScreen currMap = MapScreen.MOUNTAIN;
 	
 	public GameController(){
-		maps = new GameMap();
 	}
+	
 	public boolean move(Creature character, Direction dir) {
 		Direction currDir = character.getDirection();
 		Point2D currPos = character.getPosition();
@@ -65,7 +65,13 @@ public class GameController {
 		}
 		if(moved) {
 			character.setPosition(currPos.add(x, y));
-			for(GameObject object : objects) {
+			for(GameObject object : map.getObjects()) {
+				if(collision(character, object)) {
+					character.setPosition(currPos);
+					return false;
+				}
+			}
+			for(GameObject object : map.getEnemies()) {
 				if(collision(character, object)) {
 					character.setPosition(currPos);
 					return false;
@@ -75,19 +81,51 @@ public class GameController {
 		}
 		return false;
 	}
-	
-	public boolean collision(GameObject object1, GameObject object2) {
-		return !object1.equals(object2) &&
-				object1.getPosition().equals(object2.getPosition());
+
+	public Turn enemyTurn(Enemy enemy) {
+		if(canAttack(enemy)) {
+			System.out.println("I attacked!");
+			return Turn.ATTACK;
+		}
+		else {
+			if(move(enemy, enemy.getNextMove()))
+				return Turn.MOVE;
+			else
+				return Turn.NONE;
+		}
 	}
 	
-	public List<GameObject> getMapLayout(){
+	public boolean canAttack(Enemy enemy) {
+		Point2D enemyPos = enemy.getPosition();
+		Point2D playerPos = player.getPosition();
+		return (playerPos.equals(enemyPos.add(new Point2D(0,-1))) ||
+				playerPos.equals(enemyPos.add(new Point2D(1,0))) ||
+				playerPos.equals(enemyPos.add(new Point2D(0,1))) ||
+				playerPos.equals(enemyPos.add(new Point2D(-1,0))));
+	}
+	
+	public boolean collision(GameObject object1, GameObject object2) {
+		return (!object1.equals(object2) &&
+				object1.getPosition().equals(object2.getPosition()));
+	}
+	
+	public GameMap getMapLayout(){
 		switch(currMap) {
-		case 1:
-			objects = maps.getHomeOutside();
-			return objects;
+		case HOME_OUTSIDE:
+			map = new HomeOutside();
+			objects = map.getObjects();
+			return map;
+		case MOUNTAIN:
+			map = new Mountain();
+			objects = map.getObjects();
+			return map;
 		default:
 			return null;
 		}
+	}
+
+	public Player getPlayer() {
+		player = new Player(new Point2D(2,3));
+		return player;
 	}
 }
