@@ -7,7 +7,7 @@ import javafx.geometry.Point2D;
  * @author Tito Vasquez
  *
  */
-public class Poe extends EnemyClass {
+public class Poe extends Enemy {
 
 	/**
 	 * Constructor for the Poe class.
