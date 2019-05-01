@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import enums.MapScreen;
 import gameObjects.GameObject;
+import gameObjects.ShopItem;
+
 import java.awt.Point;
 
 import gameObjects.Door;
@@ -89,7 +91,7 @@ public class Dungeon2 extends GameMap {
 		objects.add(new GameObject(new Point(15, 1)));
 		objects.add(new GameObject(new Point(16, 1)));
 		objects.add(new GameObject(new Point(1, 2)));
-		objects.add(new Door(new Point(2, 2)));              // the door
+		objects.add(new ShopItem(new Point(2, 2), 3));              // the door
 		objects.add(new GameObject(new Point(3, 2)));
 		objects.add(new GameObject(new Point(4, 2)));
 		objects.add(new GameObject(new Point(5, 2)));
@@ -162,7 +164,7 @@ public class Dungeon2 extends GameMap {
 		objects.add(new GameObject(new Point(10, 7)));
 		objects.add(new GameObject(new Point(10, 9)));
 		objects.add(new GameObject(new Point(10, 10)));
-		enemies.add(new FinalBoss(new Point(8, 4), 1));
+		enemies.add(new FinalBoss(new Point(8, 4), 4));
 		transitions.add(new Transition(new Point(14, 14), MapScreen.DUNGEON1, new Point(14, 2)));
 		transitions.add(new Transition(new Point(2, 0), MapScreen.DUNGEON3, new Point(2, 13)));
 		setCloneObjects((ArrayList<GameObject>) objects.clone());
