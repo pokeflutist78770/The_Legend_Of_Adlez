@@ -174,7 +174,7 @@ public class MainView extends StackPane {
 		ImageView pause = new ImageView(new Image("assets/paused.png", false));
 		VBox.setMargin(pause, new Insets(25, 0, 25, 0));
 
-		ImageView mapImg = new ImageView(new Image("assets/test.jpg", false));
+		ImageView mapImg = new ImageView(new Image("assets/MenuMapT.png", false));
 
 		Button saveButton = new Button();
 		saveButton.setId("save");
