@@ -709,7 +709,7 @@ public class MainView extends StackPane {
 
 			// continue and save file exists
 			if (button.getId().equals("load") && !button.isDisabled()) {
-
+				LegendOfAdlezView.changeView(new MainView(true));
 			}
 
 			// boot up a new game
