@@ -258,6 +258,19 @@ public class MainView extends StackPane {
 			case SPACE: {
 				switch (player.getDirection()) {
 				case NORTH: {
+					if(player.getEquippedItem() instanceof Dagger) {
+						Animation animation = new SpriteAnimation(
+				                creatureMap.get(player),
+				                Duration.millis(250),
+				                2, 2,
+				                60, 434,
+				                60, 62
+				        );
+				        animation.setCycleCount(1);
+				        animation.play();
+				        interact = true;
+				        break;
+					}
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
 							434, 60, 62);
 					animation.setCycleCount(1);
@@ -273,7 +286,19 @@ public class MainView extends StackPane {
 					break;
 				}
 				case SOUTH: {
-
+					if(player.getEquippedItem() instanceof Dagger) {
+						Animation animation = new SpriteAnimation(
+				                creatureMap.get(player),
+				                Duration.millis(250),
+				                2, 2,
+				                120, 248,
+				                60, 62
+				        );
+				        animation.setCycleCount(1);
+				        animation.play();
+				        interact = true;
+				        break;
+					}
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 6, 6, 0,
 							248, 60, 62);
 					animation.setCycleCount(1);
@@ -289,6 +314,19 @@ public class MainView extends StackPane {
 					break;
 				}
 				case EAST: {
+					if(player.getEquippedItem() instanceof Dagger) {
+						Animation animation = new SpriteAnimation(
+				                creatureMap.get(player),
+				                Duration.millis(250),
+				                2, 2,
+				                60, 372,
+				                60, 62
+				        );
+				        animation.setCycleCount(1);
+				        animation.play();
+				        interact = true;
+				        break;
+					}
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
 							372, 60, 62);
 					animation.setCycleCount(1);
@@ -304,6 +342,19 @@ public class MainView extends StackPane {
 					break;
 				}
 				case WEST: {
+					if(player.getEquippedItem() instanceof Dagger) {
+						Animation animation = new SpriteAnimation(
+				                creatureMap.get(player),
+				                Duration.millis(250),
+				                2, 2,
+				                60, 310,
+				                60, 62
+				        );
+				        animation.setCycleCount(1);
+				        animation.play();
+				        interact = true;
+				        break;
+					}
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
 							310, 60, 62);
 					animation.setCycleCount(1);

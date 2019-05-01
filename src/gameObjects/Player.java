@@ -14,7 +14,7 @@ import javafx.geometry.Point2D;
 public class Player extends Creature {
 	int currentMoney;
 	int maxMoney;
-	Item equippedItem;
+	Item equippedItem = new Dagger(null);
 	List<Item> inventory = new ArrayList<Item>();
 	
 	
