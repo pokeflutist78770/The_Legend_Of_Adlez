@@ -284,6 +284,13 @@ public class MainView extends StackPane {
 			switch (e.getCode()) {
 			default:
 				break;
+			case P:{
+				if(transaction) {
+					textBox.setImage(null);
+					transaction = false;
+				}
+				player.usePotion();
+				}
 			case B:{
 				if(transaction) {
 					textBox.setImage(null);
