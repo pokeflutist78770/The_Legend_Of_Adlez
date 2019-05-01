@@ -1,5 +1,10 @@
 package gameObjects;
 
+import javafx.geometry.Point2D;
+import player_enemies.CharacterClass;
+
+
+
 /**
  * SmallPotion class. This potion only heals a small amount, and is
  * relatively cheap compared to BigPotion
@@ -13,7 +18,9 @@ public class SmallPotion extends Item implements Consumable{
 	/**
 	 * Constructor for SmallPotion item
 	 */
-	public SmallPotion() {
+	public SmallPotion(Point2D position) {
+		super(position);
+		this.setImage("assets/potion.png");
 		COST=5;
 		name="small_potion";
 	}
