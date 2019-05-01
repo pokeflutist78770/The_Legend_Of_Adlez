@@ -67,7 +67,7 @@ public class GameController implements Serializable{
 				break;
 		}
 		if(moved) {
-			character.setPosition(currPos.add(x, y));
+			character.setPosition(new Point(currPos.x+x, currPos.y+y));
 			for(GameObject object : map.getObjects()) {
 				if(collision(character, object)) {
 					character.setPosition(currPos);
@@ -101,10 +101,10 @@ public class GameController implements Serializable{
 	public boolean canAttack(Enemy enemy) {
 		Point enemyPos = enemy.getPosition();
 		Point playerPos = player.getPosition();
-		return (playerPos.equals(enemyPos.add(new Point(0,-1))) ||
-				playerPos.equals(enemyPos.add(new Point(1,0))) ||
-				playerPos.equals(enemyPos.add(new Point(0,1))) ||
-				playerPos.equals(enemyPos.add(new Point(-1,0))));
+		return (playerPos.equals(new Point(enemyPos.x, enemyPos.y-1)) ||
+				playerPos.equals(new Point(enemyPos.x+1,enemyPos.y)) ||
+				playerPos.equals(new Point(enemyPos.x, enemyPos.y+1)) ||
+				playerPos.equals(new Point(enemyPos.x-1, enemyPos.y)));
 	}
 	
 	public boolean collision(GameObject object1, GameObject object2) {

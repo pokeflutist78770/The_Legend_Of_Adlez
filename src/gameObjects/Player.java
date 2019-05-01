@@ -38,7 +38,7 @@ public class Player extends Creature implements Serializable{
 	 * Alternate constructor for the PlayerClass with stats hardcoded.
 	 * @param position int[] The position of the player character on the game board.
 	 */
-	public Player(java.awt.Point position) {
+	public Player(Point position) {
 		super(position);
 		this.setCurrentHP(20);
 		this.setAttack(1);

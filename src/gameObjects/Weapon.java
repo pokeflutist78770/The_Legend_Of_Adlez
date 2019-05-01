@@ -1,5 +1,7 @@
 package gameObjects;
 
+import java.awt.Point;
+
 import enums.Attack;
 import javafx.geometry.Point2D;
 
@@ -16,7 +18,7 @@ public abstract class Weapon extends Item {
 	protected int DAMAGE;
 	protected Attack attackType;
 	
-	public Weapon(Point2D position) {
+	public Weapon(Point position) {
 		super(position);
 	}
 

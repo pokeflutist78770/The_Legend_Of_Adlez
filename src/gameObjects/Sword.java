@@ -1,5 +1,7 @@
 package gameObjects;
 
+import java.awt.Point;
+
 import enums.Attack;
 import javafx.geometry.Point2D;
 
@@ -17,7 +19,7 @@ public class Sword extends Weapon {
 	/**
 	 * Constructor for Sword weapon
 	 */
-	public Sword(Point2D position) {
+	public Sword(Point position) {
 		super(position);
 		this.setImage("assets/sword.png");
 		COST=5;

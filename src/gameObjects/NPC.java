@@ -1,6 +1,6 @@
 package gameObjects;
 
-import javafx.geometry.Point2D;
+import java.awt.Point;
 
 /**
  * Class for the OverWorld object type "NPC".
@@ -12,9 +12,9 @@ public class NPC extends GameObject {
 
 	/**
 	 * Constructs a NPC object and sets the image of it on the overworld map.
-	 * @param position Point2D The position of the NPC object.
+	 * @param position Point The position of the NPC object.
 	 */
-	public NPC(Point2D position) {
+	public NPC(Point position) {
 		super(position);
 	}
 

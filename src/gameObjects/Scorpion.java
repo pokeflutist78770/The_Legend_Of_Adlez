@@ -1,6 +1,6 @@
 package gameObjects;
 
-import javafx.geometry.Point2D;
+import java.awt.Point;
 
 /**
  * Class for the enemy type "Scorpion".
@@ -16,7 +16,7 @@ public class Scorpion extends Enemy {
 	 * @param attack int The attack power of the Scorpion.
 	 * @param position Point2D The current position of the Scorpion.
 	 */
-	public Scorpion(int currentHP, int totalHP, int attack, Point2D position) {
+	public Scorpion(int currentHP, int totalHP, int attack, Point position) {
 		super(currentHP, totalHP, attack, position);
 	}
 
@@ -25,7 +25,7 @@ public class Scorpion extends Enemy {
 	 * @param position Point2D The current position of the Slime on the game map.
 	 * @param n int The type of movement pattern that the Scorpion will have.
 	 */
-	public Scorpion(Point2D position, int n) {
+	public Scorpion(Point position, int n) {
 		super(position, n);
 		this.setTotalHP(10);
 		this.setAttack(1);
