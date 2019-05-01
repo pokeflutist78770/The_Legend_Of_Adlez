@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 
 public class Money extends GameObject {
 	private int amount;
+	private int index;
 	
 	
 	/**
@@ -38,6 +39,12 @@ public class Money extends GameObject {
 	 */
 	public void setAmount(int amount) {
 		this.amount = amount;
+	}
+	public void setIndex(int index) {
+		this.index = index;
+	}
+	public int getIndex() {
+		return index;
 	}
 	
 	

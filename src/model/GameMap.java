@@ -27,9 +27,6 @@ public abstract class GameMap implements Serializable{
 		this.mapString = mapString;
 	}
 	
-	public void refresh() {
-		
-	}
 	public ArrayList<GameObject> getObjects() {
 		return objects;
 	}

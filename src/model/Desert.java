@@ -128,10 +128,6 @@ public class Desert extends GameMap {
 		enemies.add(new Scorpion(new Point(14, 7), 1));
 		transitions.add(new Transition(new Point(11, 13), MapScreen.HOME_UP, new Point(11, 0)));
 		transitions.add(new Transition(new Point(12, 13), MapScreen.HOME_UP, new Point(12, 0)));
-		setCloneObjects((ArrayList<GameObject>) objects.clone());
-	}
-	public void refresh() {
-		objects = getCloneObjects();
 	}
 
 }

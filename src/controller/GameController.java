@@ -3,6 +3,7 @@ package controller;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,9 +99,8 @@ public class GameController implements Serializable {
 							
 						}
 						else {
-						player.giveKey();
-						System.out.println("key recieved");
-						object.setActive(false);
+							player.giveKey();
+							object.setActive(false);
 						}
 						return true;
 					}
@@ -180,11 +180,24 @@ public class GameController implements Serializable {
 			maps.put(currMap, newMap);
 		}
 		else {
-			maps.get(map).refresh();
 			for(Enemy enemy : getEnemies()) {
 				enemy.setActive(true);
 				enemy.setDropped(false);
 				enemy.setCurrentHP(enemy.getTotalHP());
+			}
+			ArrayList<GameObject> indexs = new ArrayList<GameObject>();
+			for(GameObject object: getObstacles()) {
+				if(object instanceof Money|| object instanceof Key) {
+					if(object instanceof Money) {
+						indexs.add(object);
+					}
+					if(object instanceof Key) {
+						indexs.add(object);
+					}
+				}
+			}
+			for(GameObject in: indexs) {
+				getObstacles().remove(in);
 			}
 		}
 		player.setPosition(spawn);

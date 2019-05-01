@@ -174,9 +174,5 @@ public class River extends GameMap {
 		transitions.add(new Transition(new Point(5, 4), MapScreen.SHOP, new Point(11, 12)));
 		transitions.add(new Transition(new Point(17, 8), MapScreen.MOUNTAIN, new Point(1, 8)));
 		transitions.add(new Transition(new Point(17, 9), MapScreen.MOUNTAIN, new Point(1, 9)));
-		setCloneObjects((ArrayList<GameObject>) objects.clone());
-	}
-	public void refresh() {
-		objects = getCloneObjects();
 	}
 }

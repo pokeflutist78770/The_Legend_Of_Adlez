@@ -186,10 +186,7 @@ public class Dungeon3 extends GameMap {
 		objects.add(new GameObject(new Point(16, 8)));
 		objects.add(new GameObject(new Point(16, 9)));
 		transitions.add(new Transition(new Point(2, 13), MapScreen.DUNGEON2, new Point(2, 2)));
-		setCloneObjects((ArrayList<GameObject>) objects.clone());
 	}
-	public void refresh() {
-		objects = getCloneObjects();
-	}
+	
 
 }

@@ -82,7 +82,6 @@ public class MainView extends StackPane {
 
 	public void loadMap() {
 		currMap = controller.getCurrMap();
-		controller.getMapLayout().refresh();
 		LegendOfAdlezView.playBackground(currMap.getMusic());
 		
 		map = controller.getMapLayout();
@@ -717,6 +716,7 @@ public class MainView extends StackPane {
 					if(!enemy.hasDropped()) {
 						creatureMap.put(drop,new ImageView( new Image(drop.getImage())));
 						addObject(drop);
+						drop.setIndex(controller.getObstacles().size() -1);
 						enemy.setDropped(true);
 					}
 					controller.addObject(drop);
@@ -727,6 +727,7 @@ public class MainView extends StackPane {
 					if(!enemy.hasDropped()) {
 						creatureMap.put(drop,new ImageView( new Image(drop.getImage())));
 						addObject(drop);
+						drop.setIndex(controller.getObstacles().size()-1);
 						enemy.setDropped(true);
 					}
 					controller.addObject(drop);
@@ -735,11 +736,22 @@ public class MainView extends StackPane {
 			}
 			
 		}
+		ArrayList<GameObject> indexs = new ArrayList<GameObject>();
 		for (GameObject object : controller.getObstacles()) {
 			if (!object.getActive()) {
 				pane.getChildren().remove(creatureMap.get(object));
+				if(object instanceof Money) {
+					indexs.add(object);
+				}
+				if(object instanceof Key) {
+					indexs.add(object);
+				}
 			}
 		}
+		for(GameObject in: indexs) {
+			controller.getObstacles().remove(in);
+		}
+		
 	}
 
 	private class ButtonHandler implements EventHandler<ActionEvent> {
