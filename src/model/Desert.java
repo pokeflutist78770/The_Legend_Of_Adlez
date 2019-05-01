@@ -123,7 +123,7 @@ public class Desert extends GameMap {
 		objects.add(new GameObject(new Point(16, 0)));
 		objects.add(new GameObject(new Point(16, 11)));
 		enemies.add(new Scorpion(new Point(3, 3), 3));
-		enemies.add(new Scorpion(new Point(9, 4), 0));
+		enemies.add(new Scorpion(new Point(9, 4), 1));
 		enemies.add(new Scorpion(new Point(2, 6), 3));
 		enemies.add(new Scorpion(new Point(14, 7), 1));
 		transitions.add(new Transition(new Point(11, 13), MapScreen.HOME_UP, new Point(11, 0)));
