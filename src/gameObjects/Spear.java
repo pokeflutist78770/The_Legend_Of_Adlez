@@ -1,7 +1,7 @@
 package gameObjects;
 
 import enums.Attack;
-
+import javafx.geometry.Point2D;
 
 
 /**
@@ -15,7 +15,9 @@ public class Spear extends Weapon{
 	/**
 	 * Constructor for Staff weapon
 	 */
-	public Spear() {
+	public Spear(Point2D position) {
+		super(position);
+		this.setImage("assets/spear.png");
 		name="staff";
 		COST=10;
 		DAMAGE=5;		
