@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import enums.MapScreen;
 import gameObjects.GameObject;
 import java.awt.Point;
+
+import gameObjects.Door;
 import gameObjects.Enemy;
 import gameObjects.FinalBoss;
 import gameObjects.Transition;
@@ -87,7 +89,7 @@ public class Dungeon2 extends GameMap {
 		objects.add(new GameObject(new Point(15, 1)));
 		objects.add(new GameObject(new Point(16, 1)));
 		objects.add(new GameObject(new Point(1, 2)));
-		objects.add(new GameObject(new Point(2, 2)));              // the door
+		objects.add(new Door(new Point(2, 2)));              // the door
 		objects.add(new GameObject(new Point(3, 2)));
 		objects.add(new GameObject(new Point(4, 2)));
 		objects.add(new GameObject(new Point(5, 2)));
