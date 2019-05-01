@@ -134,6 +134,9 @@ public class MainView extends BorderPane {
 				player.dropWeapon();
 				weapon.setActive(true);
 				pane.getChildren().add(weapon.getNode());
+				
+			case ESCAPE:
+				
     		}
     	});
     }
