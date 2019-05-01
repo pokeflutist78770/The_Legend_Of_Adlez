@@ -11,17 +11,17 @@ import java.awt.Point;
  *
  */
 public class BigPotion extends Item implements Consumable{
-	private static final int HEAL=5;
+	private static final int HEAL=20;
 	
 	
 	/**
-	 * Constructor for SmallPotion item
+	 * Constructor for BigPotion item
 	 */
 	public BigPotion(Point position) {
 		super(position);
 		this.setImage("assets/potion.png");
-		COST=5;
-		name="small_potion";
+		COST=10;
+		name="Big_potion";
 	}
 
 	/**

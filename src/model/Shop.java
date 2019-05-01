@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import enums.MapScreen;
 import gameObjects.GameObject;
+import gameObjects.ShopItem;
+
 import java.awt.Point;
 import gameObjects.Enemy;
 import gameObjects.Transition;
@@ -50,7 +52,7 @@ public class Shop extends GameMap {
 		objects.add(new GameObject(new Point(5, 4)));
 		objects.add(new GameObject(new Point(5, 5)));
 		objects.add(new GameObject(new Point(5, 6)));
-		objects.add(new GameObject(new Point(5, 8)));
+		objects.add(new ShopItem(new Point(5, 8),1));
 		objects.add(new GameObject(new Point(5, 11)));
 		objects.add(new GameObject(new Point(5, 12)));
 		objects.add(new GameObject(new Point(5, 13)));
@@ -65,7 +67,7 @@ public class Shop extends GameMap {
 		objects.add(new GameObject(new Point(7, 4)));
 		objects.add(new GameObject(new Point(7, 5)));
 		objects.add(new GameObject(new Point(7, 6)));
-		objects.add(new GameObject(new Point(7, 8)));
+		objects.add(new ShopItem(new Point(7, 8),2));
 		objects.add(new GameObject(new Point(7, 11)));
 		objects.add(new GameObject(new Point(7, 12)));
 		objects.add(new GameObject(new Point(7, 13)));
