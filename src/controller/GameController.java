@@ -1,10 +1,11 @@
 package controller;
 
+import java.io.Serializable;
 import java.util.List;
 
 import enums.*;
 import gameObjects.*;
-import javafx.geometry.Point2D;
+import java.awt.Point;
 import model.*;
 
 /**
@@ -13,8 +14,9 @@ import model.*;
  *
  */
 
-public class GameController {
+public class GameController implements Serializable{
 	public static boolean isPaused=false;
+	public static final String SAVE_FILE="save_file.dat";
 	GameMap map;
 	Player player;
 	List<GameObject> objects;
@@ -25,7 +27,7 @@ public class GameController {
 	
 	public boolean move(Creature character, Direction dir) {
 		Direction currDir = character.getDirection();
-		Point2D currPos = character.getPosition();
+		Point currPos = character.getPosition();
 		int x = 0, y = 0;
 		boolean moved = false;
 		if(!currDir.equals(dir)) {
@@ -97,12 +99,12 @@ public class GameController {
 	}
 	
 	public boolean canAttack(Enemy enemy) {
-		Point2D enemyPos = enemy.getPosition();
-		Point2D playerPos = player.getPosition();
-		return (playerPos.equals(enemyPos.add(new Point2D(0,-1))) ||
-				playerPos.equals(enemyPos.add(new Point2D(1,0))) ||
-				playerPos.equals(enemyPos.add(new Point2D(0,1))) ||
-				playerPos.equals(enemyPos.add(new Point2D(-1,0))));
+		Point enemyPos = enemy.getPosition();
+		Point playerPos = player.getPosition();
+		return (playerPos.equals(enemyPos.add(new Point(0,-1))) ||
+				playerPos.equals(enemyPos.add(new Point(1,0))) ||
+				playerPos.equals(enemyPos.add(new Point(0,1))) ||
+				playerPos.equals(enemyPos.add(new Point(-1,0))));
 	}
 	
 	public boolean collision(GameObject object1, GameObject object2) {
@@ -126,7 +128,7 @@ public class GameController {
 	}
 
 	public Player getPlayer() {
-		player = new Player(new Point2D(2,3));
+		player = new Player(new Point(2,3));
 		return player;
 	}
 }

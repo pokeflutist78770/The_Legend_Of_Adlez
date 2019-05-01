@@ -1,6 +1,11 @@
 
 package view;
 
+import java.io.File;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +24,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
+import java.awt.Point;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -97,19 +102,6 @@ public class MainView extends StackPane {
     	VBox.setMargin(pause, new Insets(25,0,25,0));
     	
     	ImageView mapImg=new ImageView(new Image("assets/test.jpg", false));
-    	
-    	
-    	Button inventButton=new Button();
-    	inventButton.setId("invent");
-    	inventButton.setGraphic(new ImageView(new Image("assets/inventory.png", false)));
-		inventButton.setMinWidth(pMenu.getPrefWidth());
-		inventButton.setStyle("-fx-background-color: transparent;"+
-						"-fx-transition: color 0.2s ease-in;");
-		
-		inventButton.setOnMouseEntered(mouseEnter);
-		inventButton.setOnMouseExited(mouseExit);
-		inventButton.setOnAction(new ButtonHandler());
-    	
 		
     	Button saveButton=new Button();
     	saveButton.setId("save");
@@ -145,9 +137,8 @@ public class MainView extends StackPane {
 		quitButton.setOnMouseEntered(mouseEnter);
 		quitButton.setOnMouseExited(mouseExit);
 		quitButton.setOnAction(new ButtonHandler());
-    	
 		
-    	pMenu.getChildren().addAll(pause, mapImg, inventButton, saveButton, loadButton, quitButton);
+    	pMenu.getChildren().addAll(pause, mapImg, saveButton, loadButton, quitButton);
     	
     	pMenu.setVisible(false);
     	
@@ -215,7 +206,7 @@ public class MainView extends StackPane {
         	 */
         		boolean moved = false;
         		boolean interact = false;
-        		Point2D startPos = player.getPosition();
+        		Point startPos = player.getPosition();
         		switch(e.getCode()) {
     				default:
     					break;
@@ -359,7 +350,7 @@ public class MainView extends StackPane {
     					GameController.isPaused=!GameController.isPaused;
         		}
         		if(moved) {
-    	    		Point2D pos = player.getPosition();
+    	    		Point pos = player.getPosition();
     	    		Path path = new Path();
     	    	    path.getElements().add(new MoveTo(startPos.getX() * 48 + 24, startPos.getY() * 48 + 24));
     	    	    path.getElements().add(new LineTo(pos.getX() * 48 + 24, pos.getY() * 48 + 24));
@@ -410,7 +401,7 @@ public class MainView extends StackPane {
     	
     	for(Enemy enemy : map.getEnemies())
     		if(controller.enemyTurn(enemy) == Turn.MOVE) {
-    			Point2D pos = enemy.getPosition();
+    			Point pos = enemy.getPosition();
 				creatureMap.get(enemy).setTranslateX(pos.getX() * BLOCKWIDTH);
 				creatureMap.get(enemy).setTranslateY(pos.getY() * BLOCKHEIGHT);
     		}
@@ -430,6 +421,15 @@ public class MainView extends StackPane {
 			
 			//boot up a new game
 			else if(button.getId().equals("save")) {
+				File file=new File(GameController.SAVE_FILE);
+	    		ObjectOutputStream stream;
+				try {
+					stream = new ObjectOutputStream(new FileOutputStream(file));
+					stream.writeObject(controller);
+					stream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 			
 			//quit the game

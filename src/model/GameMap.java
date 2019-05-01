@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import enums.MapScreen;
@@ -8,7 +9,7 @@ import gameObjects.*;
 /**
  * Constructs all the maps of the game using GameObjects, Enemies, and Player.
  */
-public class GameMap {
+public class GameMap implements Serializable{
 
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private ArrayList<Transition> transitions = new ArrayList<Transition>();

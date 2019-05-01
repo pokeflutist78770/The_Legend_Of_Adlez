@@ -1,27 +1,30 @@
 package gameObjects;
 
+import java.awt.Point;
+import java.io.Serializable;
+
 import javafx.geometry.Point2D;
 
-public class GameObject {
-	private Point2D prevPosition;
-	private Point2D position;
+public class GameObject implements Serializable{
+	private Point prevPosition;
+	private Point position;
 	private String image;
 	private boolean active;
 		
-	public GameObject(Point2D position) {
-		prevPosition = position;
-		this.position = position;
+	public GameObject(Point position2) {
+		prevPosition = position2;
+		this.position = position2;
 		image = null;
 	}
 
-	public void setPosition(Point2D point) {
+	public void setPosition(Point point) {
 		prevPosition = position;
 		position = point;
 	}	
-	public Point2D getPosition() {
+	public Point getPosition() {
 		return position;
 	}
-	public Point2D getPrevPositon() {
+	public Point getPrevPositon() {
 		return prevPosition;
 	}
 	
