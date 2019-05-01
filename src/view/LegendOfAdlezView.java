@@ -70,6 +70,8 @@ public class LegendOfAdlezView extends Application{
 		soundEffects.put("boss", new AudioClip("file:src/assets/boss.wav"));
 		soundEffects.put("save", new AudioClip("file:src/assets/save.wav"));
 		soundEffects.put("menu_change", new AudioClip("file:src/assets/menu_change.wav"));
+		soundEffects.put("coin", new AudioClip("File:src/assets/coin.wav"));
+		soundEffects.put("key", new AudioClip("file:src/assets/coin.wav"));
 	}
 
 	/**
@@ -125,6 +127,8 @@ public class LegendOfAdlezView extends Application{
 	
 	
 	public static void changeView(Pane view) {
+		System.out.println("CHANGE");
+		mainPane.getChildren().clear();
 		mainPane.getChildren().removeAll(mainPane.getChildren());
 		mainPane.getChildren().add(view);
 	}

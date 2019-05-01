@@ -10,6 +10,7 @@ import enums.*;
 import gameObjects.*;
 import java.awt.Point;
 import model.*;
+import view.LegendOfAdlezView;
 
 
 /**
@@ -87,9 +88,10 @@ public class GameController implements Serializable {
 							
 						}
 						else {
-						Money drop = (Money)object;
-						player.incrementMoney(drop.getAmount());
-						object.setActive(false);
+							LegendOfAdlezView.play("coin");
+							Money drop = (Money)object;
+							player.incrementMoney(drop.getAmount());
+							object.setActive(false);
 						}
 						return true;
 					}
@@ -98,9 +100,10 @@ public class GameController implements Serializable {
 							
 						}
 						else {
-						player.giveKey();
-						System.out.println("key recieved");
-						object.setActive(false);
+							LegendOfAdlezView.play("key");
+							player.giveKey();
+							System.out.println("key recieved");
+							object.setActive(false);
 						}
 						return true;
 					}
@@ -215,6 +218,9 @@ public class GameController implements Serializable {
 	public void attack(Creature predator, Creature prey) {
 		prey.decrementHP(predator.getAttack());
 		if(prey.getCurrentHP() == 0) {
+			if(prey instanceof FinalBoss) {
+				LegendOfAdlezView.playBackground("victory");
+			}
 			prey.setActive(false);
 		}
 	}
