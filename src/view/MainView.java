@@ -390,7 +390,7 @@ public class MainView extends StackPane {
 							interacted = object;
 							break;
 						}
-					}
+					} 
 					if (interact) {
 						transaction = true;
 						ShopItem shopI = (ShopItem) interacted;
