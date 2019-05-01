@@ -605,6 +605,8 @@ public class MainView extends StackPane {
 				default:
 					break;
 				case ATTACK:
+					
+					LegendOfAdlezView.play(enemy.getAttackSound());
 					Timeline timeline = new Timeline(
 							new KeyFrame(Duration.seconds(0.05), evt -> creatureMap.get(player).setVisible(false)),
 							new KeyFrame(Duration.seconds(0.1), evt -> creatureMap.get(player).setVisible(true)));

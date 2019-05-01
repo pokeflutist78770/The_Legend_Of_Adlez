@@ -89,4 +89,15 @@ public class Enemy extends Creature {
 	public static void setAttackSound(String attackSound) {
 		Enemy.attackSound = attackSound;
 	}
+	
+	
+	public String getAttackSound(){
+		return attackSound;
+	}
 }
+
+
+
+
+
+
