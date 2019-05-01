@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import enums.MapScreen;
 import gameObjects.GameObject;
 import javafx.geometry.Point2D;
-import player_enemies.EnemyClass;
-import player_enemies.Slime;
-import player_enemies.Transition;
+import gameObjects.Enemy;
+import gameObjects.Slime;
+import gameObjects.Transition;
 
 /**
  * HomeUp map class.
@@ -18,13 +18,13 @@ public class HomeUp extends GameMap {
 
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
-	private static ArrayList<EnemyClass> enemies = new ArrayList<EnemyClass>();
+	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 	/**
 	 * Constructor for HomeUp map screen.
 	 */
 	public HomeUp() {
-		super(objects, transitions, enemies, MapScreen.HOME_UP);
+		super(objects, transitions, enemies, MapScreen.HOME_UP, "assets/homeUp.png");
 		objects.add(new GameObject(new Point2D(0, 0)));
 		objects.add(new GameObject(new Point2D(0, 1)));
 		objects.add(new GameObject(new Point2D(0, 2)));

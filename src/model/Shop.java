@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import enums.MapScreen;
 import gameObjects.GameObject;
 import javafx.geometry.Point2D;
-import player_enemies.EnemyClass;
-import player_enemies.Transition;
+import gameObjects.Enemy;
+import gameObjects.Transition;
 
 /**
  * Shop map class
@@ -19,14 +19,14 @@ public class Shop extends GameMap {
 
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
-	private static ArrayList<EnemyClass> enemies = new ArrayList<EnemyClass>();
+	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	
 	
 	/**
 	 * Constructor for Shop mapscreen.
 	 */
 	public Shop() {
-		super(objects, transitions, enemies, MapScreen.SHOP);
+		super(objects, transitions, enemies, MapScreen.SHOP, "assets/itemShop.png");
 		objects.add(new GameObject(new Point2D(3, 3)));
 		objects.add(new GameObject(new Point2D(3, 4)));
 		objects.add(new GameObject(new Point2D(3, 5)));

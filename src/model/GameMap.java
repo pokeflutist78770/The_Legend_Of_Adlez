@@ -11,15 +11,15 @@ import gameObjects.*;
 public class GameMap {
 
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
-//	private ArrayList<Transition> transitions = new ArrayList<Transition>();
+	private ArrayList<Transition> transitions = new ArrayList<Transition>();
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	private MapScreen map;
 	private String mapString;
 
-	public GameMap(ArrayList<GameObject> objects, ArrayList<Enemy> enemies,
+	public GameMap(ArrayList<GameObject> objects, ArrayList<Transition> transitions, ArrayList<Enemy> enemies,
 			MapScreen screen, String mapString) {
 		this.objects = objects;
-//		this.transitions = transitions;
+		this.transitions = transitions;
 		this.enemies = enemies;
 		this.map = screen;
 		this.mapString = mapString;
@@ -29,9 +29,9 @@ public class GameMap {
 		return objects;
 	}
 
-//	public ArrayList<Transition> getTransitions() {
-//		return transitions;
-//	}
+	public ArrayList<Transition> getTransitions() {
+		return transitions;
+	}
 
 	public ArrayList<Enemy> getEnemies() {
 		return enemies;

@@ -27,7 +27,7 @@ public class FinalBoss extends Enemy{
 	 */
 	public FinalBoss(Point2D position, int n) {
 		super(position, n);
-		this.setHP(255);
+		this.setTotalHP(255);
 		this.setAttack(10);
 		this.setImage("assets/boss.png");
 	}

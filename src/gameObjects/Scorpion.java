@@ -27,7 +27,7 @@ public class Scorpion extends Enemy {
 	 */
 	public Scorpion(Point2D position, int n) {
 		super(position, n);
-		this.setHP(10);
+		this.setTotalHP(10);
 		this.setAttack(1);
 		this.setImage("assets/scorp.png");		
 	}
