@@ -12,7 +12,7 @@ import javafx.geometry.Point2D;
 
 /**
  * @author Ben Bauer
- *
+ * 
  */
 public class ShopItem extends GameObject {
 
@@ -27,10 +27,14 @@ public class ShopItem extends GameObject {
 			item = new Sword(null);
 			price = item.getCost();
 		}
-		if(itemNumber == 2) {
+		else if(itemNumber == 2) {
 			item = new BigPotion(null);
 			price = item.getCost();
 		}
+		else if (itemNumber == 3) {
+			item = new Door(null);
+		}
+		
 	}
 
 	public int getItemNum() {
