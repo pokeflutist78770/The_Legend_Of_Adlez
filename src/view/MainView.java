@@ -702,7 +702,22 @@ public class MainView extends StackPane {
 				}
 			}
 			else {
+				GameObject drop = null;
+				if(enemy instanceof Slime) {
+					drop = new SmallMoney(enemy.getPosition());
+				}
+				else if(enemy instanceof Scorpion) {
+					drop = new MediumMoney(enemy.getPosition());
+				}
+				else if(enemy instanceof Poe) {
+					drop = new LargeMoney(enemy.getPosition());
+				}
+				else {
+					drop = new Key(enemy.getPosition());
+				}
 				pane.getChildren().remove(creatureMap.get(enemy));
+				addObject(drop);
+				
 			}
 		}
 	}
