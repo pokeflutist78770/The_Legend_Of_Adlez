@@ -1,12 +1,14 @@
+
 package controller;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import enums.*;
 import gameObjects.*;
-import javafx.geometry.Point2D;
+import java.awt.Point;
 import model.*;
 
 /**
@@ -15,22 +17,24 @@ import model.*;
  *
  */
 
-public class GameController {
-
+public class GameController implements Serializable{
 	public static boolean isPaused=false;
+	public static final String SAVE_FILE="save_file.dat";
 	GameMap map;
 	Player player;
 	MapScreen currMap = MapScreen.HOME_OUTSIDE;
+
 	Map<MapScreen, GameMap> maps;
 	
-	public GameController(){
+	public GameController() {
+		player = new Player(new Point(2,3));
 		maps = new HashMap<MapScreen, GameMap>();
 		maps.put(currMap, new HomeOutside());
 	}
 	
 	public boolean move(Creature character, Direction dir) {
 		Direction currDir = character.getDirection();
-		Point2D currPos = character.getPosition();
+		Point currPos = character.getPosition();
 		int x = 0, y = 0;
 		boolean moved = false;
 		if(!currDir.equals(dir)) {
@@ -70,19 +74,21 @@ public class GameController {
 				break;
 		}
 		if(moved) {
-			character.setPosition(currPos.add(x, y));
+			character.setPosition(new Point(currPos.x+x, currPos.y+y));
 			for(GameObject object : maps.get(currMap).getObjects()) {
 				if(collision(character, object)) {
 					character.setPosition(currPos);
 					return false;
 				}
 			}
+			
 			for(Enemy object : maps.get(currMap).getEnemies()) {
 				if(collision(character, object)) {
 					character.setPosition(currPos);
 					return false;
 				}
 			}
+			
 			for(Transition transition : maps.get(currMap).getTransitions()) {
 				if(collision(character, transition)) {
 					loadMap(transition.getMap(), transition.getSpawn());
@@ -90,11 +96,41 @@ public class GameController {
 				}
 			}
 			return true;
+			
 		}
 		return false;
 	}
 
-	private void loadMap(MapScreen map, Point2D spawn) {
+	public Turn enemyTurn(Enemy enemy) {
+		if(canAttack(enemy)) {
+			System.out.println("I attacked!");
+			return Turn.ATTACK;
+		}
+		else {
+			if(move(enemy, enemy.getNextMove()))
+				return Turn.MOVE;
+			else
+				return Turn.NONE;
+		}
+	}
+	
+	public boolean canAttack(Enemy enemy) {
+		Point enemyPos = enemy.getPosition();
+		Point playerPos = player.getPosition();
+		return (playerPos.equals(new Point(enemyPos.x, enemyPos.y-1)) ||
+				playerPos.equals(new Point(enemyPos.x+1,enemyPos.y)) ||
+				playerPos.equals(new Point(enemyPos.x, enemyPos.y+1)) ||
+				playerPos.equals(new Point(enemyPos.x-1, enemyPos.y)));
+	}
+	
+	
+	public boolean collision(GameObject object1, GameObject object2) {
+		return (!object1.equals(object2) &&
+				object1.getPosition().equals(object2.getPosition()));
+	}
+	
+	
+	private void loadMap(MapScreen map, Point spawn) {
 		currMap = map;
 		if(!maps.containsKey(currMap)) {
 			GameMap newMap = null;
@@ -138,39 +174,12 @@ public class GameController {
 		
 	}
 
-	public Turn enemyTurn(Enemy enemy) {
-		if(canAttack(enemy)) {
-			System.out.println("I attacked!");
-			return Turn.ATTACK;
-		}
-		else {
-			if(move(enemy, enemy.getNextMove()))
-				return Turn.MOVE;
-			else
-				return Turn.NONE;
-		}
-	}
-	
-	public boolean canAttack(Enemy enemy) {
-		Point2D enemyPos = enemy.getPosition();
-		Point2D playerPos = player.getPosition();
-		return (playerPos.equals(enemyPos.add(new Point2D(0,-1))) ||
-				playerPos.equals(enemyPos.add(new Point2D(1,0))) ||
-				playerPos.equals(enemyPos.add(new Point2D(0,1))) ||
-				playerPos.equals(enemyPos.add(new Point2D(-1,0))));
-	}
-	
-	public boolean collision(GameObject object1, GameObject object2) {
-		return (!object1.equals(object2) &&
-				object1.getPosition().equals(object2.getPosition()));
-	}
 	
 	public GameMap getMapLayout(){
 		return maps.get(currMap);
 	}
 
 	public Player getPlayer() {
-		player = new Player(new Point2D(2,3));
 		return player;
 	}
 	

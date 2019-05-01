@@ -1,7 +1,9 @@
 package gameObjects;
 
+import java.awt.Point;
+
 import enums.Direction;
-import javafx.geometry.Point2D;
+import java.awt.Point;
 import javafx.scene.Node;
 
 public class Creature extends GameObject{
@@ -10,11 +12,11 @@ public class Creature extends GameObject{
 	private int attack;
 	private Direction direction = Direction.SOUTH;
 	
-	public Creature(Point2D position) {
+	public Creature(Point position) {
 		super(position);
 	}
 	
-	public Creature(int currentHP, int totalHP, int attack, Point2D position) {
+	public Creature(int currentHP, int totalHP, int attack, Point position) {
 		super(position);
 		this.currentHP = currentHP;
 		this.totalHP = totalHP;

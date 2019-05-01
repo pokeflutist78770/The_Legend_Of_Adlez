@@ -1,5 +1,5 @@
 package gameObjects;
-import javafx.geometry.Point2D;
+import java.awt.Point;
 
 
 /**
@@ -19,7 +19,7 @@ public abstract class Item extends GameObject {
 	 * Constructor for Item to be a GameObject
 	 * @param position Point2D The position on the map.
 	 */
-	public Item(Point2D position) {
+	public Item(Point position) {
 		super(position);
 	}
 	

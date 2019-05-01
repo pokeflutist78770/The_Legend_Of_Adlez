@@ -1,17 +1,19 @@
 package gameObjects;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import enums.Direction;
-import javafx.geometry.Point2D;
+import java.awt.Point;
 
 /**
  * Class for the playable main character.
  * @author Tito Vasquez
  *
  */
-public class Player extends Creature {
+public class Player extends Creature implements Serializable{
 	int currentMoney;
 	int maxMoney;
 	Item equippedItem = new Dagger(null);
@@ -26,7 +28,7 @@ public class Player extends Creature {
 	 * @param attack int The attack power of the player.
 	 * @param position int[] The current position of the player.
 	 */
-	public Player(int currentHP, int totalHP, int attack, Point2D position) {
+	public Player(int currentHP, int totalHP, int attack, Point position) {
 		super(currentHP, totalHP, attack, position);
 		currentMoney = 0;
 		maxMoney = 500;
@@ -36,7 +38,7 @@ public class Player extends Creature {
 	 * Alternate constructor for the PlayerClass with stats hardcoded.
 	 * @param position int[] The position of the player character on the game board.
 	 */
-	public Player(Point2D position) {
+	public Player(Point position) {
 		super(position);
 		this.setCurrentHP(20);
 		this.setAttack(1);

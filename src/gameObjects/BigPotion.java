@@ -1,6 +1,6 @@
 package gameObjects;
 
-import javafx.geometry.Point2D;
+import java.awt.Point;
 
 
 
@@ -17,7 +17,7 @@ public class BigPotion extends Item implements Consumable{
 	/**
 	 * Constructor for SmallPotion item
 	 */
-	public BigPotion(Point2D position) {
+	public BigPotion(Point position) {
 		super(position);
 		this.setImage("assets/potion.png");
 		COST=5;

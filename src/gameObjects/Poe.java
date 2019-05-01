@@ -1,6 +1,6 @@
 package gameObjects;
 
-import javafx.geometry.Point2D;
+import java.awt.Point;
 
 /**
  * Class for the enemy type "Poe".
@@ -16,7 +16,7 @@ public class Poe extends Enemy {
 	 * @param attack int The attack power of the Poe.
 	 * @param position Point2D The current position of the Poe.
 	 */
-	public Poe(int currentHP, int totalHP, int attack, Point2D position) {
+	public Poe(int currentHP, int totalHP, int attack, Point position) {
 		super(currentHP, totalHP, attack, position);
 	}
 
@@ -25,9 +25,9 @@ public class Poe extends Enemy {
 	 * @param position Point2D The current position of the Poe on the game map.
 	 * @param int n The type of movement pattern that the Poe will have.
 	 */
-	public Poe(Point2D position, int movement) {
-		super(position, movement);
-		this.setCurrentHP(10);
+	public Poe(Point position, int n) {
+		super(position, n);
+		this.setTotalHP(10);
 		this.setAttack(1);
 		this.setImage("assets/poe.png");		
 	}
