@@ -151,15 +151,18 @@ public class MainView extends StackPane {
     	
     	pMenu.setVisible(false);
     	
-    	StackPane.setAlignment(pMenu, Pos.TOP_CENTER);
-    	pMenu.setAlignment(Pos.TOP_CENTER);
-    	this.getChildren().add(pMenu);
     	
     	controller = new GameController();
     	map = controller.getMapLayout();
     	creatureMap = new HashMap<Creature, ImageView>();
     	window = new BorderPane();
     	this.getChildren().add(window);
+    	
+    	StackPane.setAlignment(pMenu, Pos.TOP_CENTER);
+    	pMenu.setAlignment(Pos.TOP_CENTER);
+    	this.getChildren().add(pMenu);
+    	
+
     	
     	pane = new Pane();
     	pane.setPrefSize(MAPWIDTH * BLOCKWIDTH, MAPHEIGHT * BLOCKHEIGHT);
