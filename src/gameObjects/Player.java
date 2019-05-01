@@ -16,6 +16,7 @@ import java.awt.Point;
 public class Player extends Creature implements Serializable{
 	int currentMoney;
 	int maxMoney;
+	int PotionCount = 0;
 	Item equippedItem = new Dagger(null);
 	List<Item> inventory = new ArrayList<Item>();
 	
@@ -42,7 +43,7 @@ public class Player extends Creature implements Serializable{
 		super(position);
 		this.setCurrentHP(20);
 		this.setAttack(1);
-		currentMoney = 0;
+		currentMoney = 50;
 		maxMoney = 500;
 		setDirection(Direction.SOUTH);
 
@@ -78,5 +79,14 @@ public class Player extends Creature implements Serializable{
 	}
 	public List<Item> getInventory(){
 		return inventory;
+	}
+	public void upPotionCount(){
+		PotionCount++;
+	}
+	public void usePotion() {
+		if(PotionCount > 0) {
+			this.incrementHP(20);
+			PotionCount--;
+		}
 	}
 }
