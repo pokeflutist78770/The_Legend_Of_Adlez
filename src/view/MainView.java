@@ -9,6 +9,8 @@ import gameObjects.*;
 import enums.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -71,6 +73,12 @@ public class MainView extends StackPane {
     	bPane=new BorderPane();
     	this.getChildren().add(bPane);
     	
+    	GameController.isPaused=false;
+    	
+    	/*------ Inventory Box  -----*/
+    	VBox inventory=new VBox();
+    	
+    	
     	
     	/*-----   Pause Menu Buttons   --------- */
     	
@@ -104,37 +112,53 @@ public class MainView extends StackPane {
     	
     	
     	Button inventButton=new Button();
+    	inventButton.setId("invent");
     	inventButton.setGraphic(new ImageView(new Image("assets/inventory.png", false)));
 		inventButton.setMinWidth(pMenu.getPrefWidth());
 		inventButton.setStyle("-fx-background-color: transparent;"+
 						"-fx-transition: color 0.2s ease-in;");
+		
 		inventButton.setOnMouseEntered(mouseEnter);
 		inventButton.setOnMouseExited(mouseExit);
+		inventButton.setOnAction(new ButtonHandler());
     	
+		
     	Button saveButton=new Button();
+    	saveButton.setId("save");
     	saveButton.setGraphic(new ImageView(new Image("assets/save.png", false)));
 		saveButton.setMinWidth(pMenu.getPrefWidth());
 		saveButton.setStyle("-fx-background-color: transparent;"+
 						"-fx-transition: color 0.2s ease-in;");
+		
 		saveButton.setOnMouseEntered(mouseEnter);
 		saveButton.setOnMouseExited(mouseExit);
+		saveButton.setOnAction(new ButtonHandler());
+		
 		
     	Button loadButton=new Button();
+    	loadButton.setId("load");
     	loadButton.setGraphic(new ImageView(new Image("assets/load.png", false)));
 		loadButton.setMinWidth(pMenu.getPrefWidth());
 		loadButton.setStyle("-fx-background-color: transparent;"+
 						"-fx-transition: color 0.2s ease-in;");
+		
 		loadButton.setOnMouseEntered(mouseEnter);
 		loadButton.setOnMouseExited(mouseExit);
+		loadButton.setOnAction(new ButtonHandler());
+		
 		
     	Button quitButton=new Button();
+    	quitButton.setId("quit");
     	quitButton.setGraphic(new ImageView(new Image("assets/quit.png", false)));
 		quitButton.setMinWidth(pMenu.getPrefWidth());
 		quitButton.setStyle("-fx-background-color: transparent;"+
 						"-fx-transition: color 0.2s ease-in;");
+		
 		quitButton.setOnMouseEntered(mouseEnter);
 		quitButton.setOnMouseExited(mouseExit);
+		quitButton.setOnAction(new ButtonHandler());
     	
+		
     	pMenu.getChildren().addAll(pause, map, inventButton, saveButton, loadButton, quitButton);
     	
     	pMenu.setVisible(false);
@@ -344,5 +368,48 @@ public class MainView extends StackPane {
     	object.getNode().setTranslateY(y);
     	pane.getChildren().add(object.getNode());
     }
+    
+    
+    
+    private class ButtonHandler implements EventHandler<ActionEvent>{
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			Button button=(Button) arg0.getSource();
+			
+			//continue and save file exists
+			if(button.getId().equals("load") && !button.isDisabled()) {
+				
+			}
+			
+			//boot up a new game
+			else if(button.getId().equals("save")) {
+			}
+			
+			//quit the game
+			else if(button.getId().equals("quit")) {
+				LegendOfAdlezView.changeView(new StartMenuView());
+				//Platform.exit();
+			}
+			
+		}
+    	
+    }
 
 }  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

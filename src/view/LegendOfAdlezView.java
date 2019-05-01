@@ -42,3 +42,10 @@ public class LegendOfAdlezView extends Application{
 		mainPane.getChildren().add(view);
 	}
 }
+
+
+
+
+
+
+
