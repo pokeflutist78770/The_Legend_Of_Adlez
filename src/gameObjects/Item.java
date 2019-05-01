@@ -1,5 +1,6 @@
 package gameObjects;
-
+import javafx.geometry.Point2D;
+import player_enemies.GameObject;
 
 
 /**
@@ -8,10 +9,21 @@ package gameObjects;
  * @author Angel Aguayo
  *
  */
-public abstract class Item {
+public abstract class Item extends GameObject {
+	
 	protected static int COST;
-
+	
 	protected static String name;
+	
+	
+	/**
+	 * Constructor for Item to be a GameObject
+	 * @param position Point2D The position on the map.
+	 */
+	public Item(Point2D position) {
+		super(position);
+	}
+	
 	
 	/**
 	 * Gets the cost of the current item
