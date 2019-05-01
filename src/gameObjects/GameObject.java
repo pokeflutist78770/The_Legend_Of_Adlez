@@ -3,26 +3,24 @@ package gameObjects;
 import javafx.geometry.Point2D;
 
 public class GameObject {
-	private Point2D prevPosition;
 	private Point2D position;
 	private String image;
-	private boolean active;
+	private boolean active = true;
 		
 	public GameObject(Point2D position) {
-		prevPosition = position;
 		this.position = position;
 		image = null;
 	}
+	public GameObject(Point2D position, String image) {
+		this.position = position;
+		this.image = image;
+	}
 
 	public void setPosition(Point2D point) {
-		prevPosition = position;
 		position = point;
 	}	
 	public Point2D getPosition() {
 		return position;
-	}
-	public Point2D getPrevPositon() {
-		return prevPosition;
 	}
 	
 	public void setImage(String imageString) {

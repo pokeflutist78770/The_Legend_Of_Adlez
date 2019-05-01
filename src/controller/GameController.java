@@ -16,16 +16,15 @@ import model.*;
  */
 
 public class GameController {
-
 	public static boolean isPaused=false;
 	GameMap map;
 	Player player;
-	MapScreen currMap = MapScreen.HOME_OUTSIDE;
+	MapScreen currMap = MapScreen.DUNGEON1;
 	Map<MapScreen, GameMap> maps;
 	
 	public GameController(){
 		maps = new HashMap<MapScreen, GameMap>();
-		maps.put(currMap, new HomeOutside());
+		maps.put(currMap, new Dungeon1());
 	}
 	
 	public boolean move(Creature character, Direction dir) {
@@ -77,8 +76,9 @@ public class GameController {
 					return false;
 				}
 			}
-			for(Enemy object : maps.get(currMap).getEnemies()) {
-				if(collision(character, object)) {
+			for(Enemy enemy : maps.get(currMap).getEnemies()) {
+				if(enemy.getActive())
+				if(collision(character, enemy)) {
 					character.setPosition(currPos);
 					return false;
 				}
@@ -134,16 +134,31 @@ public class GameController {
 			}
 			maps.put(currMap, newMap);
 		}
+		else {
+			for(Enemy enemy : getEnemies()) {
+				enemy.setActive(true);
+				enemy.setCurrentHP(enemy.getTotalHP());
+			}
+		}
 		player.setPosition(spawn);
 		
 	}
 
 	public Turn enemyTurn(Enemy enemy) {
-		if(canAttack(enemy)) {
-			System.out.println("I attacked!");
+		Direction tempDir = enemy.getDirection();
+		boolean didAttack = false;
+		for(Direction dir : Direction.values()) {
+			enemy.setDirection(dir);
+			if(attemptAttack(enemy, player)) {
+				didAttack = true;
+			}
+		}
+		enemy.setDirection(tempDir);
+		if(didAttack) {
 			return Turn.ATTACK;
 		}
 		else {
+			enemy.setDirection(tempDir);
 			if(move(enemy, enemy.getNextMove()))
 				return Turn.MOVE;
 			else
@@ -151,13 +166,35 @@ public class GameController {
 		}
 	}
 	
-	public boolean canAttack(Enemy enemy) {
-		Point2D enemyPos = enemy.getPosition();
-		Point2D playerPos = player.getPosition();
-		return (playerPos.equals(enemyPos.add(new Point2D(0,-1))) ||
-				playerPos.equals(enemyPos.add(new Point2D(1,0))) ||
-				playerPos.equals(enemyPos.add(new Point2D(0,1))) ||
-				playerPos.equals(enemyPos.add(new Point2D(-1,0))));
+	public void attack(Creature predator, Creature prey) {
+		prey.decrementHP(predator.getAttack());
+		if(prey.getCurrentHP() == 0) {
+			prey.setActive(false);
+		}
+	}
+	
+	public boolean attemptAttack(Creature predator, Creature prey) {
+		Point2D predatorPos = predator.getPosition();
+		Point2D preyPos = prey.getPosition();
+		boolean didAttack = false;
+		switch(predator.getDirection()) {
+		case NORTH:
+			didAttack = preyPos.equals(predatorPos.add(new Point2D(0,-1)));
+			break;
+		case SOUTH:
+			didAttack = preyPos.equals(predatorPos.add(new Point2D(0,1)));
+			break;
+		case EAST:
+			didAttack = preyPos.equals(predatorPos.add(new Point2D(1,0)));
+			break;
+		case WEST:
+			didAttack = preyPos.equals(predatorPos.add(new Point2D(-1,0)));
+			break;
+		}
+		if(didAttack) {
+			attack(predator, prey);
+		}
+		return didAttack;
 	}
 	
 	public boolean collision(GameObject object1, GameObject object2) {
@@ -188,5 +225,12 @@ public class GameController {
 	
 	public List<Transition> getTransitions(){
 		return maps.get(currMap).getTransitions();
+	}
+
+	public void playerAttack() {
+		for(Enemy enemy : getEnemies()) {
+			if(enemy.getActive())
+				attemptAttack(player, enemy);
+		}
 	}
 }

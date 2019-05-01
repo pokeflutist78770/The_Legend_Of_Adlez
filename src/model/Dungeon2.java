@@ -160,8 +160,8 @@ public class Dungeon2 extends GameMap {
 		objects.add(new GameObject(new Point2D(10, 7)));
 		objects.add(new GameObject(new Point2D(10, 9)));
 		objects.add(new GameObject(new Point2D(10, 10)));
-		enemies.add(new FinalBoss(new Point2D(8, 4), 4));
-		enemies.add(new FinalBoss(new Point2D(8, 4), 2));
+		enemies.add(new FinalBoss(new Point2D(8, 5), 1));
+//		enemies.add(new FinalBoss(new Point2D(8, 4), 2));
 		transitions.add(new Transition(new Point2D(14, 13), MapScreen.DUNGEON1, new Point2D(14, 2)));
 		transitions.add(new Transition(new Point2D(2, 1), MapScreen.DUNGEON3, new Point2D(2, 12)));
 	}

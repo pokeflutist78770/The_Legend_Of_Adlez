@@ -13,8 +13,9 @@ import gameObjects.*;
 import enums.*;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
-
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -179,7 +180,7 @@ public class MainView extends StackPane {
 
 		StackPane.setAlignment(pMenu, Pos.TOP_CENTER);
 		pMenu.setAlignment(Pos.TOP_CENTER);
-		this.getChildren().add(pMenu);
+		
 
 		controller = new GameController();
 		map = controller.getMapLayout();
@@ -187,7 +188,7 @@ public class MainView extends StackPane {
 		creatureMap = new HashMap<Creature, ImageView>();
 		window = new BorderPane();
 		this.getChildren().add(window);
-
+		this.getChildren().add(pMenu);
 		pane = new Pane();
 		pane.setPrefSize(MAPWIDTH * BLOCKWIDTH, MAPHEIGHT * BLOCKHEIGHT);
 		window.setCenter(pane);
@@ -230,6 +231,7 @@ public class MainView extends StackPane {
 			default:
 				break;
 			case SPACE: {
+				controller.playerAttack();
 				switch (player.getDirection()) {
 				case NORTH: {
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
@@ -424,18 +426,32 @@ public class MainView extends StackPane {
 			window.setEffect(new GaussianBlur());
 			return;
 		}
-
 		window.setEffect(null);
 
 		if(currMap != controller.getCurrMap()) {
 			loadMap();
 		}
-//		for (Enemy enemy : map.getEnemies())
-//			if (controller.enemyTurn(enemy) == Turn.MOVE) {
-//				Point2D pos = enemy.getPosition();
-//				creatureMap.get(enemy).setTranslateX(pos.getX() * BLOCKWIDTH);
-//				creatureMap.get(enemy).setTranslateY(pos.getY() * BLOCKHEIGHT);
-//			}
+		for (Enemy enemy : map.getEnemies()) {
+			if(enemy.getActive()) {
+				switch(controller.enemyTurn(enemy)) {
+				case MOVE:
+					Point2D pos = enemy.getPosition();
+					creatureMap.get(enemy).setTranslateX(pos.getX() * BLOCKWIDTH);
+					creatureMap.get(enemy).setTranslateY(pos.getY() * BLOCKHEIGHT);
+					break;
+				case ATTACK:
+					Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.05), evt -> creatureMap.get(player).setVisible(false)),
+		                    new KeyFrame(Duration.seconds( 0.1), evt -> creatureMap.get(player).setVisible(true)));
+					timeline.setCycleCount(4);
+					timeline.play();
+				default:
+					break;
+				}
+			}
+			else {
+				pane.getChildren().remove(creatureMap.get(enemy));
+			}
+		}
 	}
 
 	private class ButtonHandler implements EventHandler<ActionEvent> {
