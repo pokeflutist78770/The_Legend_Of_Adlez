@@ -1,6 +1,5 @@
 package gameObjects;
 import javafx.geometry.Point2D;
-import player_enemies.GameObject;
 
 
 /**

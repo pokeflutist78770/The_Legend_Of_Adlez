@@ -15,14 +15,14 @@ import javafx.geometry.Point2D;
 public class Mountain extends GameMap {
 
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
-//	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
+	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 	/**
 	 * Constructor for Mountain map screen.
 	 */
 	public Mountain() {
-		super(objects, enemies, MapScreen.MOUNTAIN, "assets/mountain.png");
+		super(objects, transitions, enemies, MapScreen.MOUNTAIN, "assets/mountain.png");
 		objects.add(new GameObject(new Point2D(0, 0)));
 		objects.add(new GameObject(new Point2D(0, 1)));
 		objects.add(new GameObject(new Point2D(0, 2)));
@@ -113,12 +113,12 @@ public class Mountain extends GameMap {
 		objects.add(new GameObject(new Point2D(17, 12)));
 		objects.add(new GameObject(new Point2D(17, 13)));
     	enemies.add(new Scorpion(new Point2D(1, 2), 3));
-//		enemies.add(new Poe(new Point2D(6, 3), 1));
+		enemies.add(new Poe(new Point2D(6, 3), 1));
 		enemies.add(new Scorpion(new Point2D(12, 5), 2));
-//		enemies.add(new Slime(new Point2D(6, 11), 1));
-//		transitions.add(new Transition(new Point2D(0, 8), new River(), new Point2D(16, 8)));
-//		transitions.add(new Transition(new Point2D(0, 9), new River(), new Point2D(16, 9)));
-//		transitions.add(new Transition(new Point2D(9, 1), new Dungeon1(), new Point2D(9, 12)));
+		enemies.add(new Slime(new Point2D(6, 11), 1));
+		transitions.add(new Transition(new Point2D(0, 8), new River(), new Point2D(16, 8)));
+		transitions.add(new Transition(new Point2D(0, 9), new River(), new Point2D(16, 9)));
+		transitions.add(new Transition(new Point2D(9, 1), new Dungeon1(), new Point2D(9, 12)));
 	}
 
 }

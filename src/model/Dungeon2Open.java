@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import enums.MapScreen;
 import gameObjects.GameObject;
 import javafx.geometry.Point2D;
-import player_enemies.EnemyClass;
-import player_enemies.FinalBoss;
-import player_enemies.Transition;
+import gameObjects.Enemy;
+import gameObjects.FinalBoss;
+import gameObjects.Transition;
 
 /**
  * Dungeon2Open map.
@@ -18,13 +18,13 @@ public class Dungeon2Open extends GameMap {
 
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
-	private static ArrayList<EnemyClass> enemies = new ArrayList<EnemyClass>();
+	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	
 	/**
 	 * Constructor for Dungeon2Open map.
 	 */
 	public Dungeon2Open() {
-		super(objects, transitions, enemies, MapScreen.DUNGEON2);
+		super(objects, transitions, enemies, MapScreen.DUNGEON2, "assets/bossRoomOpen.png");
 		objects.add(new GameObject(new Point2D(0, 0)));
 		objects.add(new GameObject(new Point2D(0, 1)));
 		objects.add(new GameObject(new Point2D(0, 2)));

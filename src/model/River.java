@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import enums.MapScreen;
 import gameObjects.GameObject;
 import javafx.geometry.Point2D;
-import player_enemies.EnemyClass;
-import player_enemies.Transition;
+import gameObjects.Enemy;
+import gameObjects.Transition;
 
 /**
  * River map class.
@@ -17,14 +17,14 @@ public class River extends GameMap {
 
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
-	private static ArrayList<EnemyClass> enemies = new ArrayList<EnemyClass>();
+	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 	
 	/**
 	 * Constructor for River map
 	 */
 	public River() {
-		super(objects, transitions, enemies, MapScreen.RIVER);
+		super(objects, transitions, enemies, MapScreen.RIVER, "assets/river.png");
 		objects.add(new GameObject(new Point2D(0, 0)));
 		objects.add(new GameObject(new Point2D(0, 1)));
 		objects.add(new GameObject(new Point2D(0, 2)));

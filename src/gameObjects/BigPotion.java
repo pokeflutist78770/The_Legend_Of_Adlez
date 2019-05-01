@@ -1,7 +1,6 @@
 package gameObjects;
 
 import javafx.geometry.Point2D;
-import player_enemies.CharacterClass;
 
 
 
@@ -11,14 +10,14 @@ import player_enemies.CharacterClass;
  * @author Angel Aguayo
  *
  */
-public class SmallPotion extends Item implements Consumable{
+public class BigPotion extends Item implements Consumable{
 	private static final int HEAL=5;
 	
 	
 	/**
 	 * Constructor for SmallPotion item
 	 */
-	public SmallPotion(Point2D position) {
+	public BigPotion(Point2D position) {
 		super(position);
 		this.setImage("assets/potion.png");
 		COST=5;
