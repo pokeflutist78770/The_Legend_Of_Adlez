@@ -2,9 +2,10 @@
 package view;
 
 import java.io.File;
-
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +60,7 @@ public class MainView extends StackPane {
 	private Pane pane;
 	private Player player;
 	private GameMap map;
+	
 	private MapScreen currMap;
 	private Map<Creature, ImageView> creatureMap;
 
@@ -67,6 +69,8 @@ public class MainView extends StackPane {
 
 	private GameController controller;
 	private boolean keyListener = true;
+	
+	private List<GameObject> objects;
 
 	public void loadMap() {
 		currMap = controller.getCurrMap();
@@ -102,7 +106,7 @@ public class MainView extends StackPane {
 		}
 	}
 
-	public MainView() {
+	public MainView(boolean loadFile) {
 
 		GameController.isPaused = false;
 
@@ -173,8 +177,25 @@ public class MainView extends StackPane {
 		pMenu.setVisible(false);
 
 
-
-		controller = new GameController();
+    	//we want to load a save file
+    	if(loadFile) {
+    		System.out.println("[LOAD FILE]");
+			File file=new File(GameController.SAVE_FILE);
+			try {
+				ObjectInputStream stream =new ObjectInputStream(new FileInputStream(file));
+				controller=(GameController) stream.readObject();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	else {
+    		controller = new GameController();
+    	}
+    	
 		map = controller.getMapLayout();
 		currMap = controller.getCurrMap();
 		creatureMap = new HashMap<Creature, ImageView>();
@@ -425,6 +446,10 @@ public class MainView extends StackPane {
     	}
     	
     	window.setEffect(null);
+    	
+    	if(currMap!=controller.getCurrMap()) {
+    		loadMap();
+    	}
     	
     	for(Enemy enemy : map.getEnemies())
     		if(controller.enemyTurn(enemy) == Turn.MOVE) {

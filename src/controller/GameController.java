@@ -23,9 +23,11 @@ public class GameController implements Serializable{
 	GameMap map;
 	Player player;
 	MapScreen currMap = MapScreen.HOME_OUTSIDE;
+
 	Map<MapScreen, GameMap> maps;
 	
-	public GameController(){
+	public GameController() {
+		player = new Player(new Point(2,3));
 		maps = new HashMap<MapScreen, GameMap>();
 		maps.put(currMap, new HomeOutside());
 	}
@@ -79,6 +81,7 @@ public class GameController implements Serializable{
 					return false;
 				}
 			}
+			
 			for(Enemy object : maps.get(currMap).getEnemies()) {
 				if(collision(character, object)) {
 					character.setPosition(currPos);
@@ -93,6 +96,7 @@ public class GameController implements Serializable{
 				}
 			}
 			return true;
+			
 		}
 		return false;
 	}
@@ -176,7 +180,6 @@ public class GameController implements Serializable{
 	}
 
 	public Player getPlayer() {
-		player = new Player(new Point(2,3));
 		return player;
 	}
 	
