@@ -69,8 +69,10 @@ public class MainView extends StackPane {
 
 	private GameController controller;
 	private boolean keyListener = true;
+	private boolean transaction = false;
+	private int price = 0;
+	private ImageView textBox = new ImageView();
 	
-	private List<GameObject> objects;
 
 	public void loadMap() {
 		currMap = controller.getCurrMap();
@@ -269,39 +271,85 @@ public class MainView extends StackPane {
 			keyListener = false;
 			boolean moved = false;
 			boolean interact = false;
+			GameObject interacted = null;
 			Point startPos = player.getPosition();
 			switch (e.getCode()) {
 			default:
 				break;
+			case B:{
+				System.out.println(transaction);
+				if(transaction) {
+					textBox.setImage(null);
+					if(player.getCurrentMoney() < price) {
+						textBox.setImage(new Image("assets/NotEnough.png"));
+					}
+					else {
+						textBox.setImage(new Image("assets/ItemAdded.png"));
+						buyItem(price, player);
+
+					}
+
+					break;
+				}
+				break;
+			}	
 			case SPACE: {
+				if(transaction) {
+					textBox.setImage(null);
+					transaction = false;
+				}
 				switch (player.getDirection()) {
 				case NORTH: {
-					if(player.getEquippedItem() instanceof Dagger) {
-						Animation animation = new SpriteAnimation(
-				                creatureMap.get(player),
-				                Duration.millis(250),
-				                2, 2,
-				                60, 434,
-				                60, 62
-				        );
-				        animation.setCycleCount(1);
-				        animation.play();
-				        interact = true;
-				        break;
-					}
-					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
-							434, 60, 62);
-					animation.setCycleCount(1);
-					animation.setOnFinished(new EventHandler<ActionEvent>() {
-						@Override
-						public void handle(ActionEvent event) {
-							keyListener = true;
+					Point potentialInteractable = new Point((int)player.getPosition().getX(),(int)player.getPosition().getY()-1);
+					for(GameObject object: controller.getObstacles()) {
+						if(object.getPosition().equals(potentialInteractable) && (object instanceof ShopItem)) {
+							interact = true;
+							interacted = object;
+							break;
 						}
-					});
-					animation.play();
-					interact = true;
-					creatureMap.get(player).setViewport(new Rectangle2D(0, 62, 60, 62));
-					break;
+					}
+					if(interact) {
+						transaction = true;
+						ShopItem shopI = (ShopItem) interacted;
+						if(shopI.getItemNum() == 1) {
+							textBox = new ImageView(new Image("assets/SwordBuy.png"));
+							pane.getChildren().add(textBox);
+							price = 25;}	
+						else {
+							textBox = new ImageView(new Image("assets/PotionBuy.png"));
+							pane.getChildren().add(textBox);
+							price = 10;
+						}
+						break;
+					}
+					else {
+						if(player.getEquippedItem() instanceof Dagger) {
+							Animation animation = new SpriteAnimation(
+					                creatureMap.get(player),
+					                Duration.millis(250),
+					                2, 2,
+					                60, 434,
+					                60, 62
+					        );
+					        animation.setCycleCount(1);
+					        animation.play();
+					        interact = true;
+					        break;
+						}
+						Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
+								434, 60, 62);
+						animation.setCycleCount(1);
+						animation.setOnFinished(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								keyListener = true;
+							}
+						});
+						animation.play();
+						interact = true;
+						creatureMap.get(player).setViewport(new Rectangle2D(0, 62, 60, 62));
+						break;
+						}
 				}
 				case SOUTH: {
 					if(player.getEquippedItem() instanceof Dagger) {
@@ -393,6 +441,10 @@ public class MainView extends StackPane {
 					break;
 			case W:
 			case UP:
+				if(transaction) {
+					textBox.setImage(null);
+					transaction = false;
+				}
 				moved = controller.move(player, Direction.NORTH);
 				if (!moved) {
 					creatureMap.get(player).setViewport(new Rectangle2D(0, 62, 60, 62));
@@ -411,6 +463,10 @@ public class MainView extends StackPane {
 				break;
 			case S:
 			case DOWN:
+				if(transaction) {
+					textBox.setImage(null);
+					transaction = false;
+				}
 				moved = controller.move(player, Direction.SOUTH);
 				if (!moved) {
 					creatureMap.get(player).setViewport(new Rectangle2D(0, 0, 60, 62));
@@ -429,6 +485,10 @@ public class MainView extends StackPane {
 				break;
 			case D:
 			case RIGHT:
+				if(transaction) {
+					textBox.setImage(null);
+					transaction = false;
+				}
 				moved = controller.move(player, Direction.EAST);
 				if (!moved) {
 					creatureMap.get(player).setViewport(new Rectangle2D(420, 186, 60, 62));
@@ -447,6 +507,10 @@ public class MainView extends StackPane {
 				break;
 			case A:
 			case LEFT:
+				if(transaction) {
+					textBox.setImage(null);
+					transaction = false;
+				}
 				moved = controller.move(player, Direction.WEST);
 				if (!moved) {
 					creatureMap.get(player).setViewport(new Rectangle2D(0, 124, 60, 62));
@@ -649,6 +713,16 @@ public class MainView extends StackPane {
 			
 		}
     	
+    }
+    public void buyItem(int price, Player player ) {
+    	if(price == 25) {
+    		player.setCurrentMoney(player.getCurrentMoney() - 25);
+    		player.addInventory(new Sword(null));
+    	}
+    	else {
+    		player.setCurrentMoney(player.getCurrentMoney() - 10);
+    		player.addInventory(new BigPotion(null));
+    	}
     }
 
 }  
