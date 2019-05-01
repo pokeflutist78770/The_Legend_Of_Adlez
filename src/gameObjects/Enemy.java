@@ -12,7 +12,7 @@ import javafx.geometry.Point2D;
  */
 public class Enemy extends Creature {
 
-	private static String attackSound;
+	private String attackSound;
 	
 	
 	/**
@@ -87,8 +87,8 @@ public class Enemy extends Creature {
 	}
 	
 
-	public static void setAttackSound(String attackSound) {
-		Enemy.attackSound = attackSound;
+	public void setAttackSound(String attackSound) {
+		this.attackSound = attackSound;
 	}
 
 	/**
@@ -104,4 +104,14 @@ public class Enemy extends Creature {
 	public void setDropped(boolean dropped) {
 		this.dropped = dropped;
 	}
+	
+	public String getAttackSound(){
+		return attackSound;
+	}
 }
+
+
+
+
+
+

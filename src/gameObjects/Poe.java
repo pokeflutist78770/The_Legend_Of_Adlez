@@ -20,6 +20,8 @@ public class Poe extends Enemy {
 		setTotalHP(10);
 
 		this.setAttack(1);
-		this.setImage("assets/poe.png");		
+		this.setImage("assets/poe.png");	
+		
+		super.setAttackSound("poe");
 	}
 }

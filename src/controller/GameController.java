@@ -48,28 +48,28 @@ public class GameController implements Serializable {
 		}
 		switch(dir) {
 			case NORTH:				
-				if(character.getPosition().getY() > 0){
+				if(character.getPosition().getY() > -1){
 					x = 0;
 					y = -1;
 					moved = true;
 				}
 				break;
 			case SOUTH:
-				if(character.getPosition().getY() < 13){
+				if(character.getPosition().getY() < 14){
 					x = 0;
 					y = 1;
 					moved = true;
 				}
 				break;
 			case EAST:
-				if(character.getPosition().getX() < 17){
+				if(character.getPosition().getX() < 18){
 					x = 1;
 					y = 0;
 					moved = true;
 				}
 				break;
 			case WEST:
-				if(character.getPosition().getX() > 0){
+				if(character.getPosition().getX() > -1){
 					x = -1;
 					y = 0;
 					moved = true;
