@@ -116,6 +116,7 @@ public class HomeUp extends GameMap {
 		enemies.add(new Slime(new Point(3, 5), 2));
 		enemies.add(new Slime(new Point(14, 5), 3));
 		enemies.add(new Slime(new Point(8, 10), 1));
+		transitions.add(new Transition(new Point(5, 14), MapScreen.HOME_OUTSIDE, new Point(6, 0)));
 		transitions.add(new Transition(new Point(6, 14), MapScreen.HOME_OUTSIDE, new Point(6, 0)));
 		transitions.add(new Transition(new Point(7, 14), MapScreen.HOME_OUTSIDE, new Point(7, 0)));
 		transitions.add(new Transition(new Point(11, -1), MapScreen.DESERT, new Point(11, 13)));
