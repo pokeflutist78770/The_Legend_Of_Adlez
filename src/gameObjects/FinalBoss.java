@@ -1,4 +1,7 @@
+
 package gameObjects;
+
+import java.awt.Point;
 
 import javafx.geometry.Point2D;
 
@@ -15,7 +18,7 @@ public class FinalBoss extends Enemy{
 	 * @param n int The type of movement pattern that the Boss will have.
 	 */
 
-	public FinalBoss(Point2D position, int movement) {
+	public FinalBoss(Point position, int movement) {
 		super(position, movement);
 		setTotalHP(255);
 		this.setCurrentHP(255);

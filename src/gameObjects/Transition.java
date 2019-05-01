@@ -1,5 +1,8 @@
 package gameObjects;
 
+import java.awt.Point;
+
+import enums.MapScreen;
 import javafx.geometry.Point2D;
 import model.GameMap;
 import enums.*;
@@ -7,13 +10,13 @@ import enums.*;
 public class Transition extends GameObject {
 	
 	private MapScreen newScreen;
-	private Point2D spawn;
+	private Point spawn;
 	
 	/**
 	 * Constructor for Transition tiles that would be used to change to the other screens.
 	 * @param position Point2D The position on the map.
 	 */
-	public Transition(Point2D position, MapScreen screen, Point2D spawn) {
+	public Transition(Point position, MapScreen screen, Point spawn) {
 		super(position);
 		newScreen = screen;
 		this.spawn = spawn;
@@ -31,7 +34,7 @@ public class Transition extends GameObject {
 	 * Gets the spawn point of the player after a transition
 	 * @return spawn Point2D The spawn point of the player.
 	 */
-	public Point2D getSpawn() {
+	public Point getSpawn() {
 		return spawn;
 	}
 

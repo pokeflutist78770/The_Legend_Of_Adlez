@@ -1,5 +1,7 @@
 package gameObjects;
 
+import java.awt.Point;
+
 import javafx.geometry.Point2D;
 
 /**
@@ -16,7 +18,7 @@ public class Money extends GameObject {
 	 * Creates a Money objects that will be used for the player's currency.
 	 * @param position Point2D The position on the map.
 	 */
-	public Money(Point2D position) {
+	public Money(Point position) {
 		super(position);
 	}
 

@@ -1,5 +1,7 @@
 package gameObjects;
 
+import java.awt.Point;
+
 import enums.Direction;
 import javafx.geometry.Point2D;
 
@@ -39,6 +41,7 @@ public class Enemy extends Creature {
 	 * @param attack int The attack power of the enemy
 	 * @param position Point2D The current position of the enemy
 	 */
+
 	public Enemy(Point2D position, int movePattern) {
 		super(position);
 		setMovementPattern(movePattern);

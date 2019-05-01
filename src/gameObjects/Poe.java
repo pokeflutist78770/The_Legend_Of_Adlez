@@ -1,6 +1,6 @@
 package gameObjects;
 
-import javafx.geometry.Point2D;
+import java.awt.Point;
 
 /**
  * Class for the enemy type "Poe".
@@ -18,7 +18,8 @@ public class Poe extends Enemy {
 		super(position, movement);
 		this.setCurrentHP(10);
 		setTotalHP(10);
+
 		this.setAttack(1);
-		this.setImage("assets/idleDark.png");		
+		this.setImage("assets/poe.png");		
 	}
 }
