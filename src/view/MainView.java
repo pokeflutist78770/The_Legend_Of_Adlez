@@ -608,7 +608,11 @@ public class MainView extends StackPane {
 				pathTransition.play();
 			} else
 				keyListener = true;
+			
+			System.out.println("[PLAYER]: :"+player.getPosition());
 		});
+		
+	
 	}
 	
 
@@ -650,8 +654,11 @@ public class MainView extends StackPane {
 			return;
         }
 		
+		
 		pMenu.setVisible(GameController.isPaused);
-
+		kMenu.setVisible(false);
+		
+		
 		if (GameController.isPaused) {
 			window.setEffect(new GaussianBlur());
 			return;
@@ -846,11 +853,10 @@ public class MainView extends StackPane {
 				LegendOfAdlezView.changeView(new StartMenuView());
 				// Platform.exit();
 			}
-
-			
 		}
-    	
     }
+	
+	
     public void buyItem(int price, Player player ) {
     	if(price == 25) {
     		player.setCurrentMoney(player.getCurrentMoney() - 25);

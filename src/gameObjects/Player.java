@@ -29,7 +29,7 @@ public class Player extends Creature implements Serializable{
 		super(position);
 
 		this.setTotalHP(20);
-		this.setCurrentHP(2);
+		this.setCurrentHP(20);
 		this.setAttack(1);
 		currentMoney = 0;
 		maxMoney = 500;
