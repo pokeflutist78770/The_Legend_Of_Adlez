@@ -19,6 +19,7 @@ public class Scorpion extends Enemy {
 		super(position, movePattern);
 		this.setTotalHP(10);
     setCurrentHP(10);
+    setMoneyDrop(7);
 		this.setAttack(1);
 		this.setImage("assets/scorp.png");		
 	}
