@@ -722,6 +722,7 @@ public class MainView extends StackPane {
 					}
 					controller.addObject(drop);
 				}
+				//key drop
 				else {
 					Key drop = new Key(enemy.getPosition());
 					pane.getChildren().remove(creatureMap.get(enemy));
