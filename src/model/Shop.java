@@ -122,6 +122,10 @@ public class Shop extends GameMap {
 		objects.add(new GameObject(new Point(13, 12)));
 		objects.add(new GameObject(new Point(13, 13)));
 		transitions.add(new Transition(new Point(11, 13), MapScreen.RIVER, new Point(5, 5)));
+		setCloneObjects((ArrayList<GameObject>) objects.clone());
+	}
+	public void refresh() {
+		objects = getCloneObjects();
 	}
 
 }

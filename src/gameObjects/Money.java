@@ -3,6 +3,8 @@ package gameObjects;
 import java.awt.Point;
 
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Money class for currency.

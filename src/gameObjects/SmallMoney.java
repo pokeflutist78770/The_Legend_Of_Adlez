@@ -2,6 +2,9 @@ package gameObjects;
 
 import java.awt.Point;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 /**
  * SmallMoney class that gives the user 5 currency.
  * @author Tito Vasquez

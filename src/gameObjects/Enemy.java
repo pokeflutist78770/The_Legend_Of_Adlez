@@ -37,6 +37,7 @@ public class Enemy extends Creature {
 				    WEST, NORTH, NORTH, WEST, SOUTH};
 	private Direction[] current; 
 	private int index = 0;
+	private boolean dropped = false;
 
 	/**
 	 * Constructor for the EnemyClass of enemies.
@@ -88,5 +89,19 @@ public class Enemy extends Creature {
 
 	public static void setAttackSound(String attackSound) {
 		Enemy.attackSound = attackSound;
+	}
+
+	/**
+	 * @return the dropped
+	 */
+	public boolean hasDropped() {
+		return dropped;
+	}
+
+	/**
+	 * @param dropped the dropped to set
+	 */
+	public void setDropped(boolean dropped) {
+		this.dropped = dropped;
 	}
 }

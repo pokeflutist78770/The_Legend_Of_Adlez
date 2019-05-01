@@ -162,6 +162,10 @@ public class Dungeon2Open extends GameMap {
 		enemies.add(new FinalBoss(new Point(8, 4), 2));
 		transitions.add(new Transition(new Point(14, 13), MapScreen.DUNGEON1, new Point(14, 2)));
 		transitions.add(new Transition(new Point(2, 1), MapScreen.DUNGEON3, new Point(2, 12)));
+		setCloneObjects((ArrayList<GameObject>) objects.clone());
+	}
+	public void refresh() {
+		objects = getCloneObjects();
 	}
 
 }

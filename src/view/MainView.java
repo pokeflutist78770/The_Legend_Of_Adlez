@@ -69,7 +69,7 @@ public class MainView extends StackPane {
 	private GameMap map;
 
 	private MapScreen currMap;
-	private Map<Creature, ImageView> creatureMap;
+	private Map<GameObject, ImageView> creatureMap;
 
 	private VBox pMenu;
 	private BorderPane window;
@@ -82,14 +82,14 @@ public class MainView extends StackPane {
 
 	public void loadMap() {
 		currMap = controller.getCurrMap();
-		
+		controller.getMapLayout().refresh();
 		LegendOfAdlezView.playBackground(currMap.getMusic());
 		
 		map = controller.getMapLayout();
 		pane.getChildren().clear();
 		pane.setBackground(new Background(
 				new BackgroundImage(new Image(controller.getMapLayout().getMapString()), null, null, null, null)));
-		creatureMap = new HashMap<Creature, ImageView>();
+		creatureMap = new HashMap<GameObject, ImageView>();
 		creatureMap.put(player, new ImageView(new Image(player.getImage())));
 		addObject(player);
 		switch (player.getDirection()) {
@@ -231,7 +231,7 @@ public class MainView extends StackPane {
 
 		map = controller.getMapLayout();
 		currMap = controller.getCurrMap();
-		creatureMap = new HashMap<Creature, ImageView>();
+		creatureMap = new HashMap<GameObject, ImageView>();
 		window = new BorderPane();
 		this.getChildren().add(window);
 
@@ -575,7 +575,7 @@ public class MainView extends StackPane {
 		if (creatureMap.containsKey(object)) {
 			image = creatureMap.get(object);
 		}
-		else if(object instanceof Item) {
+		else if(object instanceof Item || object instanceof Money) {
 			image = new ImageView(new Image(object.getImage()));
 		}
 		else {
@@ -702,22 +702,42 @@ public class MainView extends StackPane {
 				}
 			}
 			else {
-				GameObject drop = null;
-				if(enemy instanceof Slime) {
-					drop = new SmallMoney(enemy.getPosition());
-				}
-				else if(enemy instanceof Scorpion) {
-					drop = new MediumMoney(enemy.getPosition());
-				}
-				else if(enemy instanceof Poe) {
-					drop = new LargeMoney(enemy.getPosition());
+				if(enemy instanceof Slime|| enemy instanceof Scorpion || enemy instanceof Poe) {
+					Money drop = null;
+					if(enemy instanceof Slime) {
+						drop = new SmallMoney(enemy.getPosition());
+					}
+					else if(enemy instanceof Scorpion) {
+						drop = new MediumMoney(enemy.getPosition());
+					}
+					else if(enemy instanceof Poe) {
+						drop = new LargeMoney(enemy.getPosition());
+					}
+					pane.getChildren().remove(creatureMap.get(enemy));
+					if(!enemy.hasDropped()) {
+						creatureMap.put(drop,new ImageView( new Image(drop.getImage())));
+						addObject(drop);
+						enemy.setDropped(true);
+					}
+					controller.addObject(drop);
 				}
 				else {
-					drop = new Key(enemy.getPosition());
+					Key drop = new Key(enemy.getPosition());
+					pane.getChildren().remove(creatureMap.get(enemy));
+					if(!enemy.hasDropped()) {
+						creatureMap.put(drop,new ImageView( new Image(drop.getImage())));
+						addObject(drop);
+						enemy.setDropped(true);
+					}
+					controller.addObject(drop);
+					
 				}
-				pane.getChildren().remove(creatureMap.get(enemy));
-				addObject(drop);
-				
+			}
+			
+		}
+		for (GameObject object : controller.getObstacles()) {
+			if (!object.getActive()) {
+				pane.getChildren().remove(creatureMap.get(object));
 			}
 		}
 	}

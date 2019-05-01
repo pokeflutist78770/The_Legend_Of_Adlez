@@ -119,6 +119,9 @@ public class HomeUp extends GameMap {
 		transitions.add(new Transition(new Point(7, 13), MapScreen.HOME_OUTSIDE, new Point(7, 1)));
 		transitions.add(new Transition(new Point(11, 0), MapScreen.DESERT, new Point(11, 12)));
 		transitions.add(new Transition(new Point(12, 0), MapScreen.DESERT, new Point(12, 12)));
+		setCloneObjects((ArrayList<GameObject>) objects.clone());
 	}
-
+	public void refresh() {
+		objects = getCloneObjects();
+	}
 }

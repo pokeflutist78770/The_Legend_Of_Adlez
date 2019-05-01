@@ -80,11 +80,34 @@ public class GameController implements Serializable {
 		}
 		if(moved) {
 			character.setPosition(new Point(currPos.x+x, currPos.y+y));
-			for(GameObject object : maps.get(currMap).getObjects()) {
+			for(GameObject object : getObstacles()) {
 				if(collision(character, object)) {
-
-					character.setPosition(currPos);
-					return false;
+					if(object instanceof Money) {
+						if(!object.getActive()) {
+							
+						}
+						else {
+						Money drop = (Money)object;
+						player.incrementMoney(drop.getAmount());
+						object.setActive(false);
+						}
+						return true;
+					}
+					if(object instanceof Key) {
+						if(!object.getActive()) {
+							
+						}
+						else {
+						player.giveKey();
+						System.out.println("key recieved");
+						object.setActive(false);
+						}
+						return true;
+					}
+					else {
+						character.setPosition(currPos);
+						return false;
+					}
 				}
 			}
 			
@@ -157,8 +180,10 @@ public class GameController implements Serializable {
 			maps.put(currMap, newMap);
 		}
 		else {
+			maps.get(map).refresh();
 			for(Enemy enemy : getEnemies()) {
 				enemy.setActive(true);
+				enemy.setDropped(false);
 				enemy.setCurrentHP(enemy.getTotalHP());
 			}
 		}
@@ -258,5 +283,14 @@ public class GameController implements Serializable {
 			if(enemy.getActive())
 				attemptAttack(player, enemy);
 		}
+	}
+
+
+	/**
+	 * @param drop
+	 */
+	public void addObject(GameObject object) {
+		maps.get(currMap).addObject(object);
+		
 	}
 }

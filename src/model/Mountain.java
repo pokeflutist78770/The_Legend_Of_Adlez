@@ -119,6 +119,10 @@ public class Mountain extends GameMap {
 		transitions.add(new Transition(new Point(0, 8), MapScreen.RIVER, new Point(16, 8)));
 		transitions.add(new Transition(new Point(0, 9), MapScreen.RIVER, new Point(16, 9)));
 		transitions.add(new Transition(new Point(9, 1), MapScreen.DUNGEON1, new Point(9, 12)));
+		setCloneObjects((ArrayList<GameObject>) objects.clone());
+	}
+	public void refresh() {
+		objects = getCloneObjects();
 	}
 
 }
