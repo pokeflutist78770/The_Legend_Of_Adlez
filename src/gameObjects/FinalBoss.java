@@ -25,10 +25,11 @@ public class FinalBoss extends Enemy{
 	 * @param position Point2D The current position of the FinalBoss on the game map.
 	 * @param n int The type of movement pattern that the Boss will have.
 	 */
-	public FinalBoss(Point2D position, int n) {
-		super(position, n);
-		this.setTotalHP(255);
+
+	public FinalBoss(Point2D position, int movement) {
+		super(position, movement);
+		this.setCurrentHP(255);
 		this.setAttack(10);
-		this.setImage("assets/boss.png");
+		this.setImage("assets/idleDark");
 	}
 }

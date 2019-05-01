@@ -25,10 +25,10 @@ public class Poe extends Enemy {
 	 * @param position Point2D The current position of the Poe on the game map.
 	 * @param int n The type of movement pattern that the Poe will have.
 	 */
-	public Poe(Point2D position, int n) {
-		super(position, n);
-		this.setTotalHP(10);
+	public Poe(Point2D position, int movement) {
+		super(position, movement);
+		this.setCurrentHP(10);
 		this.setAttack(1);
-		this.setImage("assets/poe.png");		
+		this.setImage("assets/idleDark.png");		
 	}
 }

@@ -1,21 +1,21 @@
 package gameObjects;
 
-import enums.MapScreen;
 import javafx.geometry.Point2D;
 import model.GameMap;
+import enums.*;
 
 public class Transition extends GameObject {
 	
-	private MapScreen currentMap;
+	private MapScreen newScreen;
 	private Point2D spawn;
 	
 	/**
 	 * Constructor for Transition tiles that would be used to change to the other screens.
 	 * @param position Point2D The position on the map.
 	 */
-	public Transition(Point2D position, MapScreen map, Point2D spawn) {
+	public Transition(Point2D position, MapScreen screen, Point2D spawn) {
 		super(position);
-		currentMap = map;
+		newScreen = screen;
 		this.spawn = spawn;
 	}
 	
@@ -24,7 +24,7 @@ public class Transition extends GameObject {
 	 * @return currentMap GameMap The map that is being transitioned to.
 	 */
 	public MapScreen getMap() {
-		return currentMap;
+		return newScreen;
 	}
 	
 	/**

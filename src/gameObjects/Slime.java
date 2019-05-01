@@ -25,10 +25,10 @@ public class Slime extends Enemy {
 	 * @param position Point2D The current position of the Slime on the game map.
 	 * @param n int The type of movement pattern that the Slime will have.
 	 */
-	public Slime(Point2D position, int n) {
-		super(position, n);
-		this.setTotalHP(10);
-		this.setAttack(1);
-		this.setImage("assets/slime.png");		
+	public Slime(Point2D position, int movement) {
+		super(position, movement);
+		setCurrentHP(10);
+		setAttack(1);
+		setImage("assets/idleDark.png");
 	}
 }

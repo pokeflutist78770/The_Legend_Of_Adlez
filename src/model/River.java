@@ -3,10 +3,9 @@ package model;
 import java.util.ArrayList;
 
 import enums.MapScreen;
-import gameObjects.GameObject;
+import gameObjects.*;
+import model.*;
 import javafx.geometry.Point2D;
-import gameObjects.Enemy;
-import gameObjects.Transition;
 
 /**
  * River map class.
