@@ -1,20 +1,27 @@
 package gameObjects;
 
+import javafx.geometry.Point2D;
+
+
+
 /**
- * BigPotion class. This item heals player health by a big amount,
- * proving to cost more than a SmallPotion and healing more health in
- * the long run.
+ * SmallPotion class. This potion only heals a small amount, and is
+ * relatively cheap compared to BigPotion
  * @author Angel Aguayo
+ *
  */
 public class BigPotion extends Item implements Consumable{
-	private static final int HEAL=20;
+	private static final int HEAL=5;
+	
 	
 	/**
-	 * Constructor for BigPotion item
+	 * Constructor for SmallPotion item
 	 */
-	public BigPotion() {
-		COST=23;
-		name="big_potion";
+	public BigPotion(Point2D position) {
+		super(position);
+		this.setImage("assets/potion.png");
+		COST=5;
+		name="small_potion";
 	}
 
 	/**

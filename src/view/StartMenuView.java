@@ -12,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -193,7 +194,7 @@ public class StartMenuView extends StackPane{
 			
 			//boot up a new game
 			else if(button.getId().equals("New Game")) {
-				
+				LegendOfAdlezView.changeView(new MainView());
 			}
 			
 			//display controls

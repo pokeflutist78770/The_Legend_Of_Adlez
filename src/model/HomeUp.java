@@ -1,10 +1,14 @@
+
 package model;
 
 import java.util.ArrayList;
 
 import enums.MapScreen;
-import gameObjects.*;
+import gameObjects.GameObject;
 import javafx.geometry.Point2D;
+import gameObjects.Enemy;
+import gameObjects.Slime;
+import gameObjects.Transition;
 
 /**
  * HomeUp map class.
@@ -113,8 +117,8 @@ public class HomeUp extends GameMap {
 		enemies.add(new Slime(new Point2D(8, 10), 1));
 		transitions.add(new Transition(new Point2D(6, 13), MapScreen.HOME_OUTSIDE, new Point2D(6, 1)));
 		transitions.add(new Transition(new Point2D(7, 13), MapScreen.HOME_OUTSIDE, new Point2D(7, 1)));
-//		transitions.add(new Transition(new Point2D(11, 0), new Desert(), new Point2D(11, 12)));
-//		transitions.add(new Transition(new Point2D(12, 0), new Desert(), new Point2D(12, 12)));
+		transitions.add(new Transition(new Point2D(11, 0), MapScreen.DESERT, new Point2D(11, 12)));
+		transitions.add(new Transition(new Point2D(12, 0), MapScreen.DESERT, new Point2D(12, 12)));
 	}
 
 }

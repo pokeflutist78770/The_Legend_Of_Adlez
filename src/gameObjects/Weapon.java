@@ -1,6 +1,7 @@
 package gameObjects;
 
 import enums.Attack;
+import javafx.geometry.Point2D;
 
 
 
@@ -14,6 +15,10 @@ import enums.Attack;
 public abstract class Weapon extends Item {
 	protected int DAMAGE;
 	protected Attack attackType;
+	
+	public Weapon(Point2D position) {
+		super(position);
+	}
 
 	/**
 	 * Get the damage a weapon can do

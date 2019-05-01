@@ -14,7 +14,7 @@ public class Scorpion extends Enemy {
 	 * @param currentHP int The currentHP of the Scorpion.
 	 * @param totalHP int The totalHP of the Scorpion.
 	 * @param attack int The attack power of the Scorpion.
-	 * @param position int[] The current position of the Scorpion.
+	 * @param position Point2D The current position of the Scorpion.
 	 */
 	public Scorpion(int currentHP, int totalHP, int attack, Point2D position) {
 		super(currentHP, totalHP, attack, position);
@@ -22,12 +22,13 @@ public class Scorpion extends Enemy {
 
 	/**
 	 * Separate constructor that hard codes in the stats of the Slime for consistency.
-	 * @param position int[] The current position of the Slime on the game map.
+	 * @param position Point2D The current position of the Slime on the game map.
+	 * @param n int The type of movement pattern that the Scorpion will have.
 	 */
-	public Scorpion(Point2D position, int movement) {
-		super(position, movement);
-		setCurrentHP(10);
-		setAttack(1);
-		setImage("assets/idleDark.png");		
+	public Scorpion(Point2D position, int n) {
+		super(position, n);
+		this.setTotalHP(10);
+		this.setAttack(1);
+		this.setImage("assets/scorp.png");		
 	}
 }

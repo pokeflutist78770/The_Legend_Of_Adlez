@@ -1,4 +1,4 @@
-package view;
+
 
 import java.util.HashMap;
 
@@ -10,10 +10,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import view.StartMenuView;
 
 public class LegendOfAdlezView extends Application{
 	private static StackPane mainPane;
 	static Scene mainScene;
+	private HashMap<String, Image> imageMap;
+	
 	
 	public static void main(String args[]) {
 		launch(args);
@@ -22,7 +25,6 @@ public class LegendOfAdlezView extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
 		primaryStage.setTitle("The Legend of Adlez");
 		
 		StartMenuView startView=new StartMenuView();
@@ -42,10 +44,3 @@ public class LegendOfAdlezView extends Application{
 		mainPane.getChildren().add(view);
 	}
 }
-
-
-
-
-
-
-

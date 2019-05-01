@@ -16,6 +16,9 @@ import model.*;
  */
 
 public class GameController {
+
+	public static boolean isPaused=false;
+	GameMap map;
 	Player player;
 	MapScreen currMap = MapScreen.HOME_OUTSIDE;
 	Map<MapScreen, GameMap> maps;

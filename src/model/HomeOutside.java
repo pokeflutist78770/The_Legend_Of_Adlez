@@ -111,7 +111,7 @@ public class HomeOutside extends GameMap {
 		objects.add(new GameObject(new Point2D(15, 13)));
 		objects.add(new GameObject(new Point2D(16, 13)));
 		objects.add(new GameObject(new Point2D(17, 13)));
-//		transitions.add(new Transition(new Point2D(2, 2), new Home(), new Point2D(7, 12)));
+		transitions.add(new Transition(new Point2D(2, 2), MapScreen.HOME, new Point2D(7, 12)));
 		transitions.add(new Transition(new Point2D(6, 0), MapScreen.HOME_UP, new Point2D(6, 12)));
 		transitions.add(new Transition(new Point2D(7, 0), MapScreen.HOME_UP, new Point2D(7, 12)));
 		transitions.add(new Transition(new Point2D(17, 8), MapScreen.RIVER, new Point2D(1, 8)));
