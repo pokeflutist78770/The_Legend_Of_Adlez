@@ -700,6 +700,7 @@ public class MainView extends StackPane {
 					}
 				}
 			}
+			//this is where the change should be
 			else {
 				if(enemy instanceof Slime|| enemy instanceof Scorpion || enemy instanceof Poe) {
 					Money drop = null;
