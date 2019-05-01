@@ -68,7 +68,7 @@ public class StartMenuView extends StackPane{
 		};
 		
 		clouds.run();
-		/*
+		
 		for(int i=0; i<10; i++) {
 		Image cloud=new Image("assets/cloud.png", false);
 		ImageView cloudView=new ImageView(cloud);
@@ -92,7 +92,7 @@ public class StartMenuView extends StackPane{
 			this.getChildren().add(cloudView);
 		}
 		//LegendOfAdlezView.playBackground("theme");
-*/
+
 
 		
 		setup();

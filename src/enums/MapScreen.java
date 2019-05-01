@@ -15,7 +15,7 @@ public enum MapScreen implements Serializable{
 			return "home";
 		}
 		else if(this.toString().equals("RIVER")) {
-			return "theme";
+			return "home";
 		}
 		
 		else if(this.toString().equals("MOUNTAIN")) {
