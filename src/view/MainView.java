@@ -48,6 +48,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -78,6 +82,9 @@ public class MainView extends StackPane {
 
 	public void loadMap() {
 		currMap = controller.getCurrMap();
+		
+		LegendOfAdlezView.playBackground(currMap.getMusic());
+		
 		map = controller.getMapLayout();
 		pane.getChildren().clear();
 		pane.setBackground(new Background(
@@ -130,9 +137,7 @@ public class MainView extends StackPane {
 	public MainView(boolean loadFile) {
 
 		GameController.isPaused = false;
-
-		/*------ Inventory Box  -----*/
-		VBox inventory = new VBox();
+		
 
 		/*-----   Pause Menu Buttons   --------- */
 
@@ -291,12 +296,18 @@ public class MainView extends StackPane {
 				}
 				break;
 			}
+				
 			case SPACE: {
 				controller.playerAttack();
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
 				}
+				//this is a special case where both sounds need to be played at the same 
+				//time
+				new AudioClip("file:src/assets/attack.wav").play();
+				new AudioClip("file:src/assets/sword_swoosh.wav").play();;
+				
 				switch (player.getDirection()) {
 				case NORTH: {
 					Point potentialInteractable = new Point((int) player.getPosition().getX(),
@@ -418,8 +429,11 @@ public class MainView extends StackPane {
 			}
 				if (interact)
 					break;
+				
 			case W:
 			case UP:
+				if(GameController.isPaused) return;
+				
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -442,6 +456,7 @@ public class MainView extends StackPane {
 				break;
 			case S:
 			case DOWN:
+				if(GameController.isPaused) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -464,6 +479,7 @@ public class MainView extends StackPane {
 				break;
 			case D:
 			case RIGHT:
+				if(GameController.isPaused) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -486,6 +502,7 @@ public class MainView extends StackPane {
 				break;
 			case A:
 			case LEFT:
+				if(GameController.isPaused) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -530,6 +547,7 @@ public class MainView extends StackPane {
 				keyListener = true;
 		});
 	}
+	
 
 	/**
 	 * Adds object to view at specified x/y coordinate on grid.

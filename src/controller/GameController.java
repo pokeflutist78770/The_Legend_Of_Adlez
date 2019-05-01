@@ -1,37 +1,42 @@
 
 package controller;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import enums.*;
 import gameObjects.*;
 import java.awt.Point;
 import model.*;
 
+
 /**
- * Controller for the GameBoard including interactions with the character and enemies, etc.
+ * Controller for the GameBoard including interactions with the character and
+ * enemies, etc.
+ * 
  * @author Tito Vasquez & Timothy Lyons
  *
  */
 
-public class GameController implements Serializable{
-	public static boolean isPaused=false;
-	public static final String SAVE_FILE="save_file.dat";
+
+public class GameController implements Serializable {
+	public static boolean isPaused = false;
+	public static final String SAVE_FILE = "save_file.dat";
 	GameMap map;
 	Player player;
 	MapScreen currMap = MapScreen.HOME_OUTSIDE;
-
 	Map<MapScreen, GameMap> maps;
-	
+
 	public GameController() {
-		player = new Player(new Point(2,3));
+		player = new Player(new Point(2, 3));
 		maps = new HashMap<MapScreen, GameMap>();
 		maps.put(currMap, new HomeOutside());
+		
 	}
-	
+
+
 	public boolean move(Creature character, Direction dir) {
 		Direction currDir = character.getDirection();
 		Point currPos = character.getPosition();
@@ -77,6 +82,7 @@ public class GameController implements Serializable{
 			character.setPosition(new Point(currPos.x+x, currPos.y+y));
 			for(GameObject object : maps.get(currMap).getObjects()) {
 				if(collision(character, object)) {
+
 					character.setPosition(currPos);
 					return false;
 				}
@@ -97,7 +103,6 @@ public class GameController implements Serializable{
 				}
 			}
 			return true;
-			
 		}
 		return false;
 	}

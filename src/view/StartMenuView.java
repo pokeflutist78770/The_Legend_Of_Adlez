@@ -5,8 +5,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.util.Random;
 
 import controller.GameController;
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -23,17 +26,74 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class StartMenuView extends StackPane{
 	private Image background;
 	
-	
 	public StartMenuView() {
+		
+		LegendOfAdlezView.playBackground("theme");
+		
 		Image image=new Image("assets/new_background.png", false);
 		ImageView imageView=new ImageView(image);
+		this.getChildren().addAll(imageView);
+		/*
+		Thread clouds=new Thread() {
+			public void run() {
+				Image cloud=new Image("assets/cloud.png", false);
+				ImageView cloudView=new ImageView(cloud);
+				cloudView.setFitHeight(100);
+				cloudView.setFitWidth(100);
+				
+				TranslateTransition translateTransition = new TranslateTransition();
+				translateTransition.setDuration(Duration.millis(75000));
+				translateTransition.setNode(cloudView);
+				translateTransition.setByX(4000);
+				translateTransition.setCycleCount(500);
+				translateTransition.setAutoReverse(true);
+				translateTransition.play(); 
+				Random rand=new Random();
+				
+				int wow=rand.nextInt(50);
+				
+				StackPane.setMargin(cloudView, new Insets(wow, 2*wow, 5, wow+10));
+						
+				StackPane.setAlignment(cloudView, Pos.TOP_LEFT);
+				
+				
+			}
+		};
 		
-		this.getChildren().add(imageView);
+		clouds.run();
+		
+		for(int i=0; i<10; i++) {
+		Image cloud=new Image("assets/cloud.png", false);
+		ImageView cloudView=new ImageView(cloud);
+		cloudView.setFitHeight(100);
+		cloudView.setFitWidth(100);
+		
+		TranslateTransition translateTransition = new TranslateTransition();
+		translateTransition.setDuration(Duration.millis(75000));
+		translateTransition.setNode(cloudView);
+		translateTransition.setByX(4000);
+		translateTransition.setCycleCount(500);
+		translateTransition.setAutoReverse(true);
+		translateTransition.play(); 
+		Random rand=new Random();
+		
+		int wow=rand.nextInt(200);
+		
+		StackPane.setMargin(cloudView, new Insets(wow+20, 2*wow, wow, wow+10));
+				
+		StackPane.setAlignment(cloudView, Pos.TOP_LEFT);
+			this.getChildren().add(cloudView);
+		}
+		//LegendOfAdlezView.playBackground("theme");
+
+		*/
 		
 		setup();
 	}
@@ -48,6 +108,14 @@ public class StartMenuView extends StackPane{
 		
 		Image image=new Image("assets/Logo.png", false);
 		ImageView logoView=new ImageView(image);
+		FadeTransition ft=new FadeTransition(Duration.millis(2000), logoView);
+		ft.setFromValue(0);
+	    ft.setToValue(1);
+	    //ft.setCycleCount(4);
+	    //ft.setAutoReverse(true);
+	 
+	    ft.play();
+		
 		pane.setTop(logoView);
 		BorderPane.setAlignment(logoView, Pos.TOP_CENTER);
 		BorderPane.setMargin(logoView, new Insets(50,0,0,0));
@@ -198,6 +266,7 @@ public class StartMenuView extends StackPane{
 			
 			//boot up a new game
 			else if(button.getId().equals("New Game")) {
+				LegendOfAdlezView.playBackground("home");
 				LegendOfAdlezView.changeView(new MainView(false));
 			}
 			
