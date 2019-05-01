@@ -163,5 +163,4 @@ public class Dungeon2 extends GameMap {
 		transitions.add(new Transition(new Point(14, 13), MapScreen.DUNGEON1, new Point(14, 2)));
 		transitions.add(new Transition(new Point(2, 1), MapScreen.DUNGEON3, new Point(2, 12)));
 	}
-
 }

@@ -18,6 +18,7 @@ public class Player extends Creature implements Serializable{
 	int maxMoney;
 	int PotionCount = 0;
 	Item equippedItem = new Dagger(null);
+	boolean key = false;
 	List<Item> inventory = new ArrayList<Item>();
 	
 	/**
@@ -30,7 +31,7 @@ public class Player extends Creature implements Serializable{
 		this.setTotalHP(20);
 		this.setCurrentHP(2);
 		this.setAttack(1);
-		currentMoney = 50;
+		currentMoney = 0;
 		maxMoney = 500;
 		setDirection(Direction.SOUTH);
 		setImage("assets/adlez1.png");
@@ -74,5 +75,14 @@ public class Player extends Creature implements Serializable{
 			this.incrementHP(20);
 			PotionCount--;
 		}
+	}
+	public void incrementMoney(int amt) {
+		this.currentMoney += amt;
+	}
+	public boolean hasKey() {
+		return key;
+	}
+	public void giveKey() {
+		key = true;
 	}
 }

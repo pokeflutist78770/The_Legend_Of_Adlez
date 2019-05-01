@@ -9,9 +9,10 @@ import gameObjects.*;
 /**
  * Constructs all the maps of the game using GameObjects, Enemies, and Player.
  */
-public class GameMap implements Serializable{
+public abstract class GameMap implements Serializable{
 
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+	private ArrayList<GameObject> cloneObjects;
 	private ArrayList<Transition> transitions = new ArrayList<Transition>();
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	private MapScreen map;
@@ -25,7 +26,7 @@ public class GameMap implements Serializable{
 		this.map = screen;
 		this.mapString = mapString;
 	}
-
+	
 	public ArrayList<GameObject> getObjects() {
 		return objects;
 	}
@@ -44,5 +45,22 @@ public class GameMap implements Serializable{
 	
 	public String getMapString() {
 		return mapString;
+	}
+	public void addObject(GameObject object) {
+		objects.add(object);
+	}
+
+	/**
+	 * @return the cloneObjects
+	 */
+	public ArrayList<GameObject> getCloneObjects() {
+		return cloneObjects;
+	}
+
+	/**
+	 * @param cloneObjects the cloneObjects to set
+	 */
+	public void setCloneObjects(ArrayList<GameObject> cloneObjects) {
+		this.cloneObjects = cloneObjects;
 	}
 }

@@ -120,5 +120,4 @@ public class HomeUp extends GameMap {
 		transitions.add(new Transition(new Point(11, 0), MapScreen.DESERT, new Point(11, 12)));
 		transitions.add(new Transition(new Point(12, 0), MapScreen.DESERT, new Point(12, 12)));
 	}
-
 }

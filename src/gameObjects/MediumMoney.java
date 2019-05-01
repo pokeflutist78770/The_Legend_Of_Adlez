@@ -15,7 +15,7 @@ public class MediumMoney extends Money {
 	 */
 	public MediumMoney(Point position) {
 		super(position);
-		super.setAmount(15);
+		super.setAmount(7);
 		this.setImage("assets/mediumMoney.png");
 	}
 

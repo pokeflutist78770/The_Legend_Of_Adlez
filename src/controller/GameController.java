@@ -3,6 +3,7 @@ package controller;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,11 +88,33 @@ public class GameController implements Serializable{
 				won = true;
 				return true;
 			}
-			for(GameObject object : maps.get(currMap).getObjects()) {
+			for(GameObject object : getObstacles()) {
 				if(collision(character, object)) {
-
-					character.setPosition(currPos);
-					return false;
+					if(object instanceof Money) {
+						if(!object.getActive()) {
+							
+						}
+						else {
+						Money drop = (Money)object;
+						player.incrementMoney(drop.getAmount());
+						object.setActive(false);
+						}
+						return true;
+					}
+					if(object instanceof Key) {
+						if(!object.getActive()) {
+							
+						}
+						else {
+							player.giveKey();
+							object.setActive(false);
+						}
+						return true;
+					}
+					else {
+						character.setPosition(currPos);
+						return false;
+					}
 				}
 			}
 			
@@ -166,7 +189,22 @@ public class GameController implements Serializable{
 		else {
 			for(Enemy enemy : getEnemies()) {
 				enemy.setActive(true);
+				enemy.setDropped(false);
 				enemy.setCurrentHP(enemy.getTotalHP());
+			}
+			ArrayList<GameObject> indexs = new ArrayList<GameObject>();
+			for(GameObject object: getObstacles()) {
+				if(object instanceof Money|| object instanceof Key) {
+					if(object instanceof Money) {
+						indexs.add(object);
+					}
+					if(object instanceof Key) {
+						indexs.add(object);
+					}
+				}
+			}
+			for(GameObject in: indexs) {
+				getObstacles().remove(in);
 			}
 		}
 		player.setPosition(spawn);
@@ -267,5 +305,14 @@ public class GameController implements Serializable{
 			if(enemy.getActive())
 				attemptAttack(player, enemy);
 		}
+	}
+
+
+	/**
+	 * @param drop
+	 */
+	public void addObject(GameObject object) {
+		maps.get(currMap).addObject(object);
+		
 	}
 }

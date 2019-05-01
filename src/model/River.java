@@ -175,5 +175,4 @@ public class River extends GameMap {
 		transitions.add(new Transition(new Point(17, 8), MapScreen.MOUNTAIN, new Point(1, 8)));
 		transitions.add(new Transition(new Point(17, 9), MapScreen.MOUNTAIN, new Point(1, 9)));
 	}
-
 }
