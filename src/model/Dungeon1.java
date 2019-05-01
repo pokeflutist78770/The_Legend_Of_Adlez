@@ -172,7 +172,7 @@ public class Dungeon1 extends GameMap {
 		enemies.add(new Poe(new Point2D(7, 3), 1));
 		enemies.add(new Poe(new Point2D(1, 6), 1));
 		enemies.add(new Poe(new Point2D(10, 10), 1));
-	    enemies.add(new Poe(new Point2D(15, 7), 2));
+//	    enemies.add(new Poe(new Point2D(15, 7), 2));
 		transitions.add(new Transition(new Point2D(9, 13), MapScreen.MOUNTAIN, new Point2D(9, 2)));
 		transitions.add(new Transition(new Point2D(14, 1), MapScreen.DUNGEON2, new Point2D(14, 12)));
 	}

@@ -116,6 +116,21 @@ public class GameController {
 			case DUNGEON1:
 				newMap = new Dungeon1();
 				break;
+			case DESERT:
+				newMap = new Desert();
+				break;
+			case DUNGEON2:
+				newMap = new Dungeon2();
+				break;
+			case DUNGEON3:
+				newMap = new Dungeon3();
+				break;
+			case SHOP:
+				newMap = new Shop();
+				break;
+			case HOME:
+				newMap = new Home();
+				break;
 			}
 			maps.put(currMap, newMap);
 		}

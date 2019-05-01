@@ -168,7 +168,7 @@ public class River extends GameMap {
 		objects.add(new GameObject(new Point2D(17, 13)));
 		transitions.add(new Transition(new Point2D(0, 8), MapScreen.HOME_OUTSIDE, new Point2D(16, 8)));
 		transitions.add(new Transition(new Point2D(0, 9), MapScreen.HOME_OUTSIDE, new Point2D(16, 9)));
-		transitions.add(new Transition(new Point2D(5, 4), new Shop(), new Point2D(11, 12)));
+		transitions.add(new Transition(new Point2D(5, 4), MapScreen.SHOP, new Point2D(11, 12)));
 		transitions.add(new Transition(new Point2D(17, 8), MapScreen.MOUNTAIN, new Point2D(1, 8)));
 		transitions.add(new Transition(new Point2D(17, 9), MapScreen.MOUNTAIN, new Point2D(1, 9)));
 	}
