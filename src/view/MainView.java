@@ -125,6 +125,15 @@ public class MainView extends StackPane {
 			}
 			addObject(enemy);
 		}
+		if(controller.getCurrMap() == MapScreen.SHOP){
+			Sword displaySword = new Sword(new Point(5,8));
+			BigPotion displayPotion = new BigPotion(new Point(7,8));
+			ShopKeeper displayShopKeeper = new ShopKeeper(new Point(11,7));
+			addObject(displaySword);
+			addObject(displayPotion);
+			addObject(displayShopKeeper);
+			
+		}
 	}
 
 	public MainView(boolean loadFile) {
@@ -275,9 +284,8 @@ public class MainView extends StackPane {
 			switch (e.getCode()) {
 			default:
 				break;
-			case B: {
-				System.out.println(transaction);
-				if (transaction) {
+			case B:{
+				if(transaction) {
 					textBox.setImage(null);
 					if (player.getCurrentMoney() < price) {
 						textBox.setImage(new Image("assets/NotEnough.png"));
@@ -540,7 +548,11 @@ public class MainView extends StackPane {
 		ImageView image;
 		if (creatureMap.containsKey(object)) {
 			image = creatureMap.get(object);
-		} else {
+		}
+		else if(object instanceof Item) {
+			image = new ImageView(new Image(object.getImage()));
+		}
+		else {
 			image = new ImageView();
 		}
 		image.setTranslateX(x);

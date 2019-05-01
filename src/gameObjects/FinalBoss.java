@@ -23,6 +23,6 @@ public class FinalBoss extends Enemy{
 		setTotalHP(255);
 		this.setCurrentHP(255);
 		this.setAttack(10);
-		this.setImage("assets/idleDark.png");
+		this.setImage("assets/boss.png");
 	}
 }
