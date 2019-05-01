@@ -67,7 +67,4 @@ public class Home extends GameMap {
 		  transitions.add(new Transition(new Point(7, 14), MapScreen.HOME_OUTSIDE, new Point(2, 3)));
 		  setCloneObjects((ArrayList<GameObject>) objects.clone());
 	  }
-	  public void refresh() {
-			objects = getCloneObjects();
-		}
 }

@@ -3,6 +3,7 @@ package controller;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +23,15 @@ import view.LegendOfAdlezView;
  */
 
 
-public class GameController implements Serializable {
-	public static boolean isPaused = false;
-	public static final String SAVE_FILE = "save_file.dat";
-	GameMap map;
-	Player player;
-	MapScreen currMap = MapScreen.HOME_OUTSIDE;
+public class GameController implements Serializable{
+	public static boolean isPaused=false;
+	public static boolean died = false;
+	public static boolean won = false;
+	public static final String SAVE_FILE="save_file.dat";
+	private GameMap map;
+	private Player player;
+	private MapScreen currMap = MapScreen.HOME_OUTSIDE;
+
 	Map<MapScreen, GameMap> maps;
 
 	public GameController() {
@@ -81,6 +85,10 @@ public class GameController implements Serializable {
 		}
 		if(moved) {
 			character.setPosition(new Point(currPos.x+x, currPos.y+y));
+			if(currMap == MapScreen.DUNGEON3 && player.getPosition().equals(new Point(9, 3))) {
+				won = true;
+				return true;
+			}
 			for(GameObject object : getObstacles()) {
 				if(collision(character, object)) {
 					if(object instanceof Money) {
@@ -102,7 +110,6 @@ public class GameController implements Serializable {
 						else {
 							LegendOfAdlezView.play("key");
 							player.giveKey();
-							System.out.println("key recieved");
 							object.setActive(false);
 						}
 						return true;
@@ -168,7 +175,7 @@ public class GameController implements Serializable {
 				newMap = new Desert();
 				break;
 			case DUNGEON2:
-				newMap = new Dungeon2();
+				newMap = new Dungeon2Open();
 				break;
 			case DUNGEON3:
 				newMap = new Dungeon3();
@@ -183,11 +190,24 @@ public class GameController implements Serializable {
 			maps.put(currMap, newMap);
 		}
 		else {
-			maps.get(map).refresh();
 			for(Enemy enemy : getEnemies()) {
 				enemy.setActive(true);
 				enemy.setDropped(false);
 				enemy.setCurrentHP(enemy.getTotalHP());
+			}
+			ArrayList<GameObject> indexs = new ArrayList<GameObject>();
+			for(GameObject object: getObstacles()) {
+				if(object instanceof Money|| object instanceof Key) {
+					if(object instanceof Money) {
+						indexs.add(object);
+					}
+					if(object instanceof Key) {
+						indexs.add(object);
+					}
+				}
+			}
+			for(GameObject in: indexs) {
+				getObstacles().remove(in);
 			}
 		}
 		player.setPosition(spawn);
@@ -222,6 +242,8 @@ public class GameController implements Serializable {
 				LegendOfAdlezView.playBackground("victory");
 			}
 			prey.setActive(false);
+			if(prey instanceof Player)
+				died = true;
 		}
 	}
 	

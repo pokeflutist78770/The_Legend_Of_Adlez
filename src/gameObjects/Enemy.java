@@ -27,6 +27,7 @@ public class Enemy extends Creature {
 	private Direction WEST = Direction.WEST;
 	private Direction SOUTH = Direction.SOUTH;
 	private Direction NORTH = Direction.NORTH;
+	private int moneyDrop;
 	
 	private Direction[] horizontal = {EAST, EAST, EAST, EAST, EAST, WEST, WEST, WEST, WEST, WEST};
 	private Direction[] vertical = {SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, NORTH, NORTH, NORTH, NORTH, NORTH};
@@ -91,6 +92,16 @@ public class Enemy extends Creature {
 		this.attackSound = attackSound;
 	}
 
+
+	public void setMoneyDrop(int amt) {
+		moneyDrop = amt;
+	}
+	
+	public int getMoneyDrop(int amt) {
+		return moneyDrop;
+	}
+
+
 	/**
 	 * @return the dropped
 	 */
@@ -109,9 +120,4 @@ public class Enemy extends Creature {
 		return attackSound;
 	}
 }
-
-
-
-
-
 

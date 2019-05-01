@@ -3,6 +3,7 @@ package gameObjects;
 import java.awt.Point;
 	
 public class Key extends Item {
+		private int index;
 	
 		/**
 		 * Constructor for Key object.
@@ -12,6 +13,20 @@ public class Key extends Item {
 			super(position);
 			this.setImage("assets/key.png");
 			name = "key";
+		}
+
+		/**
+		 * @return the index
+		 */
+		public int getIndex() {
+			return index;
+		}
+
+		/**
+		 * @param index the index to set
+		 */
+		public void setIndex(int index) {
+			this.index = index;
 		}
 	
 }

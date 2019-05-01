@@ -30,9 +30,6 @@ public abstract class GameMap implements Serializable{
 		this.spawn = spawn;
 	}
 	
-	public void refresh() {
-		
-	}
 	public ArrayList<GameObject> getObjects() {
 		return objects;
 	}

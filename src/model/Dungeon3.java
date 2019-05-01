@@ -192,5 +192,6 @@ public class Dungeon3 extends GameMap {
 	public void refresh() {
 		objects = getCloneObjects();
 	}
+	
 
 }
