@@ -1,42 +1,80 @@
 package gameObjects;
 
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Player extends Creature{
-	private Boolean weapon = false;
-	private int health;
-	public Player(){
-		super(new Circle(0,0,15, Color.GREEN));
-		health = 100;
+import enums.Direction;
+import javafx.geometry.Point2D;
+
+/**
+ * Class for the playable main character.
+ * @author Tito Vasquez
+ *
+ */
+public class Player extends Creature {
+	int currentMoney;
+	int maxMoney;
+	Item equippedItem;
+	List<Item> inventory = new ArrayList<Item>();
+	
+	
+	/**
+
+	 * Constructor for the PlayerClass object.
+	 * @param currentHP int The currentHP of the player.
+	 * @param totalHP int The totalHP of the player.
+	 * @param attack int The attack power of the player.
+	 * @param position int[] The current position of the player.
+	 */
+	public Player(int currentHP, int totalHP, int attack, Point2D position) {
+		super(currentHP, totalHP, attack, position);
+		currentMoney = 0;
+		maxMoney = 500;
+		setImage("assets/idleDark.png");
+	}
+	/**
+	 * Alternate constructor for the PlayerClass with stats hardcoded.
+	 * @param position int[] The position of the player character on the game board.
+	 */
+	public Player(Point2D position) {
+		super(position);
+		this.setCurrentHP(20);
+		this.setAttack(1);
+		currentMoney = 0;
+		maxMoney = 500;
+		setDirection(Direction.SOUTH);
+
+		setImage("assets/adlez1.png");
 	}
 	
-	public void damange (int dmg) {
-		health = Math.max(0, health - dmg);
+	public void setEquippedItem(Item item) {
+		equippedItem = item;
+	}
+	public Item getEquippedItem() {
+		return equippedItem;
 	}
 	
-	public void heal (int amt) {
-		health = Math.min(100, health + amt);
+	/**
+	 * Setter for the player's current money amount.
+	 */
+	public void setCurrentMoney(int amount) {
+		currentMoney = Math.min(maxMoney, amount);
 	}
-	
-	public int getHealth() {
-		return health;
+	/**
+	 * Getter for the player's money.
+	 * @return currentMoney int The current amount of money that the player is holding.
+	 */
+	public int getCurrentMoney() {
+		return currentMoney;
 	}
-	
-	public Boolean hasWeapon() {
-		return weapon;
+
+	public void addInventory(Item item) {
+		inventory.add(item);
 	}
-	
-	public void getWeapon() {
-		Circle circle = (Circle) this.getNode();
-		circle.setFill(Color.BLUE);
-		weapon = true;
+	public void setInventory(List<Item> inventory) {
+		this.inventory = inventory;
 	}
-	
-	public void dropWeapon() {
-		Circle circle = (Circle) this.getNode();
-		circle.setFill(Color.GREEN);
-		weapon = false;
+	public List<Item> getInventory(){
+		return inventory;
 	}
 }

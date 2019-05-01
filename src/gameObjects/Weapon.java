@@ -1,6 +1,7 @@
-package Items;
+package gameObjects;
 
 import enums.Attack;
+import javafx.geometry.Point2D;
 
 
 
@@ -13,17 +14,12 @@ import enums.Attack;
  */
 public abstract class Weapon extends Item {
 	protected int DAMAGE;
-	protected int RANGE;
 	protected Attack attackType;
-
-	/**
-	 * Gets the range of the current weapon
-	 * @return int representing how many blocks the 
-	 */
-	public int getRange() {
-		return RANGE;
-	}
 	
+	public Weapon(Point2D position) {
+		super(position);
+	}
+
 	/**
 	 * Get the damage a weapon can do
 	 * @return int representing amount of damage a weapon can do

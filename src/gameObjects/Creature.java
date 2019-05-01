@@ -8,53 +8,71 @@ public class Creature extends GameObject{
 	private int currentHP;
 	private int totalHP;
 	private int attack;
-	private Direction direction;
-	
-	public Creature(Node node) {
-		super(node);
-		direction = Direction.SOUTH;
-		// TODO Auto-generated constructor stub
-	}
+	private Direction direction = Direction.SOUTH;
 	
 	public Creature(Point2D position) {
 		super(position);
 	}
 	
-	public Direction getDirection() {
-		return direction;
+	public Creature(int currentHP, int totalHP, int attack, Point2D position) {
+		super(position);
+		this.currentHP = currentHP;
+		this.totalHP = totalHP;
+		this.attack = attack;
 	}
-	
+
 	public void setDirection(Direction dir) {
 		direction = dir;
 	}
-	public void move(Direction dir) {
-		int x = 0, y = 0;
-		switch(dir) {
-		case NORTH:
-			x = 0;
-			y= -1;
-			break;
-		case SOUTH:
-			x = 0;
-			y = 1;
-			break;
-		case EAST:
-			x = 1;
-			y = 0;
-			break;
-		case WEST:
-			x = -1;
-			y = 0;
-			break;	
-		}
-		setPosition(getPosition().add(x, y));
-		Node node = getNode();
-		node.setTranslateX(node.getTranslateX() + x * 48);
-		node.setTranslateY(node.getTranslateY() + y * 48);
+	public Direction getDirection() {
+		return direction;
+	}
+
+	/**
+	 * Setter for the character's HP
+	 * @param hp int The HP of the character.
+	 */
+	public void setCurrentHP(int currentHP) {
+		this.currentHP = currentHP;
+	}
+	/**
+	 * Getter for character's HP.
+	 * @return currentHP int The character's current HP.
+	 */
+	public int getCurrentHP() {
+		return currentHP;
 	}
 	
+	/**
+	 * Setter for character's total HP.
+	 * @param totalHP int The character's total HP.
+	 */
+	public void setTotalHP(int totalHP) {
+		this.totalHP = totalHP;
+	}
+	/**
+	 * Getter for character's total HP.
+	 * @return totalHP int The character's total HP.
+	 */
+	public int getTotalHP() {
+		return totalHP;
+	}
 	
-	
+	/**
+	 * Setter for the character's attack.
+	 * @param attack int The attack power of the character.
+	 */
+	public void setAttack(int attack) {
+		this.attack = attack;
+	}
+	/**
+	 * Getter for character's attack power.
+	 * @return attack int The character's current attack power.
+	 */
+	public int getAttack() {
+		return attack;
+	}
+
 	/**
 	 * Reduces the HP of the character by a given amount.
 	 * @param n int The number of HP to reduce.
@@ -65,7 +83,6 @@ public class Creature extends GameObject{
 			currentHP = 0;
 		}
 	}
-	
 	/**
 	 * Increases the HP of the character by a given amount.
 	 * @param n int The number of HP to increase.
@@ -77,44 +94,4 @@ public class Creature extends GameObject{
 		}
 	}
 	
-	/**
-	 * Setter for the character's HP
-	 * @param hp int The HP of the character.
-	 */
-	public void setHP(int hp) {
-		this.currentHP = hp;
-	}
-	
-	/**
-	 * Setter for the character's attack.
-	 * @param attack int The attack power of the character.
-	 */
-	public void setAttack(int attack) {
-		this.attack = attack;
-	}
-	
-	/**
-	 * Getter for character's HP.
-	 * @return currentHP int The character's current HP.
-	 */
-	public int getcurrentHP() {
-		return currentHP;
-	}
-	
-	/**
-	 * Getter for character's total HP.
-	 * @return totalHP int The character's total HP.
-	 */
-	public int getTotalHP() {
-		return totalHP;
-	}
-	
-	/**
-	 * Getter for character's attack power.
-	 * @return attack int The character's current attack power.
-	 */
-	public int getAttack() {
-		return attack;
-	}
-
 }

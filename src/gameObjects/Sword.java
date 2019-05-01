@@ -1,6 +1,7 @@
-package Items;
+package gameObjects;
 
 import enums.Attack;
+import javafx.geometry.Point2D;
 
 
 
@@ -11,16 +12,17 @@ import enums.Attack;
  * @author Angel Aguayo
  *
  */
-public class Sword extends Weapon{
+public class Sword extends Weapon {
 	
 	/**
 	 * Constructor for Sword weapon
 	 */
-	public Sword() {
+	public Sword(Point2D position) {
+		super(position);
+		this.setImage("assets/sword.png");
 		COST=5;
 		name="sword";
 		
-		RANGE=1;
 		DAMAGE=3;
 		attackType=Attack.SWEEP;
 	}

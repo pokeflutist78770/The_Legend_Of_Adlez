@@ -1,13 +1,19 @@
+
 package view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
+import animation.SpriteAnimation;
 import controller.GameController;
 import gameObjects.*;
 import enums.*;
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.PathTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -15,6 +21,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -32,42 +39,26 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import model.GameMap;
 
 public class MainView extends StackPane {
-	int HEIGHT = 14, WIDTH = 18, BLOCK = 48, BLOCKHEIGHT = 40, BLOCKWIDTH = 30;
+	int MAPHEIGHT = 14, MAPWIDTH = 18;
+	int BLOCKHEIGHT = 48, BLOCKWIDTH = 48;
 	private Pane pane;
 	private Player player;
-	private Weapon weapon;
-	private Potion potion;
-	private int score = 0;
-	Label scoreLabel;
-	Label healthLabel;
-	Label dirLabel;
+	private GameMap map;
+	private List<GameObject> objects;
+	private Map<Creature, ImageView> creatureMap;
+	private GameController controller;
 	private BorderPane bPane;
 	private VBox pMenu;
-	private List<GameObject> objects;
-	private List<Enemy> enemies = new ArrayList<>();
 	
-	/*
-	 * TODO Remove temporary classes on merge with master
-	 */
-	public class Weapon extends GameObject{
-		Weapon(){
-			super(new Rectangle(20,20, Color.BLUE));
-		}
-	}
-	public class Potion extends GameObject{
-		private int health;
-		Potion(int amt) {
-			super(new Rectangle(20,20, Color.DEEPPINK));
-			health = amt;
-		}
-		public int getHealth() {
-			return health;
-		}
-	}
 	
     public MainView() {
     	bPane=new BorderPane();
@@ -108,7 +99,7 @@ public class MainView extends StackPane {
     	ImageView pause=new ImageView(new Image("assets/paused.png", false));
     	VBox.setMargin(pause, new Insets(25,0,25,0));
     	
-    	ImageView map=new ImageView(new Image("assets/test.jpg", false));
+    	ImageView mapImg=new ImageView(new Image("assets/test.jpg", false));
     	
     	
     	Button inventButton=new Button();
@@ -159,7 +150,7 @@ public class MainView extends StackPane {
 		quitButton.setOnAction(new ButtonHandler());
     	
 		
-    	pMenu.getChildren().addAll(pause, map, inventButton, saveButton, loadButton, quitButton);
+    	pMenu.getChildren().addAll(pause, mapImg, inventButton, saveButton, loadButton, quitButton);
     	
     	pMenu.setVisible(false);
     	
@@ -167,27 +158,35 @@ public class MainView extends StackPane {
     	pMenu.setAlignment(Pos.TOP_CENTER);
     	this.getChildren().add(pMenu);
     	
+    	controller = new GameController();
+    	map = controller.getMapLayout();
+    	creatureMap = new HashMap<Creature, ImageView>();
+    	BorderPane window = new BorderPane();
     	pane = new Pane();
-    	pane.setBackground(new Background(new BackgroundImage(new Image("assets/homeOutside.png"), null, null, null, null)));
-    	bPane.setCenter(pane);
-    	
+    	pane.setPrefSize(MAPWIDTH * BLOCKWIDTH, MAPHEIGHT * BLOCKHEIGHT);
+    	pane.setBackground(new Background(new BackgroundImage(new Image(map.getMapString()), null, null, null, null)));
+    	window.setCenter(pane);
+
     	TilePane tilePane = new TilePane();
-    	scoreLabel = new Label();
-    	healthLabel = new Label();
-    	dirLabel = new Label();
-    	tilePane.getChildren().addAll(scoreLabel, healthLabel, dirLabel);
-    	bPane.setBottom(tilePane);
-    	pane.setPrefSize(WIDTH * BLOCK, HEIGHT * BLOCK);
+    	window.setBottom(tilePane);
+
+    	for(GameObject obstacle : map.getObjects()) {
+    		addObject(obstacle);
+    	}
+    	for(Enemy enemy : map.getEnemies()) {
+    		creatureMap.put(enemy, new ImageView(new Image(enemy.getImage())));
+    		addObject(enemy);
+    	}
+//    	player = new Player(new Point2D(2,3));
+//    	creatureMap.put(player, new ImageView(new Image("assets/adlez1.png")));
+//    	creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
+//    	addObject(player);
+//    	}
+    	player = controller.getPlayer();
+    	creatureMap.put(player, new ImageView(new Image(player.getImage())));
+    	creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
+    	addObject(player);
     	
-    	player = new Player();
-    	player.setPosition(0,0);
-    	addObject(player, player.getPosition().getX() * BLOCK + BLOCK / 2, player.getPosition().getY() * BLOCK + BLOCK / 2);
-    	weapon = new Weapon();
-    	weapon.setPosition(5,0);
-    	addObject(weapon, weapon.getPosition().getX() * BLOCK + 10, weapon.getPosition().getY() * BLOCK + 10);
-    	potion = new Potion(10);
-    	potion.setPosition(0, 5);
-    	addObject(potion, potion.getPosition().getX() * BLOCK + 10, potion.getPosition().getY() * BLOCK + 10);
     	/*
     	 * Continous loop functioning as the games internal "clock". Screen updates on each tick.
     	 */
@@ -198,7 +197,6 @@ public class MainView extends StackPane {
             }
         };
         timer.start();
-        
 
     	/*
     	 * Controlls: Move player using either WASD or Arrows
@@ -206,70 +204,188 @@ public class MainView extends StackPane {
     	 * 			  otherwise the player will move in the specified direction
     	 *            Space drops the weapon and leaves player vulnerable
     	 */
-    	LegendOfAdlezView.mainScene.setOnKeyPressed(e -> {
-    		
-    		Direction dir = player.getDirection();
-    		switch(e.getCode()) {
-			default:
-				break;
-			case W:
-			case UP:
-				if(GameController.isPaused) {
-					return;
-				}
-				if(dir != Direction.NORTH)
-					player.setDirection(Direction.NORTH);
-				else if(player.getPosition().getY() > 0){
-					player.move(Direction.NORTH);
-				}
-				break;
-			case S:
-			case DOWN:
-				if(GameController.isPaused) {
-					return;
-				}
-				if(dir != Direction.SOUTH)
-					player.setDirection(Direction.SOUTH);
-				else if(player.getPosition().getY() < HEIGHT - 1){
-					player.move(Direction.SOUTH);
-				}
-				break;
-			case D:
-			case RIGHT:
-				if(GameController.isPaused) {
-					return;
-				}
-				if(dir != Direction.EAST)
-					player.setDirection(Direction.EAST);
-				else if(player.getPosition().getX() < WIDTH - 1){
-					player.move(Direction.EAST);
-				}
-				break;
-			case A:
-			case LEFT:
-				if(GameController.isPaused) {
-					return;
-				}
-				if(dir != Direction.WEST)
-					player.setDirection(Direction.WEST);
-				else if(player.getPosition().getX() > 0){
-					player.move(Direction.WEST);
-				}
-				break;
-			case SPACE:
-				if(GameController.isPaused) {
-					return;
-				}
-				player.dropWeapon();
-				weapon.setActive(true);
-				pane.getChildren().add(weapon.getNode());
-				
-			case ESCAPE:
-				GameController.isPaused=!GameController.isPaused;
-    		}
-    	});
+    	LegendOfAdlezView.mainScene.setOnKeyReleased(e -> {
+    		/*
+        	 * Controlls: Move player using either WASD or Arrows
+        	 * 			  If Player is not facing the direction, the player will "turn"
+        	 * 			  otherwise the player will move in the specified direction
+        	 *            Space drops the weapon and leaves player vulnerable
+        	 */
+        		boolean moved = false;
+        		boolean interact = false;
+        		Point2D startPos = player.getPosition();
+        		switch(e.getCode()) {
+    				default:
+    					break;
+    				case SPACE:{
+    					switch(player.getDirection()) {
+    						case NORTH:{
+    							Animation animation = new SpriteAnimation(
+    					                creatureMap.get(player),
+    					                Duration.millis(250),
+    					                5, 5,
+    					                0, 434,
+    					                60, 62
+    					        );
+    					        animation.setCycleCount(1);
+    					        animation.play();
+    					       interact = true;
+    					        creatureMap.get(player).setViewport(new Rectangle2D(0,62,60,62));
+    					        break;
+    						}
+    						case SOUTH:{
+    							
+    							Animation animation = new SpriteAnimation(
+    					                creatureMap.get(player),
+    					                Duration.millis(250),
+    					                6, 6,
+    					                0, 248,
+    					                60, 62
+    					        );
+    					        animation.setCycleCount(1);
+    					        animation.play();
+    					        interact = true;
+    					        creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
+    					        break;
+    						}
+    						case EAST:{
+    							Animation animation = new SpriteAnimation(
+    					                creatureMap.get(player),
+    					                Duration.millis(250),
+    					                5, 5,
+    					                0, 372,
+    					                60, 62
+    					        );
+    					        animation.setCycleCount(1);
+    					        animation.play();
+    					        interact = true;
+    					        creatureMap.get(player).setViewport(new Rectangle2D(420,186,60,62));
+    					        break;
+    						}
+    						case WEST:{
+    							Animation animation = new SpriteAnimation(
+    					                creatureMap.get(player),
+    					                Duration.millis(250),
+    					                5, 5,
+    					                0, 310,
+    					                60, 62
+    					        );
+    					        animation.setCycleCount(1);
+    					        animation.play();
+    					        interact = true;
+    					        creatureMap.get(player).setViewport(new Rectangle2D(0,124,60,62));
+    							break;
+    						}
+    					}
+    				}
+    				if(interact)
+    					break;
+    				case W:
+    				case UP:
+    					moved = controller.move(player, Direction.NORTH);
+    					if(!moved) {
+    						creatureMap.get(player).setViewport(new Rectangle2D(0,62,60,62));
+    					}
+    					else {
+    						Animation animation = new SpriteAnimation(
+    				                creatureMap.get(player),
+    				                Duration.millis(250),
+    				                8, 8,
+    				                0, 62,
+    				                60, 62
+    				        );
+    				        animation.setCycleCount(1);
+    				        animation.play();
+    					}
+    					break;
+    				case S:
+    				case DOWN:
+    					moved = controller.move(player, Direction.SOUTH);
+    					if(!moved) {
+    						creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
+    					}
+    					else {
+    						Animation animation = new SpriteAnimation(
+    				                creatureMap.get(player),
+    				                Duration.millis(250),
+    				                8, 8,
+    				                0, 0,
+    				                60, 62
+    				        );
+    				        animation.setCycleCount(1);
+    				        animation.play();
+    					}
+    					break;
+    				case D:
+    				case RIGHT:
+    					moved = controller.move(player, Direction.EAST);
+    					if(!moved) {
+    						creatureMap.get(player).setViewport(new Rectangle2D(420,186,60,62));
+    					}
+    					else {
+    						Animation animation = new SpriteAnimation(
+    				                creatureMap.get(player),
+    				                Duration.millis(250),
+    				                8, 8,
+    				                0, 186,
+    				                60, 62
+    				        );
+    				        animation.setCycleCount(1);
+    				        animation.play();
+    					}
+    					break;
+    				case A:
+    				case LEFT:
+    					moved = controller.move(player, Direction.WEST);
+    					if(!moved) {
+    						creatureMap.get(player).setViewport(new Rectangle2D(0,124,60,62));
+    					}
+    					else {
+    						Animation animation = new SpriteAnimation(
+    				                creatureMap.get(player),
+    				                Duration.millis(500),
+    				                8, 8,
+    				                0, 124,
+    				                60, 62
+    				        );
+    				        animation.setCycleCount(1);
+    				        animation.play();
+    					}
+    					break;
+        			}
+        		if(moved) {
+    	    		Point2D pos = player.getPosition();
+    	    		Path path = new Path();
+    	    	    path.getElements().add(new MoveTo(startPos.getX() * 48 + 24, startPos.getY() * 48 + 24));
+    	    	    path.getElements().add(new LineTo(pos.getX() * 48 + 24, pos.getY() * 48 + 24));
+    	    	    PathTransition pathTransition = new PathTransition();
+    	    	    pathTransition.setDuration(Duration.millis(250));
+    	    	    pathTransition.setNode(creatureMap.get(player)); // Circle is built above
+    	    	    pathTransition.setPath(path);
+    	    	    pathTransition.play();	
+        		}
+        	});
     }
 
+    
+    /**
+     * Adds object to view at specified x/y coordinate on grid.
+     */
+    public void addObject(GameObject object) {
+		double x = object.getPosition().getX() * BLOCKWIDTH;
+		double y = object.getPosition().getY() * BLOCKHEIGHT;
+		ImageView image;
+		if(creatureMap.containsKey(object)) {
+			image = creatureMap.get(object);
+		}else {
+		image = new ImageView();
+		}
+		image.setTranslateX(x);
+		image.setTranslateY(y);
+	    pane.getChildren().add(image);
+    }
+    
+    
     /*
      * Checks for collision between the player and any weapons or enemies.
      * If player is colliding with a weapon, player picks it up. Having weapon
@@ -284,91 +400,13 @@ public class MainView extends StackPane {
     	}
     	
     	bPane.setEffect(null);
-    	
-    	if(player.collision(potion)) {
-    		player.heal(potion.getHealth());
-    		potion.setActive(false);
-    		pane.getChildren().remove(potion.getNode());
-    		newPotion();
-    	}
-    	if(player.collision(weapon)) {
-			player.getWeapon();
-			weapon.setActive(false);
-			pane.getChildren().remove(weapon.getNode());
-		}
-    	for(Enemy enemy : enemies) {
-    		if(player.collision(enemy) && player.hasWeapon()) {
-    			score++;
-    			enemy.setActive(false);
-    			pane.getChildren().remove(enemy.getNode());
+    	for(Enemy enemy : map.getEnemies())
+    		if(controller.enemyTurn(enemy) == Turn.MOVE) {
+    			Point2D pos = enemy.getPosition();
+				creatureMap.get(enemy).setTranslateX(pos.getX() * BLOCKWIDTH);
+				creatureMap.get(enemy).setTranslateY(pos.getY() * BLOCKHEIGHT);
     		}
-    		else if(player.collision(enemy) && !player.hasWeapon()) {
-    			player.damange(10);
-    			switch(player.getDirection()) {
-    			case NORTH:
-    				player.move(Direction.SOUTH);
-    				break;
-    			case SOUTH:
-    				player.move(Direction.NORTH);
-    				break;
-    			case EAST:
-    				player.move(Direction.WEST);
-    				break;
-    			case WEST:
-    				player.move(Direction.EAST);
-    				break;
-    			}
-    		}    			
-    	}
-    	enemies.removeIf(e-> !e.isActive());
-    	if(enemies.size() == 0) {
-    		newEnemy();
-    		newEnemy();
-    		newEnemy();
-    		newEnemy();
-    	}
-    	scoreLabel.setText("Enemies defeated: " + Integer.toString(score));
-    	healthLabel.setText("Health: " + player.getHealth());
-    	dirLabel.setText("Direction: " + player.getDirection());
-    	
     }
-    
-    private void newPotion() {
-		potion = new Potion(10);
-		Random coord = new Random();
-    	Point2D loc = new Point2D(coord.nextInt(WIDTH),coord.nextInt(HEIGHT));
-    	while(loc.equals(player.getPosition()) || loc.equals(weapon.getPosition()) || loc.equals(potion.getPosition())) {
-    		loc = new Point2D(coord.nextInt(WIDTH),coord.nextInt(HEIGHT));
-    	}
-    	potion.setPosition(loc);
-    	addObject(potion, potion.getPosition().getX() * BLOCK + 10, potion.getPosition().getY() * BLOCK + 10);
-	}
-
-	/*
-     * Generates new enemy randomly on board. Prevents initial collision with player and weapon
-     */
-    public void newEnemy() {
-    	Enemy enemy = new Enemy();
-    	Random coord = new Random();
-    	Point2D loc = new Point2D(coord.nextInt(WIDTH),coord.nextInt(HEIGHT));
-    	while(loc.equals(player.getPosition()) || loc.equals(weapon.getPosition()) || loc.equals(potion.getPosition())) {
-    		loc = new Point2D(coord.nextInt(WIDTH),coord.nextInt(HEIGHT));
-    	}
-    	enemy.setPosition(loc);
-    	enemies.add(enemy);
-    	addObject(enemy, enemy.getPosition().getX() * BLOCK + 5, enemy.getPosition().getY() * BLOCK + 5);
-    	
-    }
-    
-    /*
-     * Adds object to view at specified x/y coordinate on grid.
-     */
-    public void addObject(GameObject object, double x, double y) {
-    	object.getNode().setTranslateX(x);
-    	object.getNode().setTranslateY(y);
-    	pane.getChildren().add(object.getNode());
-    }
-    
     
     
     private class ButtonHandler implements EventHandler<ActionEvent>{
@@ -397,17 +435,6 @@ public class MainView extends StackPane {
     }
 
 }  
-
-
-
-
-
-
-
-
-
-
-
 
 
 

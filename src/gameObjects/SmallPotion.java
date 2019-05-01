@@ -1,4 +1,6 @@
-package Items;
+package gameObjects;
+
+import javafx.geometry.Point2D;
 
 import player_enemies.CharacterClass;
 
@@ -17,7 +19,9 @@ public class SmallPotion extends Item implements Consumable{
 	/**
 	 * Constructor for SmallPotion item
 	 */
-	public SmallPotion() {
+	public SmallPotion(Point2D position) {
+		super(position);
+		this.setImage("assets/potion.png");
 		COST=5;
 		name="small_potion";
 	}
@@ -29,10 +33,10 @@ public class SmallPotion extends Item implements Consumable{
 	 * @return boolean representing if item usage was successful
 	 */
 	@Override
-	public boolean use(CharacterClass person) {
+	public boolean use(Creature person) {
 		
 		//health is full, can't use potion
-		if(person.getcurrentHP()==person.getTotalHP()) {
+		if(person.getCurrentHP()==person.getTotalHP()) {
 			return false;
 		}
 		
