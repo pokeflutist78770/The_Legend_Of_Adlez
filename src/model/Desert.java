@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import enums.MapScreen;
 import gameObjects.GameObject;
 import javafx.geometry.Point2D;
-import player_enemies.EnemyClass;
-import player_enemies.Scorpion;
-import player_enemies.Transition;
+import gameObjects.Enemy;
+import gameObjects.Scorpion;
+import gameObjects.Transition;
 
 
 /**
@@ -19,13 +19,13 @@ public class Desert extends GameMap {
 
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
-	private static ArrayList<EnemyClass> enemies = new ArrayList<EnemyClass>();
+	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 	/**
 	 * Constructor for Desert map.
 	 */
 	public Desert() {
-		super(objects, transitions, enemies, MapScreen.DESERT);
+		super(objects, transitions, enemies, MapScreen.DESERT, "assets/desert.png");
 		objects.add(new GameObject(new Point2D(0, 0)));
 		objects.add(new GameObject(new Point2D(0, 1)));
 		objects.add(new GameObject(new Point2D(0, 2)));
@@ -125,8 +125,8 @@ public class Desert extends GameMap {
 		enemies.add(new Scorpion(new Point2D(9, 4), 0));
 		enemies.add(new Scorpion(new Point2D(2, 6), 3));
 		enemies.add(new Scorpion(new Point2D(14, 7), 1));
-		transitions.add(new Transition(new Point2D(11, 13), new HomeUp(), new Point2D(11, 0)));
-		transitions.add(new Transition(new Point2D(12, 13), new HomeUp(), new Point2D(12, 0)));
+		transitions.add(new Transition(new Point2D(11, 13), MapScreen.HOME_UP, new Point2D(11, 0)));
+		transitions.add(new Transition(new Point2D(12, 13), MapScreen.HOME_UP, new Point2D(12, 0)));
 	}
 
 }

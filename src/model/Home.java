@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import enums.MapScreen;
 import gameObjects.GameObject;
 import javafx.geometry.Point2D;
-import player_enemies.EnemyClass;
-import player_enemies.Transition;
+import gameObjects.Enemy;
+import gameObjects.Transition;
 
 /**
  * Home map.
@@ -17,13 +17,13 @@ public class Home extends GameMap {
 	
 	  private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	  private static ArrayList<Transition> transitions = new ArrayList<Transition>();
-	  private static ArrayList<EnemyClass> enemies = new ArrayList<EnemyClass>();	  
+	  private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();	  
 	  
 	  /**
 	   * Constructor for Home map.
 	   */
 	  public Home() {
-		  super(objects, transitions, enemies, MapScreen.HOME);
+		  super(objects, transitions, enemies, MapScreen.HOME, "assets/home.png");
 		  objects.add(new GameObject(new Point2D(5, 6)));
 		  objects.add(new GameObject(new Point2D(5, 7)));
 		  objects.add(new GameObject(new Point2D(5, 8)));
@@ -63,6 +63,6 @@ public class Home extends GameMap {
 		  objects.add(new GameObject(new Point2D(11, 11)));
 		  objects.add(new GameObject(new Point2D(11, 12)));
 		  objects.add(new GameObject(new Point2D(11, 13))); 
-		  transitions.add(new Transition(new Point2D(7, 13), new HomeOutside(), new Point2D(2, 3)));
+		  transitions.add(new Transition(new Point2D(7, 13), MapScreen.HOME_OUTSIDE, new Point2D(2, 3)));
 	  }
 }

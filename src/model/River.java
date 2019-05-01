@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import enums.MapScreen;
 import gameObjects.GameObject;
 import javafx.geometry.Point2D;
-import player_enemies.EnemyClass;
-import player_enemies.Transition;
+import gameObjects.Enemy;
+import gameObjects.Transition;
 
 /**
  * River map class.
@@ -17,14 +17,14 @@ public class River extends GameMap {
 
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
-	private static ArrayList<EnemyClass> enemies = new ArrayList<EnemyClass>();
+	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 	
 	/**
 	 * Constructor for River map
 	 */
 	public River() {
-		super(objects, transitions, enemies, MapScreen.RIVER);
+		super(objects, transitions, enemies, MapScreen.RIVER, "assets/river.png");
 		objects.add(new GameObject(new Point2D(0, 0)));
 		objects.add(new GameObject(new Point2D(0, 1)));
 		objects.add(new GameObject(new Point2D(0, 2)));
@@ -167,11 +167,11 @@ public class River extends GameMap {
 		objects.add(new GameObject(new Point2D(17, 11)));
 		objects.add(new GameObject(new Point2D(17, 12)));
 		objects.add(new GameObject(new Point2D(17, 13)));
-		transitions.add(new Transition(new Point2D(0, 8), new HomeOutside(), new Point2D(16, 8)));
-		transitions.add(new Transition(new Point2D(0, 9), new HomeOutside(), new Point2D(16, 9)));
-		transitions.add(new Transition(new Point2D(5, 4), new Shop(), new Point2D(11, 12)));
-		transitions.add(new Transition(new Point2D(17, 8), new Mountain(), new Point2D(1, 8)));
-		transitions.add(new Transition(new Point2D(17, 9), new Mountain(), new Point2D(1, 9)));
+		transitions.add(new Transition(new Point2D(0, 8), MapScreen.HOME_OUTSIDE, new Point2D(16, 8)));
+		transitions.add(new Transition(new Point2D(0, 9), MapScreen.HOME_OUTSIDE, new Point2D(16, 9)));
+		transitions.add(new Transition(new Point2D(5, 4), MapScreen.SHOP, new Point2D(11, 12)));
+		transitions.add(new Transition(new Point2D(17, 8), MapScreen.MOUNTAIN, new Point2D(1, 8)));
+		transitions.add(new Transition(new Point2D(17, 9), MapScreen.MOUNTAIN, new Point2D(1, 9)));
 	}
 
 }

@@ -16,7 +16,7 @@ import gameObjects.*;
 public class HomeOutside extends GameMap {
 
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
-//	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
+	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 	
@@ -24,7 +24,7 @@ public class HomeOutside extends GameMap {
 	 * Constructor for HomeOutside Map.
 	 */
 	public HomeOutside() {
-		super(objects, enemies, MapScreen.HOME_OUTSIDE, "assets/homeOutside.png");
+		super(objects, transitions, enemies, MapScreen.HOME_OUTSIDE, "assets/homeOutside.png");
 		objects.add(new GameObject(new Point2D(0, 0)));
 		objects.add(new GameObject(new Point2D(0, 1)));
 		objects.add(new GameObject(new Point2D(0, 2)));
@@ -111,10 +111,10 @@ public class HomeOutside extends GameMap {
 		objects.add(new GameObject(new Point2D(15, 13)));
 		objects.add(new GameObject(new Point2D(16, 13)));
 		objects.add(new GameObject(new Point2D(17, 13)));
-//		transitions.add(new Transition(new Point2D(2, 2), new Home(), new Point2D(7, 12)));
-//		transitions.add(new Transition(new Point2D(6, 0), new HomeUp(), new Point2D(6, 12)));
-//		transitions.add(new Transition(new Point2D(7, 0), new HomeUp(), new Point2D(7, 12)));
-//		transitions.add(new Transition(new Point2D(17, 8), new River(), new Point2D(1, 8)));
-//		transitions.add(new Transition(new Point2D(17, 9), new River(), new Point2D(1, 9)));
+		transitions.add(new Transition(new Point2D(2, 2), MapScreen.HOME, new Point2D(7, 12)));
+		transitions.add(new Transition(new Point2D(6, 0), MapScreen.HOME_UP, new Point2D(6, 12)));
+		transitions.add(new Transition(new Point2D(7, 0), MapScreen.HOME_UP, new Point2D(7, 12)));
+		transitions.add(new Transition(new Point2D(17, 8), MapScreen.RIVER, new Point2D(1, 8)));
+		transitions.add(new Transition(new Point2D(17, 9), MapScreen.RIVER, new Point2D(1, 9)));
 	}
 }

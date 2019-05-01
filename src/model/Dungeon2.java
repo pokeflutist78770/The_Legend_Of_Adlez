@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import enums.MapScreen;
 import gameObjects.GameObject;
 import javafx.geometry.Point2D;
-import player_enemies.EnemyClass;
-import player_enemies.FinalBoss;
-import player_enemies.Transition;
+import gameObjects.Enemy;
+import gameObjects.FinalBoss;
+import gameObjects.Transition;
 
 /**
  * Dungeon2 map.
@@ -18,14 +18,14 @@ public class Dungeon2 extends GameMap {
 
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
-	private static ArrayList<EnemyClass> enemies = new ArrayList<EnemyClass>();
+	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 	
 	/**
 	 * Constructor for Dungeon2 map.
 	 */
 	public Dungeon2() {
-		super(objects, transitions, enemies, MapScreen.DUNGEON2);
+		super(objects, transitions, enemies, MapScreen.DUNGEON2, "assets/bossRoom.png");
 		objects.add(new GameObject(new Point2D(0, 0)));
 		objects.add(new GameObject(new Point2D(0, 1)));
 		objects.add(new GameObject(new Point2D(0, 2)));
@@ -87,7 +87,6 @@ public class Dungeon2 extends GameMap {
 		objects.add(new GameObject(new Point2D(16, 1)));
 		objects.add(new GameObject(new Point2D(1, 2)));
 		objects.add(new GameObject(new Point2D(2, 2)));              // the door
-		objects.get(60).changeDoor();
 		objects.add(new GameObject(new Point2D(3, 2)));
 		objects.add(new GameObject(new Point2D(4, 2)));
 		objects.add(new GameObject(new Point2D(5, 2)));
@@ -163,8 +162,8 @@ public class Dungeon2 extends GameMap {
 		objects.add(new GameObject(new Point2D(10, 10)));
 		enemies.add(new FinalBoss(new Point2D(8, 4), 4));
 		enemies.add(new FinalBoss(new Point2D(8, 4), 2));
-		transitions.add(new Transition(new Point2D(14, 13), new Dungeon1(), new Point2D(14, 2)));
-		transitions.add(new Transition(new Point2D(2, 1), new Dungeon3(), new Point2D(2, 12)));
+		transitions.add(new Transition(new Point2D(14, 13), MapScreen.DUNGEON1, new Point2D(14, 2)));
+		transitions.add(new Transition(new Point2D(2, 1), MapScreen.DUNGEON3, new Point2D(2, 12)));
 	}
 
 }

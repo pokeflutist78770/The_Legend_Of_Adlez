@@ -56,13 +56,10 @@ public class MainView extends StackPane {
 	private List<GameObject> objects;
 	private Map<Creature, ImageView> creatureMap;
 	private GameController controller;
-	private BorderPane bPane;
 	private VBox pMenu;
-	
+	private BorderPane window;
 	
     public MainView() {
-    	bPane=new BorderPane();
-    	this.getChildren().add(bPane);
     	
     	GameController.isPaused=false;
     	
@@ -161,7 +158,9 @@ public class MainView extends StackPane {
     	controller = new GameController();
     	map = controller.getMapLayout();
     	creatureMap = new HashMap<Creature, ImageView>();
-    	BorderPane window = new BorderPane();
+    	window = new BorderPane();
+    	this.getChildren().add(window);
+    	
     	pane = new Pane();
     	pane.setPrefSize(MAPWIDTH * BLOCKWIDTH, MAPHEIGHT * BLOCKHEIGHT);
     	pane.setBackground(new Background(new BackgroundImage(new Image(map.getMapString()), null, null, null, null)));
@@ -352,7 +351,10 @@ public class MainView extends StackPane {
     				        animation.play();
     					}
     					break;
-        			}
+        		
+    				case ESCAPE:
+    					GameController.isPaused=!GameController.isPaused;
+        		}
         		if(moved) {
     	    		Point2D pos = player.getPosition();
     	    		Path path = new Path();
@@ -394,12 +396,15 @@ public class MainView extends StackPane {
     public void onUpdate() {
     
     	pMenu.setVisible(GameController.isPaused);
+    	
+    	
     	if(GameController.isPaused) {
-    		bPane.setEffect(new GaussianBlur());
+    		window.setEffect(new GaussianBlur());
     		return;
     	}
     	
-    	bPane.setEffect(null);
+    	window.setEffect(null);
+    	
     	for(Enemy enemy : map.getEnemies())
     		if(controller.enemyTurn(enemy) == Turn.MOVE) {
     			Point2D pos = enemy.getPosition();
