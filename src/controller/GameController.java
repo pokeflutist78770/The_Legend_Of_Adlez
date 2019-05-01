@@ -25,7 +25,7 @@ import view.LegendOfAdlezView;
 
 public class GameController implements Serializable{
 	public static boolean isPaused=false;
-	public static boolean died = false;
+	public boolean died = false;
 	public static boolean won = false;
 	public static final String SAVE_FILE="save_file.dat";
 	private GameMap map;
@@ -138,6 +138,10 @@ public class GameController implements Serializable{
 			return true;
 		}
 		return false;
+	}
+	
+	public Map<MapScreen, GameMap> getMaps(){
+		return maps;
 	}
 
 	public boolean canAttack(Enemy enemy) {

@@ -1,4 +1,3 @@
-
 package view;
 
 import java.io.File;
@@ -149,10 +148,7 @@ public class MainView extends StackPane {
 	}
 
 	public MainView(boolean loadFile) {
-
 		GameController.isPaused = false;
-		
-
 		/*-----   Pause Menu Buttons   --------- */
 
 		EventHandler<MouseEvent> mouseEnter = new EventHandler<MouseEvent>() {
@@ -495,7 +491,7 @@ public class MainView extends StackPane {
 				
 			case W:
 			case UP:
-				if(GameController.isPaused || GameController.won || GameController.died) return;
+				if(GameController.isPaused || GameController.won || controller.died) return;
 				
 				if (transaction) {
 					textBox.setImage(null);
@@ -519,7 +515,7 @@ public class MainView extends StackPane {
 				break;
 			case S:
 			case DOWN:
-				if(GameController.isPaused || GameController.won || GameController.died) return;
+				if(GameController.isPaused || GameController.won || controller.died) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -542,7 +538,7 @@ public class MainView extends StackPane {
 				break;
 			case D:
 			case RIGHT:
-				if(GameController.isPaused || GameController.won || GameController.died) return;
+				if(GameController.isPaused || GameController.won || controller.died) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -565,7 +561,7 @@ public class MainView extends StackPane {
 				break;
 			case A:
 			case LEFT:
-				if(GameController.isPaused || GameController.won || GameController.died) return;
+				if(GameController.isPaused || GameController.won || controller.died) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -643,13 +639,20 @@ public class MainView extends StackPane {
 	 * to be defeated.
 	 */
 	public void onUpdate() {
+		kMenu.setVisible(controller.died);
+		
 		if (controller.died) {
-			kMenu.setVisible(true);
 			window.setEffect(new GaussianBlur());
+			for(Enemy enemy : controller.getEnemies()) {
+				enemy.setActive(false);
+				pane.getChildren().remove(creatureMap.get(enemy));
+			}
 			return;
         }
-		if (controller.won) {
-			wMenu.setVisible(true);
+		
+		wMenu.setVisible(GameController.won);
+		
+		if (GameController.won) {
 			window.setEffect(new GaussianBlur());
 			return;
         }
@@ -660,6 +663,7 @@ public class MainView extends StackPane {
 		
 		
 		if (GameController.isPaused) {
+			keyListener = true;
 			window.setEffect(new GaussianBlur());
 			return;
 		}
@@ -675,7 +679,6 @@ public class MainView extends StackPane {
 				default:
 					break;
 				case ATTACK:
-					System.out.println(enemy.getClass());
 					LegendOfAdlezView.play(enemy.getAttackSound());
 					Timeline timeline = new Timeline(
 							new KeyFrame(Duration.seconds(0.05), evt -> creatureMap.get(player).setVisible(false)),
@@ -820,7 +823,6 @@ public class MainView extends StackPane {
 		for(GameObject in: indexs) {
 			controller.getObstacles().remove(in);
 		}
-		
 	}
 
 	private class ButtonHandler implements EventHandler<ActionEvent> {
@@ -850,12 +852,18 @@ public class MainView extends StackPane {
 
 			// quit the game
 			else if (button.getId().equals("quit")) {
+				for(MapScreen screen : MapScreen.values()){
+					if(controller.getMaps().containsKey(screen)) {
+						ArrayList<Enemy> enemies = controller.getMaps().get(screen).getEnemies();
+						enemies.removeAll(enemies);
+					}
+				}
+				controller = new GameController();
 				LegendOfAdlezView.changeView(new StartMenuView());
 				// Platform.exit();
 			}
 		}
     }
-	
 	
     public void buyItem(int price, Player player ) {
     	if(price == 25) {
@@ -868,4 +876,4 @@ public class MainView extends StackPane {
     		player.upPotionCount();
     	}
     }
- }      
+ }   
