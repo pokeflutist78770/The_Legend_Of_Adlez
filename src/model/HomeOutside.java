@@ -118,3 +118,4 @@ public class HomeOutside extends GameMap {
 		transitions.add(new Transition(new Point(17, 9), MapScreen.RIVER, new Point(1, 9)));
 	}
 }
+

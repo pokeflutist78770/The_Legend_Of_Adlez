@@ -29,6 +29,6 @@ public class Poe extends Enemy {
 		super(position, n);
 		this.setTotalHP(10);
 		this.setAttack(1);
-		this.setImage("assets/poe.png");		
+		this.setImage("assets/idleDark.png");		
 	}
 }

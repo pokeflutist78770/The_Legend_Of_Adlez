@@ -1,7 +1,10 @@
+
 package controller;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import enums.*;
 import gameObjects.*;
@@ -19,10 +22,12 @@ public class GameController implements Serializable{
 	public static final String SAVE_FILE="save_file.dat";
 	GameMap map;
 	Player player;
-	List<GameObject> objects;
 	MapScreen currMap = MapScreen.HOME_OUTSIDE;
+	Map<MapScreen, GameMap> maps;
 	
 	public GameController(){
+		maps = new HashMap<MapScreen, GameMap>();
+		maps.put(currMap, new HomeOutside());
 	}
 	
 	public boolean move(Creature character, Direction dir) {
@@ -68,15 +73,22 @@ public class GameController implements Serializable{
 		}
 		if(moved) {
 			character.setPosition(new Point(currPos.x+x, currPos.y+y));
-			for(GameObject object : map.getObjects()) {
+			for(GameObject object : maps.get(currMap).getObjects()) {
 				if(collision(character, object)) {
 					character.setPosition(currPos);
 					return false;
 				}
 			}
-			for(GameObject object : map.getEnemies()) {
+			for(Enemy object : maps.get(currMap).getEnemies()) {
 				if(collision(character, object)) {
 					character.setPosition(currPos);
+					return false;
+				}
+			}
+			
+			for(Transition transition : maps.get(currMap).getTransitions()) {
+				if(collision(character, transition)) {
+					loadMap(transition.getMap(), transition.getSpawn());
 					return false;
 				}
 			}
@@ -107,28 +119,80 @@ public class GameController implements Serializable{
 				playerPos.equals(new Point(enemyPos.x-1, enemyPos.y)));
 	}
 	
+	
 	public boolean collision(GameObject object1, GameObject object2) {
 		return (!object1.equals(object2) &&
 				object1.getPosition().equals(object2.getPosition()));
 	}
 	
-	public GameMap getMapLayout(){
-		switch(currMap) {
-		case HOME_OUTSIDE:
-			map = new HomeOutside();
-			objects = map.getObjects();
-			return map;
-		case MOUNTAIN:
-			map = new Mountain();
-			objects = map.getObjects();
-			return map;
-		default:
-			return null;
+	
+	private void loadMap(MapScreen map, Point spawn) {
+		currMap = map;
+		if(!maps.containsKey(currMap)) {
+			GameMap newMap = null;
+			switch(currMap) {
+			default:
+				break;
+			case HOME_OUTSIDE:
+				newMap = new HomeOutside();
+				break;
+			case HOME_UP:
+				newMap = new HomeUp();
+				break;
+			case RIVER:
+				newMap = new River();
+				break;
+			case MOUNTAIN:
+				newMap = new Mountain();
+				break;
+			case DUNGEON1:
+				newMap = new Dungeon1();
+				break;
+			case DESERT:
+				newMap = new Desert();
+				break;
+			case DUNGEON2:
+				newMap = new Dungeon2();
+				break;
+			case DUNGEON3:
+				newMap = new Dungeon3();
+				break;
+			case SHOP:
+				newMap = new Shop();
+				break;
+			case HOME:
+				newMap = new Home();
+				break;
+			}
+			maps.put(currMap, newMap);
 		}
+		player.setPosition(spawn);
+		
+	}
+
+	
+	public GameMap getMapLayout(){
+		return maps.get(currMap);
 	}
 
 	public Player getPlayer() {
 		player = new Player(new Point(2,3));
 		return player;
+	}
+	
+	public MapScreen getCurrMap() {
+		return currMap;
+	}
+
+	public List<Enemy> getEnemies(){
+		return maps.get(currMap).getEnemies();
+	}
+	
+	public List<GameObject> getObstacles(){
+		return maps.get(currMap).getObjects();
+	}
+	
+	public List<Transition> getTransitions(){
+		return maps.get(currMap).getTransitions();
 	}
 }

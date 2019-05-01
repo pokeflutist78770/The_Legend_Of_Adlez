@@ -3,10 +3,12 @@ package model;
 import java.util.ArrayList;
 
 import enums.MapScreen;
+
 import gameObjects.GameObject;
 import java.awt.Point;
 import gameObjects.Enemy;
 import gameObjects.Transition;
+
 
 /**
  * River map class.

@@ -26,6 +26,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import java.awt.Point;
 import javafx.geometry.Pos;
+
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -58,323 +59,349 @@ public class MainView extends StackPane {
 	private Pane pane;
 	private Player player;
 	private GameMap map;
-	private List<GameObject> objects;
+	private MapScreen currMap;
 	private Map<Creature, ImageView> creatureMap;
-	private GameController controller;
+
 	private VBox pMenu;
 	private BorderPane window;
-	
-    public MainView() {
-    	
-    	GameController.isPaused=false;
-    	
-    	/*------ Inventory Box  -----*/
-    	VBox inventory=new VBox();
-    	
-    	
-    	
-    	/*-----   Pause Menu Buttons   --------- */
-    	
-		EventHandler<MouseEvent> mouseEnter=new EventHandler<MouseEvent>() {
+
+	private GameController controller;
+	private boolean keyListener = true;
+
+	public void loadMap() {
+		currMap = controller.getCurrMap();
+		map = controller.getMapLayout();
+		pane.getChildren().clear();
+		pane.setBackground(new Background(new BackgroundImage(new Image(controller.getMapLayout().getMapString()), null, null, null, null)));
+		creatureMap = new HashMap<Creature, ImageView>();
+		creatureMap.put(player, new ImageView(new Image(player.getImage())));
+		addObject(player);
+		switch (player.getDirection()) {
+		case NORTH:
+			creatureMap.get(player).setViewport(new Rectangle2D(0, 62, 60, 62));
+			break;
+		case SOUTH:
+			creatureMap.get(player).setViewport(new Rectangle2D(0, 0, 60, 62));
+			break;
+		case EAST:
+			creatureMap.get(player).setViewport(new Rectangle2D(420, 186, 60, 62));
+			break;
+		case WEST:
+			creatureMap.get(player).setViewport(new Rectangle2D(0, 124, 60, 62));
+			break;
+		}
+		for (GameObject obstacle : controller.getObstacles()) {
+			addObject(obstacle);
+		}
+		for (Transition obstacle : controller.getTransitions()) {
+			addObject(obstacle);
+		}
+		for (Enemy enemy : controller.getEnemies()) {
+			creatureMap.put(enemy, new ImageView(new Image(enemy.getImage())));
+			addObject(enemy);
+		}
+	}
+
+	public MainView() {
+
+		GameController.isPaused = false;
+
+		/*------ Inventory Box  -----*/
+		VBox inventory = new VBox();
+
+		/*-----   Pause Menu Buttons   --------- */
+
+		EventHandler<MouseEvent> mouseEnter = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Button button=(Button) event.getTarget();
+				Button button = (Button) event.getTarget();
 				button.setStyle("-fx-background-color: rgba(50,50,50,.5)");
-			}			
+			}
 		};
-		
-		
-		EventHandler<MouseEvent> mouseExit=new EventHandler<MouseEvent>() {
+
+		EventHandler<MouseEvent> mouseExit = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Button button=(Button) event.getTarget();
-				
+				Button button = (Button) event.getTarget();
+
 				button.setStyle("-fx-background-color: transparent;");
-			}			
+			}
 		};
-		
-		//vbox for all of the buttons
-    	pMenu=new VBox();
-    	pMenu.setPrefWidth(300);
-    	pMenu.setStyle("-fx-background-color: rgba(50,50,50,.5);");
-    	
-    	ImageView pause=new ImageView(new Image("assets/paused.png", false));
-    	VBox.setMargin(pause, new Insets(25,0,25,0));
-    	
-    	ImageView mapImg=new ImageView(new Image("assets/test.jpg", false));
-		
-    	Button saveButton=new Button();
-    	saveButton.setId("save");
-    	saveButton.setGraphic(new ImageView(new Image("assets/save.png", false)));
+
+		// vbox for all of the buttons
+		pMenu = new VBox();
+		pMenu.setPrefWidth(300);
+		pMenu.setStyle("-fx-background-color: rgba(50,50,50,.5);");
+
+		ImageView pause = new ImageView(new Image("assets/paused.png", false));
+		VBox.setMargin(pause, new Insets(25, 0, 25, 0));
+
+		ImageView mapImg = new ImageView(new Image("assets/test.jpg", false));
+
+		Button saveButton = new Button();
+		saveButton.setId("save");
+		saveButton.setGraphic(new ImageView(new Image("assets/save.png", false)));
 		saveButton.setMinWidth(pMenu.getPrefWidth());
-		saveButton.setStyle("-fx-background-color: transparent;"+
-						"-fx-transition: color 0.2s ease-in;");
-		
+		saveButton.setStyle("-fx-background-color: transparent;" + "-fx-transition: color 0.2s ease-in;");
+
 		saveButton.setOnMouseEntered(mouseEnter);
 		saveButton.setOnMouseExited(mouseExit);
 		saveButton.setOnAction(new ButtonHandler());
-		
-		
-    	Button loadButton=new Button();
-    	loadButton.setId("load");
-    	loadButton.setGraphic(new ImageView(new Image("assets/load.png", false)));
+
+		Button loadButton = new Button();
+		loadButton.setId("load");
+		loadButton.setGraphic(new ImageView(new Image("assets/load.png", false)));
 		loadButton.setMinWidth(pMenu.getPrefWidth());
-		loadButton.setStyle("-fx-background-color: transparent;"+
-						"-fx-transition: color 0.2s ease-in;");
-		
+		loadButton.setStyle("-fx-background-color: transparent;" + "-fx-transition: color 0.2s ease-in;");
+
 		loadButton.setOnMouseEntered(mouseEnter);
 		loadButton.setOnMouseExited(mouseExit);
 		loadButton.setOnAction(new ButtonHandler());
-		
-		
-    	Button quitButton=new Button();
-    	quitButton.setId("quit");
-    	quitButton.setGraphic(new ImageView(new Image("assets/quit.png", false)));
+
+		Button quitButton = new Button();
+		quitButton.setId("quit");
+		quitButton.setGraphic(new ImageView(new Image("assets/quit.png", false)));
 		quitButton.setMinWidth(pMenu.getPrefWidth());
-		quitButton.setStyle("-fx-background-color: transparent;"+
-						"-fx-transition: color 0.2s ease-in;");
-		
+		quitButton.setStyle("-fx-background-color: transparent;" + "-fx-transition: color 0.2s ease-in;");
+
 		quitButton.setOnMouseEntered(mouseEnter);
 		quitButton.setOnMouseExited(mouseExit);
 		quitButton.setOnAction(new ButtonHandler());
+
+		pMenu.getChildren().addAll(pause, mapImg, saveButton, loadButton, quitButton);
+
+		pMenu.setVisible(false);
+
+
+
+		controller = new GameController();
+		map = controller.getMapLayout();
+		currMap = controller.getCurrMap();
+		creatureMap = new HashMap<Creature, ImageView>();
+		window = new BorderPane();
+		this.getChildren().add(window);
 		
-    	pMenu.getChildren().addAll(pause, mapImg, saveButton, loadButton, quitButton);
-    	
-    	pMenu.setVisible(false);
-    	
-    	
-    	controller = new GameController();
-    	map = controller.getMapLayout();
-    	creatureMap = new HashMap<Creature, ImageView>();
-    	window = new BorderPane();
-    	this.getChildren().add(window);
-    	
-    	StackPane.setAlignment(pMenu, Pos.TOP_CENTER);
-    	pMenu.setAlignment(Pos.TOP_CENTER);
-    	this.getChildren().add(pMenu);
-    	
+		StackPane.setAlignment(pMenu, Pos.TOP_CENTER);
+		pMenu.setAlignment(Pos.TOP_CENTER);
+		this.getChildren().add(pMenu);
 
-    	
-    	pane = new Pane();
-    	pane.setPrefSize(MAPWIDTH * BLOCKWIDTH, MAPHEIGHT * BLOCKHEIGHT);
-    	pane.setBackground(new Background(new BackgroundImage(new Image(map.getMapString()), null, null, null, null)));
-    	window.setCenter(pane);
+		pane = new Pane();
+		pane.setPrefSize(MAPWIDTH * BLOCKWIDTH, MAPHEIGHT * BLOCKHEIGHT);
+		window.setCenter(pane);
 
-    	TilePane tilePane = new TilePane();
-    	window.setBottom(tilePane);
+		TilePane tilePane = new TilePane();
+		window.setBottom(tilePane);
 
-    	for(GameObject obstacle : map.getObjects()) {
-    		addObject(obstacle);
-    	}
-    	for(Enemy enemy : map.getEnemies()) {
-    		creatureMap.put(enemy, new ImageView(new Image(enemy.getImage())));
-    		addObject(enemy);
-    	}
-//    	player = new Player(new Point2D(2,3));
-//    	creatureMap.put(player, new ImageView(new Image("assets/adlez1.png")));
-//    	creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
-//    	addObject(player);
-//    	}
-    	player = controller.getPlayer();
-    	creatureMap.put(player, new ImageView(new Image(player.getImage())));
-    	creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
-    	addObject(player);
-    	
-    	/*
-    	 * Continous loop functioning as the games internal "clock". Screen updates on each tick.
-    	 */
-    	AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                onUpdate();
-            }
-        };
-        timer.start();
+		player = controller.getPlayer();
+		loadMap();
+		/*
+		 * Continous loop functioning as the games internal "clock". Screen updates on
+		 * each tick.
+		 */
+		AnimationTimer timer = new AnimationTimer() {
+			@Override
+			public void handle(long now) {
+				onUpdate();
+			}
+		};
+		timer.start();
 
-    	/*
-    	 * Controlls: Move player using either WASD or Arrows
-    	 * 			  If Player is not facing the direction, the player will "turn"
-    	 * 			  otherwise the player will move in the specified direction
-    	 *            Space drops the weapon and leaves player vulnerable
-    	 */
-    	LegendOfAdlezView.mainScene.setOnKeyReleased(e -> {
-    		/*
-        	 * Controlls: Move player using either WASD or Arrows
-        	 * 			  If Player is not facing the direction, the player will "turn"
-        	 * 			  otherwise the player will move in the specified direction
-        	 *            Space drops the weapon and leaves player vulnerable
-        	 */
-        		boolean moved = false;
-        		boolean interact = false;
-        		Point startPos = player.getPosition();
-        		switch(e.getCode()) {
-    				default:
-    					break;
-    				case SPACE:{
-    					switch(player.getDirection()) {
-    						case NORTH:{
-    							Animation animation = new SpriteAnimation(
-    					                creatureMap.get(player),
-    					                Duration.millis(250),
-    					                5, 5,
-    					                0, 434,
-    					                60, 62
-    					        );
-    					        animation.setCycleCount(1);
-    					        animation.play();
-    					       interact = true;
-    					        creatureMap.get(player).setViewport(new Rectangle2D(0,62,60,62));
-    					        break;
-    						}
-    						case SOUTH:{
-    							
-    							Animation animation = new SpriteAnimation(
-    					                creatureMap.get(player),
-    					                Duration.millis(250),
-    					                6, 6,
-    					                0, 248,
-    					                60, 62
-    					        );
-    					        animation.setCycleCount(1);
-    					        animation.play();
-    					        interact = true;
-    					        creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
-    					        break;
-    						}
-    						case EAST:{
-    							Animation animation = new SpriteAnimation(
-    					                creatureMap.get(player),
-    					                Duration.millis(250),
-    					                5, 5,
-    					                0, 372,
-    					                60, 62
-    					        );
-    					        animation.setCycleCount(1);
-    					        animation.play();
-    					        interact = true;
-    					        creatureMap.get(player).setViewport(new Rectangle2D(420,186,60,62));
-    					        break;
-    						}
-    						case WEST:{
-    							Animation animation = new SpriteAnimation(
-    					                creatureMap.get(player),
-    					                Duration.millis(250),
-    					                5, 5,
-    					                0, 310,
-    					                60, 62
-    					        );
-    					        animation.setCycleCount(1);
-    					        animation.play();
-    					        interact = true;
-    					        creatureMap.get(player).setViewport(new Rectangle2D(0,124,60,62));
-    							break;
-    						}
-    					}
-    				}
-    				if(interact)
-    					break;
-    				case W:
-    				case UP:
-    					moved = controller.move(player, Direction.NORTH);
-    					if(!moved) {
-    						creatureMap.get(player).setViewport(new Rectangle2D(0,62,60,62));
-    					}
-    					else {
-    						Animation animation = new SpriteAnimation(
-    				                creatureMap.get(player),
-    				                Duration.millis(250),
-    				                8, 8,
-    				                0, 62,
-    				                60, 62
-    				        );
-    				        animation.setCycleCount(1);
-    				        animation.play();
-    					}
-    					break;
-    				case S:
-    				case DOWN:
-    					moved = controller.move(player, Direction.SOUTH);
-    					if(!moved) {
-    						creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
-    					}
-    					else {
-    						Animation animation = new SpriteAnimation(
-    				                creatureMap.get(player),
-    				                Duration.millis(250),
-    				                8, 8,
-    				                0, 0,
-    				                60, 62
-    				        );
-    				        animation.setCycleCount(1);
-    				        animation.play();
-    					}
-    					break;
-    				case D:
-    				case RIGHT:
-    					moved = controller.move(player, Direction.EAST);
-    					if(!moved) {
-    						creatureMap.get(player).setViewport(new Rectangle2D(420,186,60,62));
-    					}
-    					else {
-    						Animation animation = new SpriteAnimation(
-    				                creatureMap.get(player),
-    				                Duration.millis(250),
-    				                8, 8,
-    				                0, 186,
-    				                60, 62
-    				        );
-    				        animation.setCycleCount(1);
-    				        animation.play();
-    					}
-    					break;
-    				case A:
-    				case LEFT:
-    					moved = controller.move(player, Direction.WEST);
-    					if(!moved) {
-    						creatureMap.get(player).setViewport(new Rectangle2D(0,124,60,62));
-    					}
-    					else {
-    						Animation animation = new SpriteAnimation(
-    				                creatureMap.get(player),
-    				                Duration.millis(500),
-    				                8, 8,
-    				                0, 124,
-    				                60, 62
-    				        );
-    				        animation.setCycleCount(1);
-    				        animation.play();
-    					}
-    					break;
-        		
-    				case ESCAPE:
-    					GameController.isPaused=!GameController.isPaused;
-        		}
-        		if(moved) {
-    	    		Point pos = player.getPosition();
-    	    		Path path = new Path();
-    	    	    path.getElements().add(new MoveTo(startPos.getX() * 48 + 24, startPos.getY() * 48 + 24));
-    	    	    path.getElements().add(new LineTo(pos.getX() * 48 + 24, pos.getY() * 48 + 24));
-    	    	    PathTransition pathTransition = new PathTransition();
-    	    	    pathTransition.setDuration(Duration.millis(250));
-    	    	    pathTransition.setNode(creatureMap.get(player)); // Circle is built above
-    	    	    pathTransition.setPath(path);
-    	    	    pathTransition.play();	
-        		}
-        	});
-    }
+		/*
+		 * Controlls: Move player using either WASD or Arrows If Player is not facing
+		 * the direction, the player will "turn" otherwise the player will move in the
+		 * specified direction Space drops the weapon and leaves player vulnerable
+		 */
+		LegendOfAdlezView.mainScene.setOnKeyPressed(e -> {
+			/*
+			 * Controlls: Move player using either WASD or Arrows If Player is not facing
+			 * the direction, the player will "turn" otherwise the player will move in the
+			 * specified direction Space drops the weapon and leaves player vulnerable
+			 */
+			if (!keyListener)
+				return;
+			keyListener = false;
+			boolean moved = false;
+			boolean interact = false;
+			Point startPos = player.getPosition();
+			switch (e.getCode()) {
+			default:
+				break;
+			case SPACE: {
+				switch (player.getDirection()) {
+				case NORTH: {
+					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
+							434, 60, 62);
+					animation.setCycleCount(1);
+					animation.setOnFinished(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							keyListener = true;
+						}
+					});
+					animation.play();
+					interact = true;
+					creatureMap.get(player).setViewport(new Rectangle2D(0, 62, 60, 62));
+					break;
+				}
+				case SOUTH: {
 
-    
-    /**
-     * Adds object to view at specified x/y coordinate on grid.
-     */
-    public void addObject(GameObject object) {
+					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 6, 6, 0,
+							248, 60, 62);
+					animation.setCycleCount(1);
+					animation.setOnFinished(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							keyListener = true;
+						}
+					});
+					animation.play();
+					interact = true;
+					creatureMap.get(player).setViewport(new Rectangle2D(0, 0, 60, 62));
+					break;
+				}
+				case EAST: {
+					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
+							372, 60, 62);
+					animation.setCycleCount(1);
+					animation.setOnFinished(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							keyListener = true;
+						}
+					});
+					animation.play();
+					interact = true;
+					creatureMap.get(player).setViewport(new Rectangle2D(420, 186, 60, 62));
+					break;
+				}
+				case WEST: {
+					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
+							310, 60, 62);
+					animation.setCycleCount(1);
+					animation.setOnFinished(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							keyListener = true;
+						}
+					});
+					animation.play();
+					interact = true;
+					creatureMap.get(player).setViewport(new Rectangle2D(0, 124, 60, 62));
+					break;
+				}
+				}
+			}
+				if (interact)
+					break;
+			case W:
+			case UP:
+				moved = controller.move(player, Direction.NORTH);
+				if (!moved) {
+					creatureMap.get(player).setViewport(new Rectangle2D(0, 62, 60, 62));
+				} else {
+					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 8, 8, 0,
+							62, 60, 62);
+					animation.setCycleCount(1);
+					animation.setOnFinished(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							keyListener = true;
+						}
+					});
+					animation.play();
+				}
+				break;
+			case S:
+			case DOWN:
+				moved = controller.move(player, Direction.SOUTH);
+				if (!moved) {
+					creatureMap.get(player).setViewport(new Rectangle2D(0, 0, 60, 62));
+				} else {
+					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 8, 8, 0, 0,
+							60, 62);
+					animation.setCycleCount(1);
+					animation.setOnFinished(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							keyListener = true;
+						}
+					});
+					animation.play();
+				}
+				break;
+			case D:
+			case RIGHT:
+				moved = controller.move(player, Direction.EAST);
+				if (!moved) {
+					creatureMap.get(player).setViewport(new Rectangle2D(420, 186, 60, 62));
+				} else {
+					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 8, 8, 0,
+							186, 60, 62);
+					animation.setCycleCount(1);
+					animation.setOnFinished(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							keyListener = true;
+						}
+					});
+					animation.play();
+				}
+				break;
+			case A:
+			case LEFT:
+				moved = controller.move(player, Direction.WEST);
+				if (!moved) {
+					creatureMap.get(player).setViewport(new Rectangle2D(0, 124, 60, 62));
+				} else {
+					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(500), 8, 8, 0,
+							124, 60, 62);
+					animation.setCycleCount(1);
+					animation.setOnFinished(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							keyListener = true;
+						}
+					});
+					animation.play();
+				}
+				break;
+
+			case ESCAPE:
+				GameController.isPaused = !GameController.isPaused;
+			}
+			if (moved) {
+				Point pos = player.getPosition();
+				Path path = new Path();
+				path.getElements().add(new MoveTo(startPos.getX() * 48 + 24, startPos.getY() * 48 + 24));
+				path.getElements().add(new LineTo(pos.getX() * 48 + 24, pos.getY() * 48 + 24));
+				PathTransition pathTransition = new PathTransition();
+				pathTransition.setDuration(Duration.millis(250));
+				pathTransition.setNode(creatureMap.get(player)); // Circle is built above
+				pathTransition.setPath(path);
+				pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						keyListener = true;
+					}
+				});
+				pathTransition.play();
+			}
+			else
+				keyListener = true;
+		});
+	}
+
+	/**
+	 * Adds object to view at specified x/y coordinate on grid.
+	 */
+	public void addObject(GameObject object) {
 		double x = object.getPosition().getX() * BLOCKWIDTH;
 		double y = object.getPosition().getY() * BLOCKHEIGHT;
 		ImageView image;
-		if(creatureMap.containsKey(object)) {
+		if (creatureMap.containsKey(object)) {
 			image = creatureMap.get(object);
-		}else {
-		image = new ImageView();
+		} else {
+			image = new ImageView();
 		}
 		image.setTranslateX(x);
 		image.setTranslateY(y);
@@ -443,8 +470,5 @@ public class MainView extends StackPane {
     }
 
 }  
-
-
-
 
 
