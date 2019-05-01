@@ -1,8 +1,12 @@
 package view;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 
+import controller.GameController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -189,12 +193,12 @@ public class StartMenuView extends StackPane{
 			
 			//continue and save file exists
 			if(button.getId().equals("Continue") && !button.isDisabled()) {
-				
+				LegendOfAdlezView.changeView(new MainView(true));
 			}
 			
 			//boot up a new game
 			else if(button.getId().equals("New Game")) {
-				LegendOfAdlezView.changeView(new MainView());
+				LegendOfAdlezView.changeView(new MainView(false));
 			}
 			
 			//display controls

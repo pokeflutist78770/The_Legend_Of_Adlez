@@ -22,7 +22,8 @@ public class GameController implements Serializable{
 	List<GameObject> objects;
 	MapScreen currMap = MapScreen.HOME_OUTSIDE;
 	
-	public GameController(){
+	public GameController() {
+		player = new Player(new Point(2,3));
 	}
 	
 	public boolean move(Creature character, Direction dir) {
@@ -128,7 +129,6 @@ public class GameController implements Serializable{
 	}
 
 	public Player getPlayer() {
-		player = new Player(new Point(2,3));
 		return player;
 	}
 }

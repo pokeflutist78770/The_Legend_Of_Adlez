@@ -2,9 +2,10 @@
 package view;
 
 import java.io.File;
-
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +65,7 @@ public class MainView extends StackPane {
 	private VBox pMenu;
 	private BorderPane window;
 	
-    public MainView() {
+    public MainView(boolean loadFile) {
     	
     	GameController.isPaused=false;
     	
@@ -142,8 +143,25 @@ public class MainView extends StackPane {
     	
     	pMenu.setVisible(false);
     	
+    	//we want to load a save file
+    	if(loadFile) {
+    		System.out.println("[LOAD FILE]");
+			File file=new File(GameController.SAVE_FILE);
+			try {
+				ObjectInputStream stream =new ObjectInputStream(new FileInputStream(file));
+				controller=(GameController) stream.readObject();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	else {
+    		controller = new GameController();
+    	}
     	
-    	controller = new GameController();
     	map = controller.getMapLayout();
     	creatureMap = new HashMap<Creature, ImageView>();
     	window = new BorderPane();
@@ -176,6 +194,8 @@ public class MainView extends StackPane {
 //    	addObject(player);
 //    	}
     	player = controller.getPlayer();
+    	System.out.println(controller.hashCode());
+    	System.out.println("[Spawn]: "+player.getPosition());
     	creatureMap.put(player, new ImageView(new Image(player.getImage())));
     	creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
     	addObject(player);
@@ -349,6 +369,9 @@ public class MainView extends StackPane {
     				case ESCAPE:
     					GameController.isPaused=!GameController.isPaused;
         		}
+        		
+        		System.out.println("[PLayer]: "+player.getPosition());
+        		
         		if(moved) {
     	    		Point pos = player.getPosition();
     	    		Path path = new Path();
@@ -363,8 +386,8 @@ public class MainView extends StackPane {
         	});
     }
 
-    
-    /**
+
+	/**
      * Adds object to view at specified x/y coordinate on grid.
      */
     public void addObject(GameObject object) {
