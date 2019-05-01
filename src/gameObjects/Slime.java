@@ -29,6 +29,6 @@ public class Slime extends Enemy {
 		super(position, movement);
 		setCurrentHP(10);
 		setAttack(1);
-		setImage("assets/idleDark.png");
+		setImage("assets/slime.png");
 	}
 }
