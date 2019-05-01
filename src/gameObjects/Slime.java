@@ -25,5 +25,6 @@ public class Slime extends Enemy {
 		setCurrentHP(10);
 		setAttack(1);
 		setImage("assets/slime.png");
+		super.setAttackSound("slime");
 	}
 }

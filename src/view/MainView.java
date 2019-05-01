@@ -155,6 +155,7 @@ public class MainView extends StackPane {
 			public void handle(MouseEvent event) {
 				Button button = (Button) event.getTarget();
 				button.setStyle("-fx-background-color: rgba(50,50,50,.5)");
+				LegendOfAdlezView.play("menu_change");
 			}
 		};
 
@@ -605,7 +606,7 @@ public class MainView extends StackPane {
 				default:
 					break;
 				case ATTACK:
-					
+					System.out.println(enemy.getClass());
 					LegendOfAdlezView.play(enemy.getAttackSound());
 					Timeline timeline = new Timeline(
 							new KeyFrame(Duration.seconds(0.05), evt -> creatureMap.get(player).setVisible(false)),
@@ -722,6 +723,7 @@ public class MainView extends StackPane {
 					stream = new ObjectOutputStream(new FileOutputStream(file));
 					stream.writeObject(controller);
 					stream.close();
+					LegendOfAdlezView.play("save");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

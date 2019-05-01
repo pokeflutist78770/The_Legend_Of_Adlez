@@ -153,6 +153,7 @@ public class StartMenuView extends StackPane{
 			public void handle(MouseEvent event) {
 				Button button=(Button) event.getTarget();
 				button.setStyle("-fx-background-color: rgba(50,50,50,.5)");
+				LegendOfAdlezView.play("menu_change");
 			}			
 		};
 		

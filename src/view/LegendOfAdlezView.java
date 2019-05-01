@@ -60,9 +60,16 @@ public class LegendOfAdlezView extends Application{
 		songs.put("home", new Media(new File("src/assets/grasslands.mp3").toURI().toString()));
 		songs.put("mountain", new Media(new File("src/assets/mountain.mp3").toURI().toString()));
 		songs.put("dungeon", new Media(new File("src/assets/dungeon.mp3").toURI().toString()));
+		songs.put("desert", new Media(new File("src/assets/desert.mp3").toURI().toString()));
 		
 		soundEffects.put("shout", new AudioClip("file:src/assets/attack.wav"));
 		soundEffects.put("sword", new AudioClip("file:src/assets/sword_swoosh.wav"));
+		soundEffects.put("scorpion", new AudioClip("file:src/assets/scorpion.mp3"));
+		soundEffects.put("poe", new AudioClip("file:src/assets/poe.wav"));
+		soundEffects.put("slime", new AudioClip("file:src/assets/slime.wav"));
+		soundEffects.put("boss", new AudioClip("file:src/assets/boss.wav"));
+		soundEffects.put("save", new AudioClip("file:src/assets/save.wav"));
+		soundEffects.put("menu_change", new AudioClip("file:src/assets/menu_change.wav"));
 	}
 
 	/**
