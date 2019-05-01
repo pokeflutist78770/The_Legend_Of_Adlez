@@ -19,6 +19,7 @@ import gameObjects.*;
 import enums.*;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
@@ -44,6 +45,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
@@ -57,6 +59,8 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.GameMap;
@@ -72,6 +76,8 @@ public class MainView extends StackPane {
 	private Map<GameObject, ImageView> creatureMap;
 
 	private VBox pMenu;
+	private VBox kMenu;
+	private VBox wMenu;
 	private BorderPane window;
 
 	private GameController controller;
@@ -209,7 +215,43 @@ public class MainView extends StackPane {
 		pMenu.getChildren().addAll(pause, mapImg, saveButton, loadButton, quitButton);
 
 		pMenu.setVisible(false);
+		
+		// vbox for kill screen
+		kMenu = new VBox();
+		kMenu.setPrefWidth(300);
+		kMenu.setStyle("-fx-background-color: rgba(50,50,50,.5);");
+		Button killQuitButton = new Button();
+		killQuitButton.setId("quit");
+		killQuitButton.setGraphic(new ImageView(new Image("assets/quit.png", false)));
+		killQuitButton.setMinWidth(pMenu.getPrefWidth());
+		killQuitButton.setStyle("-fx-background-color: transparent;" + "-fx-transition: color 0.2s ease-in;");
 
+		killQuitButton.setOnMouseEntered(mouseEnter);
+		killQuitButton.setOnMouseExited(mouseExit);
+		killQuitButton.setOnAction(new ButtonHandler());
+		ImageView youDied = new ImageView(new Image("assets/dead.png", false));
+		VBox.setMargin(youDied, new Insets(25, 0, 25, 0));
+		kMenu.getChildren().addAll(youDied, killQuitButton);
+		kMenu.setVisible(false);
+
+		// vbox for win screen
+		wMenu = new VBox();
+		wMenu.setPrefWidth(300);
+		wMenu.setStyle("-fx-background-color: rgba(50,50,50,.5);");
+		Button winQuitButton = new Button();
+		winQuitButton.setId("quit");
+		winQuitButton.setGraphic(new ImageView(new Image("assets/quit.png", false)));
+		winQuitButton.setMinWidth(pMenu.getPrefWidth());
+		winQuitButton.setStyle("-fx-background-color: transparent;" + "-fx-transition: color 0.2s ease-in;");
+
+		winQuitButton.setOnMouseEntered(mouseEnter);
+		winQuitButton.setOnMouseExited(mouseExit);
+		winQuitButton.setOnAction(new ButtonHandler());
+		ImageView youWin = new ImageView(new Image("assets/youWin.png", false));
+		VBox.setMargin(youDied, new Insets(25, 0, 25, 0));
+		wMenu.getChildren().addAll(youWin, winQuitButton);
+		wMenu.setVisible(false);
+		
 		// we want to load a save file
 		if (loadFile) {
 			System.out.println("[LOAD FILE]");
@@ -235,8 +277,12 @@ public class MainView extends StackPane {
 		this.getChildren().add(window);
 
 		StackPane.setAlignment(pMenu, Pos.TOP_CENTER);
+		StackPane.setAlignment(kMenu, Pos.CENTER);
+		StackPane.setAlignment(wMenu, Pos.CENTER);
 		pMenu.setAlignment(Pos.TOP_CENTER);
-		this.getChildren().add(pMenu);
+		kMenu.setAlignment(Pos.CENTER);
+		wMenu.setAlignment(Pos.CENTER);
+		this.getChildren().addAll(pMenu,kMenu,wMenu);
 
 		pane = new Pane();
 		pane.setPrefSize(MAPWIDTH * BLOCKWIDTH, MAPHEIGHT * BLOCKHEIGHT);
@@ -447,7 +493,7 @@ public class MainView extends StackPane {
 				
 			case W:
 			case UP:
-				if(GameController.isPaused) return;
+				if(GameController.isPaused || GameController.won || GameController.died) return;
 				
 				if (transaction) {
 					textBox.setImage(null);
@@ -471,7 +517,7 @@ public class MainView extends StackPane {
 				break;
 			case S:
 			case DOWN:
-				if(GameController.isPaused) return;
+				if(GameController.isPaused || GameController.won || GameController.died) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -494,7 +540,7 @@ public class MainView extends StackPane {
 				break;
 			case D:
 			case RIGHT:
-				if(GameController.isPaused) return;
+				if(GameController.isPaused || GameController.won || GameController.died) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -517,7 +563,7 @@ public class MainView extends StackPane {
 				break;
 			case A:
 			case LEFT:
-				if(GameController.isPaused) return;
+				if(GameController.isPaused || GameController.won || GameController.died) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -591,7 +637,17 @@ public class MainView extends StackPane {
 	 * to be defeated.
 	 */
 	public void onUpdate() {
-
+		if (controller.died) {
+			kMenu.setVisible(true);
+			window.setEffect(new GaussianBlur());
+			return;
+        }
+		if (controller.won) {
+			wMenu.setVisible(true);
+			window.setEffect(new GaussianBlur());
+			return;
+        }
+		
 		pMenu.setVisible(GameController.isPaused);
 
 		if (GameController.isPaused) {
