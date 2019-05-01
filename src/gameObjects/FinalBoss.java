@@ -24,10 +24,10 @@ public class FinalBoss extends Enemy{
 	 * Separate constructor that hard codes in the stats of the FinalBoss for consistency.
 	 * @param position int[] The current position of the FinalBoss on the game map.
 	 */
-	public FinalBoss(Point2D position) {
-		super(position);
+	public FinalBoss(Point2D position, int movement) {
+		super(position, movement);
 		this.setCurrentHP(255);
 		this.setAttack(10);
-		this.setImage(null);
+		this.setImage("assets/idleDark");
 	}
 }

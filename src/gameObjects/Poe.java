@@ -24,10 +24,10 @@ public class Poe extends Enemy {
 	 * Separate constructor that hard codes in the stats of the Poe for consistency.
 	 * @param position int[] The current position of the Poe on the game map.
 	 */
-	public Poe(Point2D position) {
-		super(position);
+	public Poe(Point2D position, int movement) {
+		super(position, movement);
 		this.setCurrentHP(10);
 		this.setAttack(1);
-		this.setImage(null);		
+		this.setImage("assets/idleDark.png");		
 	}
 }

@@ -1,6 +1,8 @@
 package controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import enums.*;
 import gameObjects.*;
@@ -14,12 +16,13 @@ import model.*;
  */
 
 public class GameController {
-	GameMap map;
 	Player player;
-	List<GameObject> objects;
 	MapScreen currMap = MapScreen.HOME_OUTSIDE;
+	Map<MapScreen, GameMap> maps;
 	
 	public GameController(){
+		maps = new HashMap<MapScreen, GameMap>();
+		maps.put(currMap, new HomeOutside());
 	}
 	
 	public boolean move(Creature character, Direction dir) {
@@ -65,21 +68,56 @@ public class GameController {
 		}
 		if(moved) {
 			character.setPosition(currPos.add(x, y));
-			for(GameObject object : map.getObjects()) {
+			for(GameObject object : maps.get(currMap).getObjects()) {
 				if(collision(character, object)) {
 					character.setPosition(currPos);
 					return false;
 				}
 			}
-			for(GameObject object : map.getEnemies()) {
+			for(Enemy object : maps.get(currMap).getEnemies()) {
 				if(collision(character, object)) {
 					character.setPosition(currPos);
+					return false;
+				}
+			}
+			for(Transition transition : maps.get(currMap).getTransitions()) {
+				if(collision(character, transition)) {
+					loadMap(transition.getMap(), transition.getSpawn());
 					return false;
 				}
 			}
 			return true;
 		}
 		return false;
+	}
+
+	private void loadMap(MapScreen map, Point2D spawn) {
+		currMap = map;
+		if(!maps.containsKey(currMap)) {
+			GameMap newMap = null;
+			switch(currMap) {
+			default:
+				break;
+			case HOME_OUTSIDE:
+				newMap = new HomeOutside();
+				break;
+			case HOME_UP:
+				newMap = new HomeUp();
+				break;
+			case RIVER:
+				newMap = new River();
+				break;
+			case MOUNTAIN:
+				newMap = new Mountain();
+				break;
+			case DUNGEON1:
+				newMap = new Dungeon1();
+				break;
+			}
+			maps.put(currMap, newMap);
+		}
+		player.setPosition(spawn);
+		
 	}
 
 	public Turn enemyTurn(Enemy enemy) {
@@ -110,22 +148,27 @@ public class GameController {
 	}
 	
 	public GameMap getMapLayout(){
-		switch(currMap) {
-		case HOME_OUTSIDE:
-			map = new HomeOutside();
-			objects = map.getObjects();
-			return map;
-		case MOUNTAIN:
-			map = new Mountain();
-			objects = map.getObjects();
-			return map;
-		default:
-			return null;
-		}
+		return maps.get(currMap);
 	}
 
 	public Player getPlayer() {
 		player = new Player(new Point2D(2,3));
 		return player;
+	}
+	
+	public MapScreen getCurrMap() {
+		return currMap;
+	}
+
+	public List<Enemy> getEnemies(){
+		return maps.get(currMap).getEnemies();
+	}
+	
+	public List<GameObject> getObstacles(){
+		return maps.get(currMap).getObjects();
+	}
+	
+	public List<Transition> getTransitions(){
+		return maps.get(currMap).getTransitions();
 	}
 }

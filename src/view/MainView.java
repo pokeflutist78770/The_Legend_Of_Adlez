@@ -14,6 +14,8 @@ import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -37,46 +39,73 @@ public class MainView extends Application {
 	private Pane pane;
 	private Player player;
 	private GameMap map;
-	private List<GameObject> objects;
+	private MapScreen currMap;
 	private Map<Creature, ImageView> creatureMap;
 	private GameController controller;
+	private boolean keyListener = true;
+	private long time;
 
+	public void loadMap() {
+		currMap = controller.getCurrMap();
+		map = controller.getMapLayout();
+		pane.getChildren().clear();
+		pane.setBackground(new Background(new BackgroundImage(new Image(map.getMapString()), null, null, null, null)));
+		creatureMap = new HashMap<Creature, ImageView>();
+		creatureMap.put(player, new ImageView(new Image(player.getImage())));
+    	addObject(player);
+		switch(player.getDirection()) {
+		case NORTH:
+			creatureMap.get(player).setViewport(new Rectangle2D(0,62,60,62));
+			break;
+		case SOUTH:
+			creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
+			break;
+		case EAST:
+			creatureMap.get(player).setViewport(new Rectangle2D(420,186,60,62));
+			break;
+		case WEST:
+			creatureMap.get(player).setViewport(new Rectangle2D(0,124,60,62));
+			break;
+		}
+		for(GameObject obstacle : controller.getObstacles()) {
+    		addObject(obstacle);
+    	}
+		for(Transition obstacle : controller.getTransitions()) {
+    		addObject(obstacle);
+    	}
+    	for(Enemy enemy : controller.getEnemies()) {
+    		creatureMap.put(enemy, new ImageView(new Image(enemy.getImage())));
+    		addObject(enemy);
+    	}
+	}
+	
     public void start(Stage stage) {
     	controller = new GameController();
-    	map = controller.getMapLayout();
-    	creatureMap = new HashMap<Creature, ImageView>();
     	BorderPane window = new BorderPane();
     	pane = new Pane();
     	pane.setPrefSize(MAPWIDTH * BLOCKWIDTH, MAPHEIGHT * BLOCKHEIGHT);
-    	pane.setBackground(new Background(new BackgroundImage(new Image(map.getMapString()), null, null, null, null)));
     	window.setCenter(pane);
 
     	TilePane tilePane = new TilePane();
     	window.setBottom(tilePane);
 
-    	for(GameObject obstacle : map.getObjects()) {
-    		addObject(obstacle);
-    	}
-    	for(Enemy enemy : map.getEnemies()) {
-    		creatureMap.put(enemy, new ImageView(new Image(enemy.getImage())));
-    		addObject(enemy);
-    	}
-//    	player = new Player(new Point2D(2,3));
-//    	creatureMap.put(player, new ImageView(new Image("assets/adlez1.png")));
-//    	creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
-//    	addObject(player);
-//    	}
     	player = controller.getPlayer();
-    	creatureMap.put(player, new ImageView(new Image(player.getImage())));
-    	creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
-    	addObject(player);
-    	
+    	loadMap();
     	/*
     	 * Continous loop functioning as the games internal "clock". Screen updates on each tick.
     	 */
     	AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+//            	if(!keyListener) {
+//            		if((now - time) > 600000000) {
+//            			keyListener = true;
+////            			System.out.println(time);
+//            		}
+//            	}
+//        		else {
+//        			time = now;
+//        		}
                 onUpdate();
             }
         };
@@ -90,7 +119,10 @@ public class MainView extends Application {
     	 * 			  otherwise the player will move in the specified direction
     	 *            Space drops the weapon and leaves player vulnerable
     	 */
-    	scene.setOnKeyReleased(e -> {
+    	scene.setOnKeyPressed(e -> {
+    		if(!keyListener)
+    			return;
+    		keyListener = false;
     		boolean moved = false;
     		boolean interact = false;
     		Point2D startPos = player.getPosition();
@@ -102,12 +134,18 @@ public class MainView extends Application {
 						case NORTH:{
 							Animation animation = new SpriteAnimation(
 					                creatureMap.get(player),
-					                Duration.millis(250),
+					                Duration.millis(500),
 					                5, 5,
 					                0, 434,
 					                60, 62
 					        );
 					        animation.setCycleCount(1);
+					        animation.setOnFinished(new EventHandler<ActionEvent>() {
+				    	        @Override
+				    	        public void handle(ActionEvent event) {
+				    	            keyListener = true;
+				    	        }
+				    	    });
 					        animation.play();
 					       interact = true;
 					        creatureMap.get(player).setViewport(new Rectangle2D(0,62,60,62));
@@ -123,6 +161,12 @@ public class MainView extends Application {
 					                60, 62
 					        );
 					        animation.setCycleCount(1);
+					        animation.setOnFinished(new EventHandler<ActionEvent>() {
+				    	        @Override
+				    	        public void handle(ActionEvent event) {
+				    	            keyListener = true;
+				    	        }
+				    	    });
 					        animation.play();
 					        interact = true;
 					        creatureMap.get(player).setViewport(new Rectangle2D(0,0,60,62));
@@ -137,6 +181,12 @@ public class MainView extends Application {
 					                60, 62
 					        );
 					        animation.setCycleCount(1);
+					        animation.setOnFinished(new EventHandler<ActionEvent>() {
+				    	        @Override
+				    	        public void handle(ActionEvent event) {
+				    	            keyListener = true;
+				    	        }
+				    	    });
 					        animation.play();
 					        interact = true;
 					        creatureMap.get(player).setViewport(new Rectangle2D(420,186,60,62));
@@ -151,6 +201,12 @@ public class MainView extends Application {
 					                60, 62
 					        );
 					        animation.setCycleCount(1);
+					        animation.setOnFinished(new EventHandler<ActionEvent>() {
+				    	        @Override
+				    	        public void handle(ActionEvent event) {
+				    	            keyListener = true;
+				    	        }
+				    	    });
 					        animation.play();
 					        interact = true;
 					        creatureMap.get(player).setViewport(new Rectangle2D(0,124,60,62));
@@ -169,12 +225,18 @@ public class MainView extends Application {
 					else {
 						Animation animation = new SpriteAnimation(
 				                creatureMap.get(player),
-				                Duration.millis(250),
+				                Duration.millis(500),
 				                8, 8,
 				                0, 62,
 				                60, 62
 				        );
 				        animation.setCycleCount(1);
+				        animation.setOnFinished(new EventHandler<ActionEvent>() {
+			    	        @Override
+			    	        public void handle(ActionEvent event) {
+			    	            keyListener = true;
+			    	        }
+			    	    });
 				        animation.play();
 					}
 					break;
@@ -187,12 +249,18 @@ public class MainView extends Application {
 					else {
 						Animation animation = new SpriteAnimation(
 				                creatureMap.get(player),
-				                Duration.millis(250),
+				                Duration.millis(500),
 				                8, 8,
 				                0, 0,
 				                60, 62
 				        );
 				        animation.setCycleCount(1);
+				        animation.setOnFinished(new EventHandler<ActionEvent>() {
+			    	        @Override
+			    	        public void handle(ActionEvent event) {
+			    	            keyListener = true;
+			    	        }
+			    	    });
 				        animation.play();
 					}
 					break;
@@ -205,12 +273,18 @@ public class MainView extends Application {
 					else {
 						Animation animation = new SpriteAnimation(
 				                creatureMap.get(player),
-				                Duration.millis(250),
-				                8, 8,
+				                Duration.millis(500),
+				                1, 8,
 				                0, 186,
 				                60, 62
 				        );
 				        animation.setCycleCount(1);
+				        animation.setOnFinished(new EventHandler<ActionEvent>() {
+			    	        @Override
+			    	        public void handle(ActionEvent event) {
+			    	            keyListener = true;
+			    	        }
+			    	    });
 				        animation.play();
 					}
 					break;
@@ -229,6 +303,12 @@ public class MainView extends Application {
 				                60, 62
 				        );
 				        animation.setCycleCount(1);
+				        animation.setOnFinished(new EventHandler<ActionEvent>() {
+			    	        @Override
+			    	        public void handle(ActionEvent event) {
+			    	            keyListener = true;
+			    	        }
+			    	    });
 				        animation.play();
 					}
 					break;
@@ -239,11 +319,19 @@ public class MainView extends Application {
 	    	    path.getElements().add(new MoveTo(startPos.getX() * 48 + 24, startPos.getY() * 48 + 24));
 	    	    path.getElements().add(new LineTo(pos.getX() * 48 + 24, pos.getY() * 48 + 24));
 	    	    PathTransition pathTransition = new PathTransition();
-	    	    pathTransition.setDuration(Duration.millis(250));
+	    	    pathTransition.setDuration(Duration.millis(500));
 	    	    pathTransition.setNode(creatureMap.get(player)); // Circle is built above
 	    	    pathTransition.setPath(path);
+	    	    pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
+	    	        @Override
+	    	        public void handle(ActionEvent event) {
+	    	            keyListener = true;
+	    	        }
+	    	    });
 	    	    pathTransition.play();	
     		}
+    		else
+    			keyListener = true;
     	});
         stage.setScene(scene);
         stage.show();
@@ -255,12 +343,16 @@ public class MainView extends Application {
      * allows enemies to be defeated.
      */
     public void onUpdate() {
-    	for(Enemy enemy : map.getEnemies())
-    		if(controller.enemyTurn(enemy) == Turn.MOVE) {
-    			Point2D pos = enemy.getPosition();
-				creatureMap.get(enemy).setTranslateX(pos.getX() * BLOCKWIDTH);
-				creatureMap.get(enemy).setTranslateY(pos.getY() * BLOCKHEIGHT);
-    		}
+    	if(currMap != controller.getCurrMap()) {
+    		loadMap();
+    	}
+//    	for(Enemy enemy : controller.getEnemies()) {
+//    		if(controller.enemyTurn(enemy) == Turn.MOVE) {
+//    			Point2D pos = enemy.getPosition();
+//				creatureMap.get(enemy).setTranslateX(pos.getX() * BLOCKWIDTH);
+//				creatureMap.get(enemy).setTranslateY(pos.getY() * BLOCKHEIGHT);
+//    		}
+//    	}
     }
         
     /**
