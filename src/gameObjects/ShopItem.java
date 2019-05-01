@@ -12,7 +12,7 @@ import javafx.geometry.Point2D;
 
 /**
  * @author Ben Bauer
- *
+ * 
  */
 public class ShopItem extends GameObject {
 
