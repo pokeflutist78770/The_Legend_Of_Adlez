@@ -26,6 +26,7 @@ public class Desert extends GameMap {
 	 */
 	public Desert() {
 		super(objects, transitions, enemies, MapScreen.DESERT, "assets/desert.png");
+
 		objects.add(new GameObject(new Point(0, 0)));
 		objects.add(new GameObject(new Point(0, 1)));
 		objects.add(new GameObject(new Point(0, 2)));

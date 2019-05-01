@@ -82,11 +82,12 @@ public class GameController implements Serializable{
 				}
 			}
 			
-			for(Enemy object : maps.get(currMap).getEnemies()) {
-				if(collision(character, object)) {
-					character.setPosition(currPos);
-					return false;
-				}
+			for(Enemy enemy : maps.get(currMap).getEnemies()) {
+				if(enemy.getActive())
+					if(collision(character, enemy)) {
+						character.setPosition(currPos);
+						return false;
+					}
 			}
 			
 			for(Transition transition : maps.get(currMap).getTransitions()) {
@@ -101,19 +102,6 @@ public class GameController implements Serializable{
 		return false;
 	}
 
-	public Turn enemyTurn(Enemy enemy) {
-		if(canAttack(enemy)) {
-			System.out.println("I attacked!");
-			return Turn.ATTACK;
-		}
-		else {
-			if(move(enemy, enemy.getNextMove()))
-				return Turn.MOVE;
-			else
-				return Turn.NONE;
-		}
-	}
-	
 	public boolean canAttack(Enemy enemy) {
 		Point enemyPos = enemy.getPosition();
 		Point playerPos = player.getPosition();
@@ -122,14 +110,7 @@ public class GameController implements Serializable{
 				playerPos.equals(new Point(enemyPos.x, enemyPos.y+1)) ||
 				playerPos.equals(new Point(enemyPos.x-1, enemyPos.y)));
 	}
-	
-	
-	public boolean collision(GameObject object1, GameObject object2) {
-		return (!object1.equals(object2) &&
-				object1.getPosition().equals(object2.getPosition()));
-	}
-	
-	
+		
 	private void loadMap(MapScreen map, Point spawn) {
 		currMap = map;
 		if(!maps.containsKey(currMap)) {
@@ -170,10 +151,77 @@ public class GameController implements Serializable{
 			}
 			maps.put(currMap, newMap);
 		}
+		else {
+			for(Enemy enemy : getEnemies()) {
+				enemy.setActive(true);
+				enemy.setCurrentHP(enemy.getTotalHP());
+			}
+		}
 		player.setPosition(spawn);
-		
 	}
 
+	public Turn enemyTurn(Enemy enemy) {
+		Direction tempDir = enemy.getDirection();
+		boolean didAttack = false;
+		for(Direction dir : Direction.values()) {
+			enemy.setDirection(dir);
+			if(attemptAttack(enemy, player)) {
+				didAttack = true;
+			}
+		}
+		enemy.setDirection(tempDir);
+		if(didAttack) {
+			return Turn.ATTACK;
+		}
+		else {
+			enemy.setDirection(tempDir);
+			if(move(enemy, enemy.getNextMove()))
+				return Turn.MOVE;
+			else
+				return Turn.NONE;
+		}
+	}
+	
+	public void attack(Creature predator, Creature prey) {
+		prey.decrementHP(predator.getAttack());
+		if(prey.getCurrentHP() == 0) {
+			prey.setActive(false);
+		}
+	}
+	
+	public boolean attemptAttack(Creature predator, Creature prey) {
+		Point predatorPos = predator.getPosition();
+		Point preyPos = prey.getPosition();
+		Point newPoint = new Point(predatorPos.x, predatorPos.y);
+		boolean didAttack = false;
+		switch(predator.getDirection()) {
+		case NORTH:
+			newPoint.translate(0,-1);
+			didAttack = preyPos.equals(newPoint);
+			break;
+		case SOUTH:
+			newPoint.translate(0,1);
+			didAttack = preyPos.equals(newPoint);
+			break;
+		case EAST:
+			newPoint.translate(1,0);
+			didAttack = preyPos.equals(newPoint);
+			break;
+		case WEST:
+			newPoint.translate(-1,0);
+			didAttack = preyPos.equals(newPoint);
+			break;
+		}
+		if(didAttack) {
+			attack(predator, prey);
+		}
+		return didAttack;
+	}
+	
+	public boolean collision(GameObject object1, GameObject object2) {
+		return (!object1.equals(object2) &&
+				object1.getPosition().equals(object2.getPosition()));
+	}
 	
 	public GameMap getMapLayout(){
 		return maps.get(currMap);
@@ -197,5 +245,13 @@ public class GameController implements Serializable{
 	
 	public List<Transition> getTransitions(){
 		return maps.get(currMap).getTransitions();
+
+	}
+
+	public void playerAttack() {
+		for(Enemy enemy : getEnemies()) {
+			if(enemy.getActive())
+				attemptAttack(player, enemy);
+		}
 	}
 }

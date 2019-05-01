@@ -43,9 +43,3 @@ public class LegendOfAdlezView extends Application{
 	}
 }
 
-
-
-
-
-
-

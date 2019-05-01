@@ -19,7 +19,10 @@ import gameObjects.*;
 import enums.*;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -60,7 +63,7 @@ public class MainView extends StackPane {
 	private Pane pane;
 	private Player player;
 	private GameMap map;
-	
+
 	private MapScreen currMap;
 	private Map<Creature, ImageView> creatureMap;
 
@@ -72,13 +75,13 @@ public class MainView extends StackPane {
 	private boolean transaction = false;
 	private int price = 0;
 	private ImageView textBox = new ImageView();
-	
 
 	public void loadMap() {
 		currMap = controller.getCurrMap();
 		map = controller.getMapLayout();
 		pane.getChildren().clear();
-		pane.setBackground(new Background(new BackgroundImage(new Image(controller.getMapLayout().getMapString()), null, null, null, null)));
+		pane.setBackground(new Background(
+				new BackgroundImage(new Image(controller.getMapLayout().getMapString()), null, null, null, null)));
 		creatureMap = new HashMap<Creature, ImageView>();
 		creatureMap.put(player, new ImageView(new Image(player.getImage())));
 		addObject(player);
@@ -103,24 +106,21 @@ public class MainView extends StackPane {
 			addObject(obstacle);
 		}
 		for (Enemy enemy : controller.getEnemies()) {
-			if(enemy instanceof Slime) {
+			if (enemy instanceof Slime) {
 				ImageView sprite = new ImageView(new Image(enemy.getImage()));
-				sprite.setViewport(new Rectangle2D(0,0,48,48));
+				sprite.setViewport(new Rectangle2D(0, 0, 48, 48));
 				creatureMap.put(enemy, sprite);
-			}
-			else if(enemy instanceof Scorpion) {
+			} else if (enemy instanceof Scorpion) {
 				ImageView sprite = new ImageView(new Image(enemy.getImage()));
-				sprite.setViewport(new Rectangle2D(0,0,48,48));
+				sprite.setViewport(new Rectangle2D(0, 0, 48, 48));
 				creatureMap.put(enemy, sprite);
-			}
-			else if(enemy instanceof Poe) {
+			} else if (enemy instanceof Poe) {
 				ImageView sprite = new ImageView(new Image(enemy.getImage()));
-				sprite.setViewport(new Rectangle2D(0,0,48,48));
+				sprite.setViewport(new Rectangle2D(0, 0, 48, 48));
 				creatureMap.put(enemy, sprite);
-			}
-			else {
+			} else {
 				ImageView sprite = new ImageView(new Image(enemy.getImage()));
-				sprite.setViewport(new Rectangle2D(0,0,48,48));
+				sprite.setViewport(new Rectangle2D(0, 0, 48, 48));
 				creatureMap.put(enemy, sprite);
 			}
 			addObject(enemy);
@@ -206,14 +206,13 @@ public class MainView extends StackPane {
 
 		pMenu.setVisible(false);
 
-
-    	//we want to load a save file
-    	if(loadFile) {
-    		System.out.println("[LOAD FILE]");
-			File file=new File(GameController.SAVE_FILE);
+		// we want to load a save file
+		if (loadFile) {
+			System.out.println("[LOAD FILE]");
+			File file = new File(GameController.SAVE_FILE);
 			try {
-				ObjectInputStream stream =new ObjectInputStream(new FileInputStream(file));
-				controller=(GameController) stream.readObject();
+				ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file));
+				controller = (GameController) stream.readObject();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -221,17 +220,16 @@ public class MainView extends StackPane {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-    	}
-    	else {
-    		controller = new GameController();
-    	}
-    	
+		} else {
+			controller = new GameController();
+		}
+
 		map = controller.getMapLayout();
 		currMap = controller.getCurrMap();
 		creatureMap = new HashMap<Creature, ImageView>();
 		window = new BorderPane();
 		this.getChildren().add(window);
-		
+
 		StackPane.setAlignment(pMenu, Pos.TOP_CENTER);
 		pMenu.setAlignment(Pos.TOP_CENTER);
 		this.getChildren().add(pMenu);
@@ -250,17 +248,18 @@ public class MainView extends StackPane {
 		 * each tick.
 		 */
 		AnimationTimer timer = new AnimationTimer() {
-			private long lastUpdate = 0 ;
-            @Override
-            public void handle(long now) {
-            		if(currMap != controller.getCurrMap()) {
-        			loadMap();
-            		}
-                    if (now - lastUpdate >= 850_000_000) {
-                    	onUpdate();
-                        lastUpdate = now ;
-                    }
-            }
+			private long lastUpdate = 0;
+
+			@Override
+			public void handle(long now) {
+				if (currMap != controller.getCurrMap()) {
+					loadMap();
+				}
+				if (now - lastUpdate >= 850_000_000) {
+					onUpdate();
+					lastUpdate = now;
+				}
+			}
 		};
 		timer.start();
 
@@ -285,13 +284,14 @@ public class MainView extends StackPane {
 			switch (e.getCode()) {
 			default:
 				break;
+
 			case B:{
 				if(transaction) {
+
 					textBox.setImage(null);
-					if(player.getCurrentMoney() < price) {
+					if (player.getCurrentMoney() < price) {
 						textBox.setImage(new Image("assets/NotEnough.png"));
-					}
-					else {
+					} else {
 						textBox.setImage(new Image("assets/ItemAdded.png"));
 						buyItem(price, player);
 
@@ -300,52 +300,48 @@ public class MainView extends StackPane {
 					break;
 				}
 				break;
-			}	
+			}
 			case SPACE: {
-				if(transaction) {
+				controller.playerAttack();
+				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
 				}
 				switch (player.getDirection()) {
 				case NORTH: {
-					Point potentialInteractable = new Point((int)player.getPosition().getX(),(int)player.getPosition().getY()-1);
-					for(GameObject object: controller.getObstacles()) {
-						if(object.getPosition().equals(potentialInteractable) && (object instanceof ShopItem)) {
+					Point potentialInteractable = new Point((int) player.getPosition().getX(),
+							(int) player.getPosition().getY() - 1);
+					for (GameObject object : controller.getObstacles()) {
+						if (object.getPosition().equals(potentialInteractable) && (object instanceof ShopItem)) {
 							interact = true;
 							interacted = object;
 							break;
 						}
 					}
-					if(interact) {
+					if (interact) {
 						transaction = true;
 						ShopItem shopI = (ShopItem) interacted;
-						if(shopI.getItemNum() == 1) {
+						if (shopI.getItemNum() == 1) {
 							textBox = new ImageView(new Image("assets/SwordBuy.png"));
 							pane.getChildren().add(textBox);
-							price = 25;}	
-						else {
+							price = 25;
+						} else {
 							textBox = new ImageView(new Image("assets/PotionBuy.png"));
 							pane.getChildren().add(textBox);
 							price = 10;
 						}
 						break;
-					}
-					else {
-						if(player.getEquippedItem() instanceof Dagger) {
-							Animation animation = new SpriteAnimation(
-					                creatureMap.get(player),
-					                Duration.millis(250),
-					                2, 2,
-					                60, 434,
-					                60, 62
-					        );
-					        animation.setCycleCount(1);
-					        animation.play();
-					        interact = true;
-					        break;
+					} else {
+						if (player.getEquippedItem() instanceof Dagger) {
+							Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 2,
+									2, 60, 434, 60, 62);
+							animation.setCycleCount(1);
+							animation.play();
+							interact = true;
+							break;
 						}
-						Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
-								434, 60, 62);
+						Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5,
+								0, 434, 60, 62);
 						animation.setCycleCount(1);
 						animation.setOnFinished(new EventHandler<ActionEvent>() {
 							@Override
@@ -357,21 +353,16 @@ public class MainView extends StackPane {
 						interact = true;
 						creatureMap.get(player).setViewport(new Rectangle2D(0, 62, 60, 62));
 						break;
-						}
+					}
 				}
 				case SOUTH: {
-					if(player.getEquippedItem() instanceof Dagger) {
-						Animation animation = new SpriteAnimation(
-				                creatureMap.get(player),
-				                Duration.millis(250),
-				                2, 2,
-				                120, 248,
-				                60, 62
-				        );
-				        animation.setCycleCount(1);
-				        animation.play();
-				        interact = true;
-				        break;
+					if (player.getEquippedItem() instanceof Dagger) {
+						Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 2, 2,
+								120, 248, 60, 62);
+						animation.setCycleCount(1);
+						animation.play();
+						interact = true;
+						break;
 					}
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 6, 6, 0,
 							248, 60, 62);
@@ -388,18 +379,13 @@ public class MainView extends StackPane {
 					break;
 				}
 				case EAST: {
-					if(player.getEquippedItem() instanceof Dagger) {
-						Animation animation = new SpriteAnimation(
-				                creatureMap.get(player),
-				                Duration.millis(250),
-				                2, 2,
-				                60, 372,
-				                60, 62
-				        );
-				        animation.setCycleCount(1);
-				        animation.play();
-				        interact = true;
-				        break;
+					if (player.getEquippedItem() instanceof Dagger) {
+						Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 2, 2,
+								60, 372, 60, 62);
+						animation.setCycleCount(1);
+						animation.play();
+						interact = true;
+						break;
 					}
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
 							372, 60, 62);
@@ -416,18 +402,13 @@ public class MainView extends StackPane {
 					break;
 				}
 				case WEST: {
-					if(player.getEquippedItem() instanceof Dagger) {
-						Animation animation = new SpriteAnimation(
-				                creatureMap.get(player),
-				                Duration.millis(250),
-				                2, 2,
-				                60, 310,
-				                60, 62
-				        );
-				        animation.setCycleCount(1);
-				        animation.play();
-				        interact = true;
-				        break;
+					if (player.getEquippedItem() instanceof Dagger) {
+						Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 2, 2,
+								60, 310, 60, 62);
+						animation.setCycleCount(1);
+						animation.play();
+						interact = true;
+						break;
 					}
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
 							310, 60, 62);
@@ -449,7 +430,7 @@ public class MainView extends StackPane {
 					break;
 			case W:
 			case UP:
-				if(transaction) {
+				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
 				}
@@ -471,7 +452,7 @@ public class MainView extends StackPane {
 				break;
 			case S:
 			case DOWN:
-				if(transaction) {
+				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
 				}
@@ -493,7 +474,7 @@ public class MainView extends StackPane {
 				break;
 			case D:
 			case RIGHT:
-				if(transaction) {
+				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
 				}
@@ -515,7 +496,7 @@ public class MainView extends StackPane {
 				break;
 			case A:
 			case LEFT:
-				if(transaction) {
+				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
 				}
@@ -555,8 +536,7 @@ public class MainView extends StackPane {
 					}
 				});
 				pathTransition.play();
-			}
-			else
+			} else
 				keyListener = true;
 		});
 	}
@@ -595,119 +575,129 @@ public class MainView extends StackPane {
 			window.setEffect(new GaussianBlur());
 			return;
 		}
-
 		window.setEffect(null);
 
-		if(currMap != controller.getCurrMap()) {
+		if (currMap != controller.getCurrMap()) {
 			loadMap();
 		}
 		for (Enemy enemy : map.getEnemies()) {
-			Point startPos = enemy.getPosition();
-			if (controller.enemyTurn(enemy) == Turn.MOVE) {
-				Point pos = enemy.getPosition();
-				Path path = new Path();
-				path.getElements().add(new MoveTo(startPos.getX() * 48 + 24, startPos.getY() * 48 + 24));
-				path.getElements().add(new LineTo(pos.getX() * 48 + 24, pos.getY() * 48 + 24));
-				PathTransition pathTransition = new PathTransition();
-				pathTransition.setDuration(Duration.millis(750));
-				pathTransition.setNode(creatureMap.get(enemy));
-				pathTransition.setPath(path);
-				pathTransition.play();
-				if(enemy instanceof Slime || enemy instanceof Scorpion) {
-					switch(enemy.getDirection()) {
-					case NORTH:{
-						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 0,
-								144, 48, 48);
-						animation.setCycleCount(1);
-						animation.play();
-						break;
+			if (enemy.getActive()) {
+				Point startPos = enemy.getPosition();
+				switch (controller.enemyTurn(enemy)) {
+				default:
+					break;
+				case ATTACK:
+					Timeline timeline = new Timeline(
+							new KeyFrame(Duration.seconds(0.05), evt -> creatureMap.get(player).setVisible(false)),
+							new KeyFrame(Duration.seconds(0.1), evt -> creatureMap.get(player).setVisible(true)));
+					timeline.setCycleCount(4);
+					timeline.play();
+					break;
+				case MOVE:
+					Point pos = enemy.getPosition();
+					Path path = new Path();
+					path.getElements().add(new MoveTo(startPos.getX() * 48 + 24, startPos.getY() * 48 + 24));
+					path.getElements().add(new LineTo(pos.getX() * 48 + 24, pos.getY() * 48 + 24));
+					PathTransition pathTransition = new PathTransition();
+					pathTransition.setDuration(Duration.millis(750));
+					pathTransition.setNode(creatureMap.get(enemy));
+					pathTransition.setPath(path);
+					pathTransition.play();
+					if (enemy instanceof Slime || enemy instanceof Scorpion) {
+						switch (enemy.getDirection()) {
+						case NORTH: {
+							Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3,
+									3, 0, 144, 48, 48);
+							animation.setCycleCount(1);
+							animation.play();
+							break;
 						}
-					case SOUTH:{
-						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 0,
+						case SOUTH: {
+							Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3,
+									3, 0, 0, 48, 48);
+							animation.setCycleCount(1);
+							animation.play();
+							break;
+						}
+						case EAST: {
+							Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3,
+									3, 0, 96, 48, 48);
+							animation.setCycleCount(1);
+							animation.play();
+							break;
+						}
+						case WEST: {
+							Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3,
+									3, 0, 48, 48, 48);
+							animation.setCycleCount(1);
+							animation.play();
+							break;
+						}
+						default:
+							break;
+						}
+					} else if (enemy instanceof Poe) {
+						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(1), 10, 10, 0,
 								0, 48, 48);
 						animation.setCycleCount(1);
 						animation.play();
-						break;
+					} else {
+						switch (enemy.getDirection()) {
+						case NORTH: {
+							Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3,
+									3, 288, 0, 48, 48);
+							animation.setCycleCount(1);
+							animation.play();
+							break;
 						}
-					case EAST:{
-						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 0,
-								96, 48, 48);
-						animation.setCycleCount(1);
-						animation.play();
-						break;
+						case SOUTH: {
+							Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3,
+									3, 0, 0, 48, 48);
+							animation.setCycleCount(1);
+							animation.play();
+							break;
 						}
-					case WEST:{
-						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 0,
-								48, 48, 48);
-						animation.setCycleCount(1);
-						animation.play();
-						break;
+						case EAST: {
+							Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3,
+									3, 144, 0, 48, 48);
+							animation.setCycleCount(1);
+							animation.play();
+							break;
 						}
-					default:
-						break;
-					}	
-				}
-				else if(enemy instanceof Poe) {
-					Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(1), 10, 10, 0,
-							0, 48, 48);
-					animation.setCycleCount(1);
-					animation.play();
-				}
-				else {
-					switch(enemy.getDirection()) {
-					case NORTH:{
-						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 288,
-								0, 48, 48);
-						animation.setCycleCount(1);
-						animation.play();
-						break;
+						case WEST: {
+							Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3,
+									3, 432, 0, 48, 48);
+							animation.setCycleCount(1);
+							animation.play();
+							break;
 						}
-					case SOUTH:{
-						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 0,
-								0, 48, 48);
-						animation.setCycleCount(1);
-						animation.play();
-						break;
+						default:
+							break;
 						}
-					case EAST:{
-						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 144,
-								0, 48, 48);
-						animation.setCycleCount(1);
-						animation.play();
-						break;
-						}
-					case WEST:{
-						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 432,
-								0, 48, 48);
-						animation.setCycleCount(1);
-						animation.play();
-						break;
-						}
-					default:
-						break;
 					}
-					
 				}
-				}
+			}
+			else {
+				pane.getChildren().remove(creatureMap.get(enemy));
+			}
 		}
 	}
 
-    
-    private class ButtonHandler implements EventHandler<ActionEvent>{
+	private class ButtonHandler implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent arg0) {
-			Button button=(Button) arg0.getSource();
-			
-			//continue and save file exists
-			if(button.getId().equals("load") && !button.isDisabled()) {
-				
+			Button button = (Button) arg0.getSource();
+
+			// continue and save file exists
+			if (button.getId().equals("load") && !button.isDisabled()) {
+
 			}
-			
-			//boot up a new game
-			else if(button.getId().equals("save")) {
-				File file=new File(GameController.SAVE_FILE);
-	    		ObjectOutputStream stream;
+
+			// boot up a new game
+			else if (button.getId().equals("save")) {
+				File file = new File(GameController.SAVE_FILE);
+				ObjectOutputStream stream;
 				try {
 					stream = new ObjectOutputStream(new FileOutputStream(file));
 					stream.writeObject(controller);
@@ -716,12 +706,13 @@ public class MainView extends StackPane {
 					e.printStackTrace();
 				}
 			}
-			
-			//quit the game
-			else if(button.getId().equals("quit")) {
+
+			// quit the game
+			else if (button.getId().equals("quit")) {
 				LegendOfAdlezView.changeView(new StartMenuView());
-				//Platform.exit();
+				// Platform.exit();
 			}
+
 			
 		}
     	
@@ -737,8 +728,4 @@ public class MainView extends StackPane {
     		player.upPotionCount();
     	}
     }
-
-}  
-
-
-
+ }      

@@ -20,33 +20,18 @@ public class Player extends Creature implements Serializable{
 	Item equippedItem = new Dagger(null);
 	List<Item> inventory = new ArrayList<Item>();
 	
-	
-	/**
-
-	 * Constructor for the PlayerClass object.
-	 * @param currentHP int The currentHP of the player.
-	 * @param totalHP int The totalHP of the player.
-	 * @param attack int The attack power of the player.
-	 * @param position int[] The current position of the player.
-	 */
-	public Player(int currentHP, int totalHP, int attack, Point position) {
-		super(currentHP, totalHP, attack, position);
-		currentMoney = 0;
-		maxMoney = 500;
-		setImage("assets/idleDark.png");
-	}
 	/**
 	 * Alternate constructor for the PlayerClass with stats hardcoded.
 	 * @param position int[] The position of the player character on the game board.
 	 */
 	public Player(Point position) {
 		super(position);
+		this.setTotalHP(20);
 		this.setCurrentHP(20);
 		this.setAttack(1);
 		currentMoney = 50;
 		maxMoney = 500;
 		setDirection(Direction.SOUTH);
-
 		setImage("assets/adlez1.png");
 	}
 	

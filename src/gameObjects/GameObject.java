@@ -5,27 +5,26 @@ import java.io.Serializable;
 
 import javafx.geometry.Point2D;
 
+
 public class GameObject implements Serializable{
-	private Point prevPosition;
 	private Point position;
 	private String image;
-	private boolean active;
+	private boolean active = true;
 		
 	public GameObject(Point position2) {
-		prevPosition = position2;
 		this.position = position2;
 		image = null;
 	}
+	public GameObject(Point position, String image) {
+		this.position = position;
+		this.image = image;
+	}
 
 	public void setPosition(Point point) {
-		prevPosition = position;
 		position = point;
 	}	
 	public Point getPosition() {
 		return position;
-	}
-	public Point getPrevPositon() {
-		return prevPosition;
 	}
 	
 	public void setImage(String imageString) {
