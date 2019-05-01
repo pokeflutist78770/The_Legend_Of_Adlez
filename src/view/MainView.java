@@ -290,9 +290,15 @@ public class MainView extends StackPane {
 			default:
 				break;
 
+			case P:{
+				if(transaction) {
+					textBox.setImage(null);
+					transaction = false;
+				}
+				player.usePotion();
+				}
 			case B:{
 				if(transaction) {
-
 					textBox.setImage(null);
 					if (player.getCurrentMoney() < price) {
 						textBox.setImage(new Image("assets/NotEnough.png"));
