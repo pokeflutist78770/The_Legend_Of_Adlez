@@ -18,13 +18,14 @@ public class HomeOutside extends GameMap {
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	private static Point spawn = new Point(8, 7);
 
 	
 	/**
 	 * Constructor for HomeOutside Map.
 	 */
 	public HomeOutside() {
-		super(objects, transitions, enemies, MapScreen.HOME_OUTSIDE, "assets/homeOutside.png");
+		super(objects, transitions, enemies, MapScreen.HOME_OUTSIDE, "assets/homeOutside.png", spawn);
 		objects.add(new GameObject(new Point(0, 0)));
 		objects.add(new GameObject(new Point(0, 1)));
 		objects.add(new GameObject(new Point(0, 2)));
@@ -53,7 +54,6 @@ public class HomeOutside extends GameMap {
 		objects.add(new GameObject(new Point(1, 12)));
 		objects.add(new GameObject(new Point(1, 13)));
 		objects.add(new GameObject(new Point(2, 0)));
-		objects.add(new GameObject(new Point(2, 1)));
 		objects.add(new GameObject(new Point(2, 5)));
 		objects.add(new GameObject(new Point(2, 6)));
 		objects.add(new GameObject(new Point(3, 0)));
@@ -111,11 +111,11 @@ public class HomeOutside extends GameMap {
 		objects.add(new GameObject(new Point(15, 13)));
 		objects.add(new GameObject(new Point(16, 13)));
 		objects.add(new GameObject(new Point(17, 13)));
-		transitions.add(new Transition(new Point(2, 2), MapScreen.HOME, new Point(7, 12)));
-		transitions.add(new Transition(new Point(6, 0), MapScreen.HOME_UP, new Point(6, 12)));
-		transitions.add(new Transition(new Point(7, 0), MapScreen.HOME_UP, new Point(7, 12)));
-		transitions.add(new Transition(new Point(17, 8), MapScreen.RIVER, new Point(1, 8)));
-		transitions.add(new Transition(new Point(17, 9), MapScreen.RIVER, new Point(1, 9)));
+		transitions.add(new Transition(new Point(2, 1), MapScreen.HOME, new Point(7, 13)));
+		transitions.add(new Transition(new Point(6, -1), MapScreen.HOME_UP, new Point(6, 13)));
+		transitions.add(new Transition(new Point(7, -1), MapScreen.HOME_UP, new Point(7, 13)));
+		transitions.add(new Transition(new Point(18, 8), MapScreen.RIVER, new Point(0, 8)));
+		transitions.add(new Transition(new Point(18, 9), MapScreen.RIVER, new Point(0, 9)));
 		setCloneObjects((ArrayList<GameObject>) objects.clone());
 	}
 	public void refresh() {

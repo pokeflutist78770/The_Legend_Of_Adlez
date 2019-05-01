@@ -19,12 +19,13 @@ public class Dungeon2Open extends GameMap {
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	private static Point spawn = new Point(14, 12);
 	
 	/**
 	 * Constructor for Dungeon2Open map.
 	 */
 	public Dungeon2Open() {
-		super(objects, transitions, enemies, MapScreen.DUNGEON2, "assets/bossRoomOpen.png");
+		super(objects, transitions, enemies, MapScreen.DUNGEON2, "assets/bossRoomOpen.png", spawn);
 		objects.add(new GameObject(new Point(0, 0)));
 		objects.add(new GameObject(new Point(0, 1)));
 		objects.add(new GameObject(new Point(0, 2)));
@@ -160,8 +161,8 @@ public class Dungeon2Open extends GameMap {
 		objects.add(new GameObject(new Point(10, 10)));
 		enemies.add(new FinalBoss(new Point(8, 4), 4));
 		enemies.add(new FinalBoss(new Point(8, 4), 2));
-		transitions.add(new Transition(new Point(14, 13), MapScreen.DUNGEON1, new Point(14, 2)));
-		transitions.add(new Transition(new Point(2, 1), MapScreen.DUNGEON3, new Point(2, 12)));
+		transitions.add(new Transition(new Point(14, 14), MapScreen.DUNGEON1, new Point(14, 2)));
+		transitions.add(new Transition(new Point(2, 0), MapScreen.DUNGEON3, new Point(2, 13)));
 		setCloneObjects((ArrayList<GameObject>) objects.clone());
 	}
 	public void refresh() {

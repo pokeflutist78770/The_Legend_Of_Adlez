@@ -19,13 +19,14 @@ public class Dungeon3 extends GameMap {
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	private static Point spawn = new Point(10, 7);
 
 	
 	/**
 	 * Constructor for Dungeon3 map.
 	 */
 	public Dungeon3() {
-		super(objects, transitions, enemies, MapScreen.DUNGEON3, "assets/endRoom.png");
+		super(objects, transitions, enemies, MapScreen.DUNGEON3, "assets/endRoom.png", spawn);
 		objects.add(new GameObject(new Point(0, 0)));
 		objects.add(new GameObject(new Point(0, 1)));
 		objects.add(new GameObject(new Point(0, 2)));
@@ -185,7 +186,7 @@ public class Dungeon3 extends GameMap {
 		objects.add(new GameObject(new Point(16, 7)));
 		objects.add(new GameObject(new Point(16, 8)));
 		objects.add(new GameObject(new Point(16, 9)));
-		transitions.add(new Transition(new Point(2, 13), MapScreen.DUNGEON2, new Point(2, 2)));
+		transitions.add(new Transition(new Point(2, 14), MapScreen.DUNGEON2, new Point(2, 2)));
 		setCloneObjects((ArrayList<GameObject>) objects.clone());
 	}
 	public void refresh() {

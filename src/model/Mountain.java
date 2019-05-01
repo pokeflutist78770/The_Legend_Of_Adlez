@@ -17,12 +17,13 @@ public class Mountain extends GameMap {
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	private static Point spawn = new Point(9, 7);
 
 	/**
 	 * Constructor for Mountain map screen.
 	 */
 	public Mountain() {
-		super(objects, transitions, enemies, MapScreen.MOUNTAIN, "assets/mountain.png");
+		super(objects, transitions, enemies, MapScreen.MOUNTAIN, "assets/mountain.png", spawn);
 		objects.add(new GameObject(new Point(0, 0)));
 		objects.add(new GameObject(new Point(0, 1)));
 		objects.add(new GameObject(new Point(0, 2)));
@@ -59,7 +60,6 @@ public class Mountain extends GameMap {
 		objects.add(new GameObject(new Point(6, 0)));
 		objects.add(new GameObject(new Point(7, 0)));
 		objects.add(new GameObject(new Point(8, 0)));
-		objects.add(new GameObject(new Point(9, 0)));
 		objects.add(new GameObject(new Point(10, 0)));
 		objects.add(new GameObject(new Point(11, 0)));
 		objects.add(new GameObject(new Point(12, 0)));
@@ -116,9 +116,9 @@ public class Mountain extends GameMap {
 		enemies.add(new Poe(new Point(6, 3), 1));
 		enemies.add(new Scorpion(new Point(12, 5), 2));
 		enemies.add(new Slime(new Point(6, 11), 1));
-		transitions.add(new Transition(new Point(0, 8), MapScreen.RIVER, new Point(16, 8)));
-		transitions.add(new Transition(new Point(0, 9), MapScreen.RIVER, new Point(16, 9)));
-		transitions.add(new Transition(new Point(9, 1), MapScreen.DUNGEON1, new Point(9, 12)));
+		transitions.add(new Transition(new Point(-1, 8), MapScreen.RIVER, new Point(17, 8)));
+		transitions.add(new Transition(new Point(-1, 9), MapScreen.RIVER, new Point(17, 9)));
+		transitions.add(new Transition(new Point(9, 0), MapScreen.DUNGEON1, new Point(9, 13)));
 		setCloneObjects((ArrayList<GameObject>) objects.clone());
 	}
 	public void refresh() {

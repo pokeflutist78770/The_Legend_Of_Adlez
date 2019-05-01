@@ -20,13 +20,14 @@ public class River extends GameMap {
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	private static Point spawn = new Point(3, 6);
 
 	
 	/**
 	 * Constructor for River map
 	 */
 	public River() {
-		super(objects, transitions, enemies, MapScreen.RIVER, "assets/river.png");
+		super(objects, transitions, enemies, MapScreen.RIVER, "assets/river.png", spawn);
 		objects.add(new GameObject(new Point(0, 0)));
 		objects.add(new GameObject(new Point(0, 1)));
 		objects.add(new GameObject(new Point(0, 2)));
@@ -169,11 +170,11 @@ public class River extends GameMap {
 		objects.add(new GameObject(new Point(17, 11)));
 		objects.add(new GameObject(new Point(17, 12)));
 		objects.add(new GameObject(new Point(17, 13)));
-		transitions.add(new Transition(new Point(0, 8), MapScreen.HOME_OUTSIDE, new Point(16, 8)));
-		transitions.add(new Transition(new Point(0, 9), MapScreen.HOME_OUTSIDE, new Point(16, 9)));
-		transitions.add(new Transition(new Point(5, 4), MapScreen.SHOP, new Point(11, 12)));
-		transitions.add(new Transition(new Point(17, 8), MapScreen.MOUNTAIN, new Point(1, 8)));
-		transitions.add(new Transition(new Point(17, 9), MapScreen.MOUNTAIN, new Point(1, 9)));
+		transitions.add(new Transition(new Point(-1, 8), MapScreen.HOME_OUTSIDE, new Point(17, 8)));
+		transitions.add(new Transition(new Point(-1, 9), MapScreen.HOME_OUTSIDE, new Point(17, 9)));
+		transitions.add(new Transition(new Point(5, 3), MapScreen.SHOP, new Point(11, 13)));
+		transitions.add(new Transition(new Point(18, 8), MapScreen.MOUNTAIN, new Point(0, 8)));
+		transitions.add(new Transition(new Point(18, 9), MapScreen.MOUNTAIN, new Point(0, 9)));
 		setCloneObjects((ArrayList<GameObject>) objects.clone());
 	}
 	public void refresh() {
