@@ -14,8 +14,6 @@ import javafx.stage.Stage;
 public class LegendOfAdlezView extends Application{
 	private static StackPane mainPane;
 	static Scene mainScene;
-	private HashMap<String, Image> imageMap;
-	
 	
 	public static void main(String args[]) {
 		launch(args);
@@ -24,6 +22,7 @@ public class LegendOfAdlezView extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
 		primaryStage.setTitle("The Legend of Adlez");
 		
 		StartMenuView startView=new StartMenuView();

@@ -11,6 +11,7 @@ import player_enemies.GameObject;
  */
 
 public class GameController {
+	public static boolean isPaused=false;
 	
 	//collisions
 	

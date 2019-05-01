@@ -4,24 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import controller.GameController;
 import gameObjects.*;
 import enums.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class MainView extends BorderPane {
+public class MainView extends StackPane {
 	int HEIGHT = 14, WIDTH = 18, BLOCK = 48, BLOCKHEIGHT = 40, BLOCKWIDTH = 30;
 	private Pane pane;
 	private Player player;
@@ -31,6 +43,8 @@ public class MainView extends BorderPane {
 	Label scoreLabel;
 	Label healthLabel;
 	Label dirLabel;
+	private BorderPane bPane;
+	private VBox pMenu;
 	private List<GameObject> objects;
 	private List<Enemy> enemies = new ArrayList<>();
 	
@@ -54,16 +68,91 @@ public class MainView extends BorderPane {
 	}
 	
     public MainView() {
+    	bPane=new BorderPane();
+    	this.getChildren().add(bPane);
+    	
+    	
+    	/*-----   Pause Menu Buttons   --------- */
+    	
+		EventHandler<MouseEvent> mouseEnter=new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Button button=(Button) event.getTarget();
+				button.setStyle("-fx-background-color: rgba(50,50,50,.5)");
+			}			
+		};
+		
+		
+		EventHandler<MouseEvent> mouseExit=new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Button button=(Button) event.getTarget();
+				
+				button.setStyle("-fx-background-color: transparent;");
+			}			
+		};
+		
+		//vbox for all of the buttons
+    	pMenu=new VBox();
+    	pMenu.setPrefWidth(300);
+    	pMenu.setStyle("-fx-background-color: rgba(50,50,50,.5);");
+    	
+    	ImageView pause=new ImageView(new Image("assets/paused.png", false));
+    	VBox.setMargin(pause, new Insets(25,0,25,0));
+    	
+    	ImageView map=new ImageView(new Image("assets/test.jpg", false));
+    	
+    	
+    	Button inventButton=new Button();
+    	inventButton.setGraphic(new ImageView(new Image("assets/inventory.png", false)));
+		inventButton.setMinWidth(pMenu.getPrefWidth());
+		inventButton.setStyle("-fx-background-color: transparent;"+
+						"-fx-transition: color 0.2s ease-in;");
+		inventButton.setOnMouseEntered(mouseEnter);
+		inventButton.setOnMouseExited(mouseExit);
+    	
+    	Button saveButton=new Button();
+    	saveButton.setGraphic(new ImageView(new Image("assets/save.png", false)));
+		saveButton.setMinWidth(pMenu.getPrefWidth());
+		saveButton.setStyle("-fx-background-color: transparent;"+
+						"-fx-transition: color 0.2s ease-in;");
+		saveButton.setOnMouseEntered(mouseEnter);
+		saveButton.setOnMouseExited(mouseExit);
+		
+    	Button loadButton=new Button();
+    	loadButton.setGraphic(new ImageView(new Image("assets/load.png", false)));
+		loadButton.setMinWidth(pMenu.getPrefWidth());
+		loadButton.setStyle("-fx-background-color: transparent;"+
+						"-fx-transition: color 0.2s ease-in;");
+		loadButton.setOnMouseEntered(mouseEnter);
+		loadButton.setOnMouseExited(mouseExit);
+		
+    	Button quitButton=new Button();
+    	quitButton.setGraphic(new ImageView(new Image("assets/quit.png", false)));
+		quitButton.setMinWidth(pMenu.getPrefWidth());
+		quitButton.setStyle("-fx-background-color: transparent;"+
+						"-fx-transition: color 0.2s ease-in;");
+		quitButton.setOnMouseEntered(mouseEnter);
+		quitButton.setOnMouseExited(mouseExit);
+    	
+    	pMenu.getChildren().addAll(pause, map, inventButton, saveButton, loadButton, quitButton);
+    	
+    	pMenu.setVisible(false);
+    	
+    	StackPane.setAlignment(pMenu, Pos.TOP_CENTER);
+    	pMenu.setAlignment(Pos.TOP_CENTER);
+    	this.getChildren().add(pMenu);
+    	
     	pane = new Pane();
     	pane.setBackground(new Background(new BackgroundImage(new Image("assets/homeOutside.png"), null, null, null, null)));
-    	this.setCenter(pane);
+    	bPane.setCenter(pane);
     	
     	TilePane tilePane = new TilePane();
     	scoreLabel = new Label();
     	healthLabel = new Label();
     	dirLabel = new Label();
     	tilePane.getChildren().addAll(scoreLabel, healthLabel, dirLabel);
-    	this.setBottom(tilePane);
+    	bPane.setBottom(tilePane);
     	pane.setPrefSize(WIDTH * BLOCK, HEIGHT * BLOCK);
     	
     	player = new Player();
@@ -94,12 +183,16 @@ public class MainView extends BorderPane {
     	 *            Space drops the weapon and leaves player vulnerable
     	 */
     	LegendOfAdlezView.mainScene.setOnKeyPressed(e -> {
+    		
     		Direction dir = player.getDirection();
     		switch(e.getCode()) {
 			default:
 				break;
 			case W:
 			case UP:
+				if(GameController.isPaused) {
+					return;
+				}
 				if(dir != Direction.NORTH)
 					player.setDirection(Direction.NORTH);
 				else if(player.getPosition().getY() > 0){
@@ -108,6 +201,9 @@ public class MainView extends BorderPane {
 				break;
 			case S:
 			case DOWN:
+				if(GameController.isPaused) {
+					return;
+				}
 				if(dir != Direction.SOUTH)
 					player.setDirection(Direction.SOUTH);
 				else if(player.getPosition().getY() < HEIGHT - 1){
@@ -116,6 +212,9 @@ public class MainView extends BorderPane {
 				break;
 			case D:
 			case RIGHT:
+				if(GameController.isPaused) {
+					return;
+				}
 				if(dir != Direction.EAST)
 					player.setDirection(Direction.EAST);
 				else if(player.getPosition().getX() < WIDTH - 1){
@@ -124,6 +223,9 @@ public class MainView extends BorderPane {
 				break;
 			case A:
 			case LEFT:
+				if(GameController.isPaused) {
+					return;
+				}
 				if(dir != Direction.WEST)
 					player.setDirection(Direction.WEST);
 				else if(player.getPosition().getX() > 0){
@@ -131,12 +233,15 @@ public class MainView extends BorderPane {
 				}
 				break;
 			case SPACE:
+				if(GameController.isPaused) {
+					return;
+				}
 				player.dropWeapon();
 				weapon.setActive(true);
 				pane.getChildren().add(weapon.getNode());
 				
 			case ESCAPE:
-				
+				GameController.isPaused=!GameController.isPaused;
     		}
     	});
     }
@@ -147,6 +252,15 @@ public class MainView extends BorderPane {
      * allows enemies to be defeated.
      */
     public void onUpdate() {
+    
+    	pMenu.setVisible(GameController.isPaused);
+    	if(GameController.isPaused) {
+    		bPane.setEffect(new GaussianBlur());
+    		return;
+    	}
+    	
+    	bPane.setEffect(null);
+    	
     	if(player.collision(potion)) {
     		player.heal(potion.getHealth());
     		potion.setActive(false);
