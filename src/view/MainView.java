@@ -406,10 +406,13 @@ public class MainView extends StackPane {
 						else {
 							if (player.hasKey() ) {
 								pane.setBackground(new Background(new BackgroundImage(new Image("assets/bossRoomOpen.png"), null, null, null, null)));
-								Door door = null;
+								ShopItem door = null;
 								for (GameObject object: controller.getObstacles()) {
-									if (object instanceof Door)
-										door = (Door) object;
+									if (object instanceof ShopItem) {
+										door = (ShopItem) object;
+										System.out.println("in");
+										break;
+									}
 								}
 								controller.getObstacles().remove(door);
 							}
