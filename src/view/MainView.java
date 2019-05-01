@@ -45,6 +45,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -74,6 +78,9 @@ public class MainView extends StackPane {
 
 	public void loadMap() {
 		currMap = controller.getCurrMap();
+		
+		LegendOfAdlezView.playBackground(currMap.getMusic());
+		
 		map = controller.getMapLayout();
 		pane.getChildren().clear();
 		pane.setBackground(new Background(new BackgroundImage(new Image(controller.getMapLayout().getMapString()), null, null, null, null)));
@@ -109,9 +116,7 @@ public class MainView extends StackPane {
 	public MainView(boolean loadFile) {
 
 		GameController.isPaused = false;
-
-		/*------ Inventory Box  -----*/
-		VBox inventory = new VBox();
+		
 
 		/*-----   Pause Menu Buttons   --------- */
 
@@ -248,6 +253,11 @@ public class MainView extends StackPane {
 			default:
 				break;
 			case SPACE: {
+				//this is a special case where both sounds need to be played at the same 
+				//time
+				new AudioClip("file:src/assets/attack.wav").play();
+				new AudioClip("file:src/assets/sword_swoosh.wav").play();;
+				LegendOfAdlezView.play("sword");
 				switch (player.getDirection()) {
 				case NORTH: {
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
@@ -411,6 +421,7 @@ public class MainView extends StackPane {
 				keyListener = true;
 		});
 	}
+	
 
 	/**
 	 * Adds object to view at specified x/y coordinate on grid.

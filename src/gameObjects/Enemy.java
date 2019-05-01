@@ -11,6 +11,8 @@ import javafx.geometry.Point2D;
  *
  */
 public class Enemy extends Creature {
+	private static String attackSound;
+	
 	/**
 	 * Constructor for the EnemyClass of enemies.
 	 * @param currentHP int The currentHP of the enemy
@@ -86,5 +88,13 @@ public class Enemy extends Creature {
 		Direction currentDirection = current[index];
 		index = (index + 1) % current.length;
 		return currentDirection;
+	}
+
+	public static String getAttackSound() {
+		return attackSound;
+	}
+
+	public static void setAttackSound(String attackSound) {
+		Enemy.attackSound = attackSound;
 	}
 }

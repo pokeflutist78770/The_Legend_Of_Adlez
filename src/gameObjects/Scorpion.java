@@ -8,7 +8,7 @@ import java.awt.Point;
  *
  */
 public class Scorpion extends Enemy {
-
+	
 	/**
 	 * Constructor for the Scorpion class.
 	 * @param currentHP int The currentHP of the Scorpion.
@@ -18,6 +18,7 @@ public class Scorpion extends Enemy {
 	 */
 	public Scorpion(int currentHP, int totalHP, int attack, Point position) {
 		super(currentHP, totalHP, attack, position);
+		super.setAttackSound("scorpion");
 	}
 
 	/**
@@ -27,6 +28,7 @@ public class Scorpion extends Enemy {
 	 */
 	public Scorpion(Point position, int n) {
 		super(position, n);
+		super.setAttackSound("scorpion");
 		this.setTotalHP(10);
 		this.setAttack(1);
 		this.setImage("assets/scorp.png");		
