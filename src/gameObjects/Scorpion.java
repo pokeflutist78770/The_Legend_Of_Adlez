@@ -9,17 +9,6 @@ import java.awt.Point;
  */
 public class Scorpion extends Enemy {
 
-	/**
-
-	 * Constructor for the Scorpion class.
-	 * @param currentHP int The currentHP of the Scorpion.
-	 * @param totalHP int The totalHP of the Scorpion.
-	 * @param attack int The attack power of the Scorpion.
-	 * @param position Point2D The current position of the Scorpion.
-	 */
-	public Scorpion(int currentHP, int totalHP, int attack, Point position) {
-		super(currentHP, totalHP, attack, position);
-	}
 
 	/**
 	 * Separate constructor that hard codes in the stats of the Slime for consistency.

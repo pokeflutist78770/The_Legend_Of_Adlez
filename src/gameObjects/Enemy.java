@@ -42,7 +42,7 @@ public class Enemy extends Creature {
 	 * @param position Point2D The current position of the enemy
 	 */
 
-	public Enemy(Point2D position, int movePattern) {
+	public Enemy(Point position, int movePattern) {
 		super(position);
 		setMovementPattern(movePattern);
 	}

@@ -12,16 +12,6 @@ import javafx.geometry.Point2D;
  */
 public class Slime extends Enemy {
 
-	/**
-	 * Constructor for the Slime class.
-	 * @param currentHP int The currentHP of the Slime.
-	 * @param totalHP int The totalHP of the Slime.
-	 * @param attack int The attack power of the Slime.
-	 * @param position Point2D The current position of the Slime.
-	 */
-	public Slime(int currentHP, int totalHP, int attack, Point position) {
-		super(currentHP, totalHP, attack, position);
-	}
 
 	/**
 

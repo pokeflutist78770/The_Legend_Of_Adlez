@@ -82,12 +82,12 @@ public class GameController implements Serializable{
 				}
 			}
 			
-			for(Enemy object : maps.get(currMap).getEnemies()) {
-				if(collision(character, object)) {
-
-					character.setPosition(currPos);
-					return false;
-				}
+			for(Enemy enemy : maps.get(currMap).getEnemies()) {
+				if(enemy.getActive())
+					if(collision(character, enemy)) {
+						character.setPosition(currPos);
+						return false;
+					}
 			}
 			
 			for(Transition transition : maps.get(currMap).getTransitions()) {
@@ -102,19 +102,6 @@ public class GameController implements Serializable{
 		return false;
 	}
 
-	public Turn enemyTurn(Enemy enemy) {
-		if(canAttack(enemy)) {
-			System.out.println("I attacked!");
-			return Turn.ATTACK;
-		}
-		else {
-			if(move(enemy, enemy.getNextMove()))
-				return Turn.MOVE;
-			else
-				return Turn.NONE;
-		}
-	}
-	
 	public boolean canAttack(Enemy enemy) {
 		Point enemyPos = enemy.getPosition();
 		Point playerPos = player.getPosition();
@@ -123,14 +110,7 @@ public class GameController implements Serializable{
 				playerPos.equals(new Point(enemyPos.x, enemyPos.y+1)) ||
 				playerPos.equals(new Point(enemyPos.x-1, enemyPos.y)));
 	}
-	
-	
-	public boolean collision(GameObject object1, GameObject object2) {
-		return (!object1.equals(object2) &&
-				object1.getPosition().equals(object2.getPosition()));
-	}
-	
-	
+		
 	private void loadMap(MapScreen map, Point spawn) {
 		currMap = map;
 		if(!maps.containsKey(currMap)) {
@@ -178,7 +158,6 @@ public class GameController implements Serializable{
 			}
 		}
 		player.setPosition(spawn);
-		
 	}
 
 	public Turn enemyTurn(Enemy enemy) {
@@ -211,21 +190,26 @@ public class GameController implements Serializable{
 	}
 	
 	public boolean attemptAttack(Creature predator, Creature prey) {
-		Point2D predatorPos = predator.getPosition();
-		Point2D preyPos = prey.getPosition();
+		Point predatorPos = predator.getPosition();
+		Point preyPos = prey.getPosition();
+		Point newPoint = new Point(predatorPos.x, predatorPos.y);
 		boolean didAttack = false;
 		switch(predator.getDirection()) {
 		case NORTH:
-			didAttack = preyPos.equals(predatorPos.add(new Point2D(0,-1)));
+			newPoint.translate(0,-1);
+			didAttack = preyPos.equals(newPoint);
 			break;
 		case SOUTH:
-			didAttack = preyPos.equals(predatorPos.add(new Point2D(0,1)));
+			newPoint.translate(0,1);
+			didAttack = preyPos.equals(newPoint);
 			break;
 		case EAST:
-			didAttack = preyPos.equals(predatorPos.add(new Point2D(1,0)));
+			newPoint.translate(1,0);
+			didAttack = preyPos.equals(newPoint);
 			break;
 		case WEST:
-			didAttack = preyPos.equals(predatorPos.add(new Point2D(-1,0)));
+			newPoint.translate(-1,0);
+			didAttack = preyPos.equals(newPoint);
 			break;
 		}
 		if(didAttack) {
