@@ -41,18 +41,10 @@ public class Enemy extends Creature {
 	 * @param attack int The attack power of the enemy
 	 * @param position Point2D The current position of the enemy
 	 */
-	public Enemy(int currentHP, int totalHP, int attack, Point position) {
-		super(currentHP, totalHP, attack, position);
-	}
 
-	/**
-	 * Separate constructor for the EnemyClass for specific enemy types.
-	 * @param position Point2D The current position of the enemy on the game map.
-	 * @param n int The type of movement patter that the enemy will have.
-	 */
-	public Enemy(Point position, int n) {
+	public Enemy(Point position, int movePattern) {
 		super(position);
-		setMovementPattern(n);
+		setMovementPattern(movePattern);
 	}
 	
 	/**
@@ -77,7 +69,8 @@ public class Enemy extends Creature {
 	public Direction[] getMovementPattern() {
 		return current;
 	}
-		
+	
+	
 	/**
 	 * Gets the next move of the enemy based on a specific pattern. 
 	 * @return currentDirection Direction The next direction that the enemy will move.

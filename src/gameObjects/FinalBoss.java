@@ -13,17 +13,6 @@ import javafx.geometry.Point2D;
 public class FinalBoss extends Enemy{
 
 	/**
-	 * Constructor for the FinalBoss Class.
-	 * @param currentHP int The boss's current HP.
-	 * @param totalHP int The boss's totalHP;
-	 * @param attack int The boss's attack power.
-	 * @param position Point2D The boss's position on the game map.
-	 */
-	public FinalBoss(int currentHP, int totalHP, int attack, Point position) {
-		super(currentHP, totalHP, attack, position);
-	}
-	
-	/**
 	 * Separate constructor that hard codes in the stats of the FinalBoss for consistency.
 	 * @param position Point2D The current position of the FinalBoss on the game map.
 	 * @param n int The type of movement pattern that the Boss will have.
@@ -31,8 +20,9 @@ public class FinalBoss extends Enemy{
 
 	public FinalBoss(Point position, int movement) {
 		super(position, movement);
+		setTotalHP(255);
 		this.setCurrentHP(255);
 		this.setAttack(10);
-		this.setImage("assets/idleDark");
+		this.setImage("assets/idleDark.png");
 	}
 }

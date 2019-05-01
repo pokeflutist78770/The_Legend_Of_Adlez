@@ -16,11 +16,12 @@ public class Creature extends GameObject{
 		super(position);
 	}
 	
+
 	public Creature(int currentHP, int totalHP, int attack, Point position) {
 		super(position);
 		this.currentHP = currentHP;
 		this.totalHP = totalHP;
-		this.attack = attack;
+		this.currentHP = totalHP;
 	}
 
 	public void setDirection(Direction dir) {
