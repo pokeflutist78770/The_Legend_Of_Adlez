@@ -60,10 +60,46 @@ public class MainView extends StackPane {
 	private Player player;
 	private GameMap map;
 	private List<GameObject> objects;
+	private MapScreen currMap;
 	private Map<Creature, ImageView> creatureMap;
 	private GameController controller;
 	private VBox pMenu;
 	private BorderPane window;
+	
+	public void loadMap() {
+		currMap = controller.getCurrMap();
+		map = controller.getMapLayout();
+		pane.getChildren().clear();
+		pane.setBackground(new Background(new BackgroundImage(new Image(controller.getMapLayout().getMapString()), null, null, null, null)));
+		creatureMap = new HashMap<Creature, ImageView>();
+		creatureMap.put(player, new ImageView(new Image(player.getImage())));
+		addObject(player);
+		switch (player.getDirection()) {
+		case NORTH:
+			creatureMap.get(player).setViewport(new Rectangle2D(0, 62, 60, 62));
+			break;
+		case SOUTH:
+			creatureMap.get(player).setViewport(new Rectangle2D(0, 0, 60, 62));
+			break;
+		case EAST:
+			creatureMap.get(player).setViewport(new Rectangle2D(420, 186, 60, 62));
+			break;
+		case WEST:
+			creatureMap.get(player).setViewport(new Rectangle2D(0, 124, 60, 62));
+			break;
+		}
+		for (GameObject obstacle : controller.getObstacles()) {
+			addObject(obstacle);
+		}
+		for (Transition obstacle : controller.getTransitions()) {
+			addObject(obstacle);
+		}
+		for (Enemy enemy : controller.getEnemies()) {
+			creatureMap.put(enemy, new ImageView(new Image(enemy.getImage())));
+			addObject(enemy);
+		}
+	}
+	
 	
     public MainView(boolean loadFile) {
     	
@@ -421,6 +457,10 @@ public class MainView extends StackPane {
     	}
     	
     	window.setEffect(null);
+    	
+    	if(currMap!=controller.getCurrMap()) {
+    		loadMap();
+    	}
     	
     	for(Enemy enemy : map.getEnemies())
     		if(controller.enemyTurn(enemy) == Turn.MOVE) {
