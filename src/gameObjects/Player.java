@@ -16,6 +16,7 @@ import java.awt.Point;
 public class Player extends Creature implements Serializable{
 	int currentMoney;
 	int maxMoney;
+	int PotionCount = 0;
 	Item equippedItem = new Dagger(null);
 	List<Item> inventory = new ArrayList<Item>();
 	
@@ -25,10 +26,11 @@ public class Player extends Creature implements Serializable{
 	 */
 	public Player(Point position) {
 		super(position);
-		this.setTotalHP(500);
-		this.setCurrentHP(500);
-		this.setAttack(500);
-		currentMoney = 0;
+
+		this.setTotalHP(20);
+		this.setCurrentHP(2);
+		this.setAttack(1);
+		currentMoney = 50;
 		maxMoney = 500;
 		setDirection(Direction.SOUTH);
 		setImage("assets/adlez1.png");
@@ -63,5 +65,14 @@ public class Player extends Creature implements Serializable{
 	}
 	public List<Item> getInventory(){
 		return inventory;
+	}
+	public void upPotionCount(){
+		PotionCount++;
+	}
+	public void usePotion() {
+		if(PotionCount > 0) {
+			this.incrementHP(20);
+			PotionCount--;
+		}
 	}
 }
