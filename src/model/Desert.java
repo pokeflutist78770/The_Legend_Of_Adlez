@@ -20,12 +20,13 @@ public class Desert extends GameMap {
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	private static Point spawn = new Point(8, 11);
 
 	/**
 	 * Constructor for Desert map.
 	 */
 	public Desert() {
-		super(objects, transitions, enemies, MapScreen.DESERT, "assets/desert.png");
+		super(objects, transitions, enemies, MapScreen.DESERT, "assets/desert.png", spawn);
 
 		objects.add(new GameObject(new Point(0, 0)));
 		objects.add(new GameObject(new Point(0, 1)));
@@ -126,8 +127,8 @@ public class Desert extends GameMap {
 		enemies.add(new Scorpion(new Point(9, 4), 1));
 		enemies.add(new Scorpion(new Point(2, 6), 3));
 		enemies.add(new Scorpion(new Point(14, 7), 1));
-		transitions.add(new Transition(new Point(11, 13), MapScreen.HOME_UP, new Point(11, 0)));
-		transitions.add(new Transition(new Point(12, 13), MapScreen.HOME_UP, new Point(12, 0)));
+		transitions.add(new Transition(new Point(11, 14), MapScreen.HOME_UP, new Point(11, 0)));
+		transitions.add(new Transition(new Point(12, 14), MapScreen.HOME_UP, new Point(12, 0)));
 		setCloneObjects((ArrayList<GameObject>) objects.clone());
 	}
 	public void refresh() {

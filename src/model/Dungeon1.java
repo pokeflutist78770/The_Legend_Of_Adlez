@@ -21,13 +21,13 @@ public class Dungeon1 extends GameMap {
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-
+	private static Point spawn = new Point(9, 12);
 	
 	/**
 	 * Constructor for dungeon1 map.
 	 */
 	public Dungeon1() {
-		super(objects, transitions, enemies, MapScreen.DUNGEON1, "assets/dungeonEntrance.png");
+		super(objects, transitions, enemies, MapScreen.DUNGEON1, "assets/dungeonEntrance.png", spawn);
 		objects.add(new GameObject(new Point(1, 0)));
 		objects.add(new GameObject(new Point(2, 0)));
 		objects.add(new GameObject(new Point(3, 0)));
@@ -41,7 +41,6 @@ public class Dungeon1 extends GameMap {
 		objects.add(new GameObject(new Point(11, 0)));
 		objects.add(new GameObject(new Point(12, 0)));
 		objects.add(new GameObject(new Point(13, 0)));
-		objects.add(new GameObject(new Point(14, 0)));
 		objects.add(new GameObject(new Point(15, 0)));
 		objects.add(new GameObject(new Point(16, 0)));
 		objects.add(new GameObject(new Point(1, 1)));
@@ -177,8 +176,8 @@ public class Dungeon1 extends GameMap {
 		enemies.add(new Poe(new Point(1, 6), 1));
 		enemies.add(new Poe(new Point(10, 10), 1));
 	    enemies.add(new Poe(new Point(15, 7), 2));
-		transitions.add(new Transition(new Point(9, 13), MapScreen.MOUNTAIN, new Point(9, 2)));
-		transitions.add(new Transition(new Point(14, 1), MapScreen.DUNGEON2, new Point(14, 12)));
+		transitions.add(new Transition(new Point(9, 14), MapScreen.MOUNTAIN, new Point(9, 2)));
+		transitions.add(new Transition(new Point(14, 0), MapScreen.DUNGEON2, new Point(14, 13)));
 		setCloneObjects((ArrayList<GameObject>) objects.clone());
 	}
 	public void refresh() {

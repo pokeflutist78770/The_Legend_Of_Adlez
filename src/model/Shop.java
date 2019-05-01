@@ -22,13 +22,14 @@ public class Shop extends GameMap {
 	private static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private static ArrayList<Transition> transitions = new ArrayList<Transition>();
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	private static Point spawn = new Point(6, 10);
 	
 	
 	/**
 	 * Constructor for Shop mapscreen.
 	 */
 	public Shop() {
-		super(objects, transitions, enemies, MapScreen.SHOP, "assets/itemShop.png");
+		super(objects, transitions, enemies, MapScreen.SHOP, "assets/itemShop.png", spawn);
 		objects.add(new GameObject(new Point(3, 3)));
 		objects.add(new GameObject(new Point(3, 4)));
 		objects.add(new GameObject(new Point(3, 5)));
@@ -121,7 +122,7 @@ public class Shop extends GameMap {
 		objects.add(new GameObject(new Point(13, 11)));
 		objects.add(new GameObject(new Point(13, 12)));
 		objects.add(new GameObject(new Point(13, 13)));
-		transitions.add(new Transition(new Point(11, 13), MapScreen.RIVER, new Point(5, 5)));
+		transitions.add(new Transition(new Point(11, 14), MapScreen.RIVER, new Point(5, 5)));
 		setCloneObjects((ArrayList<GameObject>) objects.clone());
 	}
 	public void refresh() {

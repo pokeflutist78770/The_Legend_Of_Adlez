@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -17,14 +18,16 @@ public abstract class GameMap implements Serializable{
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	private MapScreen map;
 	private String mapString;
+	private Point spawn;
 
 	public GameMap(ArrayList<GameObject> objects, ArrayList<Transition> transitions, ArrayList<Enemy> enemies,
-			MapScreen screen, String mapString) {
+			MapScreen screen, String mapString, Point spawn) {
 		this.objects = objects;
 		this.transitions = transitions;
 		this.enemies = enemies;
 		this.map = screen;
 		this.mapString = mapString;
+		this.spawn = spawn;
 	}
 	
 	public void refresh() {
