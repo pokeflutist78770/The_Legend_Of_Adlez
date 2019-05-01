@@ -398,10 +398,21 @@ public class MainView extends StackPane {
 							textBox = new ImageView(new Image("assets/SwordBuy.png"));
 							pane.getChildren().add(textBox);
 							price = 25;
-						} else {
+						} else if (shopI.getItemNum() == 2){
 							textBox = new ImageView(new Image("assets/PotionBuy.png"));
 							pane.getChildren().add(textBox);
 							price = 10;
+						}
+						else {
+							if (player.hasKey() ) {
+								pane.setBackground(new Background(new BackgroundImage(new Image("assets/bossRoomOpen.png"), null, null, null, null)));
+								Door door = null;
+								for (GameObject object: controller.getObstacles()) {
+									if (object instanceof Door)
+										door = (Door) object;
+								}
+								controller.getObstacles().remove(door);
+							}
 						}
 						break;
 					} else {

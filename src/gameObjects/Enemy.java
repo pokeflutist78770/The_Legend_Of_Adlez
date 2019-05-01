@@ -31,11 +31,12 @@ public class Enemy extends Creature {
 	
 	private Direction[] horizontal = {EAST, EAST, EAST, EAST, EAST, WEST, WEST, WEST, WEST, WEST};
 	private Direction[] vertical = {SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, NORTH, NORTH, NORTH, NORTH, NORTH};
-	private Direction[] square = {SOUTH, SOUTH, EAST, EAST, NORTH, NORTH, WEST, WEST};
-	private Direction[] boss = {SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, WEST, WEST, WEST, NORTH, NORTH, NORTH,
-		                    NORTH, NORTH, NORTH, EAST, EAST, NORTH, NORTH, EAST, SOUTH, SOUTH, SOUTH, SOUTH, SOUTH,
-				    SOUTH, SOUTH, SOUTH, EAST, EAST, EAST, NORTH, NORTH, NORTH, NORTH, NORTH, NORTH, WEST, 
-				    WEST, NORTH, NORTH, WEST, SOUTH};
+	private Direction[] square = {SOUTH, SOUTH, EAST, EAST, EAST, NORTH, NORTH, NORTH, WEST, WEST, WEST, SOUTH};
+	private Direction[] boss = {SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, WEST, WEST, WEST, WEST, NORTH, 
+								NORTH, NORTH, NORTH, NORTH, NORTH, NORTH, EAST, EAST, EAST, NORTH, NORTH, 
+								NORTH, EAST, EAST, SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, SOUTH, 
+								SOUTH, EAST, EAST, EAST, EAST, NORTH, NORTH, NORTH, NORTH, NORTH, NORTH, 
+								NORTH, WEST, WEST, WEST, NORTH, NORTH, NORTH, WEST, WEST, SOUTH, SOUTH};
 	private Direction[] current; 
 	private int index = 0;
 	private boolean dropped = false;
