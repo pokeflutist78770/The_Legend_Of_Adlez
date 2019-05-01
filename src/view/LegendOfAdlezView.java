@@ -24,8 +24,7 @@ public class LegendOfAdlezView extends Application{
 	private static HashMap<String, AudioClip> soundEffects;
 	
 	private static MediaPlayer songPlayer;
-	
-	
+		
 	public static void main(String args[]) {
 		launch(args);
 	}

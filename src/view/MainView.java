@@ -84,6 +84,10 @@ public class MainView extends StackPane {
 	private boolean transaction = false;
 	private int price = 0;
 	private ImageView textBox = new ImageView();
+	StackPane healthStack;
+	Label health;
+	StackPane coinStack;
+	Label coins; 
 
 	public void loadMap() {
 		currMap = controller.getCurrMap();
@@ -145,6 +149,8 @@ public class MainView extends StackPane {
 			addObject(displayShopKeeper);
 			
 		}
+		pane.getChildren().add(healthStack);
+		pane.getChildren().add(coinStack);
 	}
 
 	public MainView(boolean loadFile) {
@@ -290,6 +296,13 @@ public class MainView extends StackPane {
 		window.setBottom(tilePane);
 
 		player = controller.getPlayer();
+		health = new Label();
+		coins = new Label();
+		healthStack = new StackPane();
+		coinStack = new StackPane();
+		coinStack.setTranslateX(50);
+		healthStack.getChildren().addAll(new ImageView(new Image("assets/heart.png")), health);
+		coinStack.getChildren().addAll(new ImageView(new Image("assets/goldCoin.png")), coins);
 		loadMap();
 		/*
 		 * Continous loop functioning as the games internal "clock". Screen updates on
@@ -635,6 +648,8 @@ public class MainView extends StackPane {
 	 * to be defeated.
 	 */
 	public void onUpdate() {
+		health.setText(String.valueOf(player.getCurrentHP()));
+		coins.setText(String.valueOf(player.getCurrentMoney()));
 		kMenu.setVisible(controller.died);
 		
 		if (controller.died) {

@@ -41,7 +41,6 @@ public class GameController implements Serializable{
 		
 	}
 
-
 	public boolean move(Creature character, Direction dir) {
 		Direction currDir = character.getDirection();
 		Point currPos = character.getPosition();
@@ -179,7 +178,7 @@ public class GameController implements Serializable{
 				newMap = new Desert();
 				break;
 			case DUNGEON2:
-				newMap = new Dungeon2Open();
+				newMap = new Dungeon2();
 				break;
 			case DUNGEON3:
 				newMap = new Dungeon3();

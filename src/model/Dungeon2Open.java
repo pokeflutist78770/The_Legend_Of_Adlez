@@ -128,7 +128,7 @@ public class Dungeon2Open extends GameMap {
 		objects.add(new GameObject(new Point(11, 12)));
 		objects.add(new GameObject(new Point(12, 12)));
 		objects.add(new GameObject(new Point(13, 12)));
-		objects.add(new GameObject(new Point(14, 12)));
+//		objects.add(new GameObject(new Point(14, 12)));
 		objects.add(new GameObject(new Point(16, 12)));
 		objects.add(new GameObject(new Point(4, 3)));
 		objects.add(new GameObject(new Point(6, 3)));
