@@ -101,7 +101,26 @@ public class MainView extends StackPane {
 			addObject(obstacle);
 		}
 		for (Enemy enemy : controller.getEnemies()) {
-			creatureMap.put(enemy, new ImageView(new Image(enemy.getImage())));
+			if(enemy instanceof Slime) {
+				ImageView sprite = new ImageView(new Image(enemy.getImage()));
+				sprite.setViewport(new Rectangle2D(0,0,48,48));
+				creatureMap.put(enemy, sprite);
+			}
+			else if(enemy instanceof Scorpion) {
+				ImageView sprite = new ImageView(new Image(enemy.getImage()));
+				sprite.setViewport(new Rectangle2D(0,0,48,48));
+				creatureMap.put(enemy, sprite);
+			}
+			else if(enemy instanceof Poe) {
+				ImageView sprite = new ImageView(new Image(enemy.getImage()));
+				sprite.setViewport(new Rectangle2D(0,0,48,48));
+				creatureMap.put(enemy, sprite);
+			}
+			else {
+				ImageView sprite = new ImageView(new Image(enemy.getImage()));
+				sprite.setViewport(new Rectangle2D(0,0,48,48));
+				creatureMap.put(enemy, sprite);
+			}
 			addObject(enemy);
 		}
 	}
@@ -220,10 +239,17 @@ public class MainView extends StackPane {
 		 * each tick.
 		 */
 		AnimationTimer timer = new AnimationTimer() {
-			@Override
-			public void handle(long now) {
-				onUpdate();
-			}
+			private long lastUpdate = 0 ;
+            @Override
+            public void handle(long now) {
+            		if(currMap != controller.getCurrMap()) {
+        			loadMap();
+            		}
+                    if (now - lastUpdate >= 850_000_000) {
+                    	onUpdate();
+                        lastUpdate = now ;
+                    }
+            }
 		};
 		timer.start();
 
@@ -250,6 +276,19 @@ public class MainView extends StackPane {
 			case SPACE: {
 				switch (player.getDirection()) {
 				case NORTH: {
+					if(player.getEquippedItem() instanceof Dagger) {
+						Animation animation = new SpriteAnimation(
+				                creatureMap.get(player),
+				                Duration.millis(250),
+				                2, 2,
+				                60, 434,
+				                60, 62
+				        );
+				        animation.setCycleCount(1);
+				        animation.play();
+				        interact = true;
+				        break;
+					}
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
 							434, 60, 62);
 					animation.setCycleCount(1);
@@ -265,7 +304,19 @@ public class MainView extends StackPane {
 					break;
 				}
 				case SOUTH: {
-
+					if(player.getEquippedItem() instanceof Dagger) {
+						Animation animation = new SpriteAnimation(
+				                creatureMap.get(player),
+				                Duration.millis(250),
+				                2, 2,
+				                120, 248,
+				                60, 62
+				        );
+				        animation.setCycleCount(1);
+				        animation.play();
+				        interact = true;
+				        break;
+					}
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 6, 6, 0,
 							248, 60, 62);
 					animation.setCycleCount(1);
@@ -281,6 +332,19 @@ public class MainView extends StackPane {
 					break;
 				}
 				case EAST: {
+					if(player.getEquippedItem() instanceof Dagger) {
+						Animation animation = new SpriteAnimation(
+				                creatureMap.get(player),
+				                Duration.millis(250),
+				                2, 2,
+				                60, 372,
+				                60, 62
+				        );
+				        animation.setCycleCount(1);
+				        animation.play();
+				        interact = true;
+				        break;
+					}
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
 							372, 60, 62);
 					animation.setCycleCount(1);
@@ -296,6 +360,19 @@ public class MainView extends StackPane {
 					break;
 				}
 				case WEST: {
+					if(player.getEquippedItem() instanceof Dagger) {
+						Animation animation = new SpriteAnimation(
+				                creatureMap.get(player),
+				                Duration.millis(250),
+				                2, 2,
+				                60, 310,
+				                60, 62
+				        );
+				        animation.setCycleCount(1);
+				        animation.play();
+				        interact = true;
+				        break;
+					}
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5, 0,
 							310, 60, 62);
 					animation.setCycleCount(1);
@@ -426,39 +503,119 @@ public class MainView extends StackPane {
 		}
 		image.setTranslateX(x);
 		image.setTranslateY(y);
-	    pane.getChildren().add(image);
-    }
-    
-    
-    /*
-     * Checks for collision between the player and any weapons or enemies.
-     * If player is colliding with a weapon, player picks it up. Having weapon
-     * allows enemies to be defeated.
-     */
-    public void onUpdate() {
-    
-    	pMenu.setVisible(GameController.isPaused);
-    	
-    	
-    	if(GameController.isPaused) {
-    		window.setEffect(new GaussianBlur());
-    		return;
-    	}
-    	
-    	window.setEffect(null);
-    	
-    	if(currMap!=controller.getCurrMap()) {
-    		loadMap();
-    	}
-    	
-    	for(Enemy enemy : map.getEnemies())
-    		if(controller.enemyTurn(enemy) == Turn.MOVE) {
-    			Point pos = enemy.getPosition();
-				creatureMap.get(enemy).setTranslateX(pos.getX() * BLOCKWIDTH);
-				creatureMap.get(enemy).setTranslateY(pos.getY() * BLOCKHEIGHT);
-    		}
-    }
-    
+		pane.getChildren().add(image);
+	}
+
+	/*
+	 * Checks for collision between the player and any weapons or enemies. If player
+	 * is colliding with a weapon, player picks it up. Having weapon allows enemies
+	 * to be defeated.
+	 */
+	public void onUpdate() {
+
+		pMenu.setVisible(GameController.isPaused);
+
+		if (GameController.isPaused) {
+			window.setEffect(new GaussianBlur());
+			return;
+		}
+
+		window.setEffect(null);
+
+		if(currMap != controller.getCurrMap()) {
+			loadMap();
+		}
+		for (Enemy enemy : map.getEnemies()) {
+			Point2D startPos = enemy.getPosition();
+			if (controller.enemyTurn(enemy) == Turn.MOVE) {
+				Point2D pos = enemy.getPosition();
+				Path path = new Path();
+				path.getElements().add(new MoveTo(startPos.getX() * 48 + 24, startPos.getY() * 48 + 24));
+				path.getElements().add(new LineTo(pos.getX() * 48 + 24, pos.getY() * 48 + 24));
+				PathTransition pathTransition = new PathTransition();
+				pathTransition.setDuration(Duration.millis(750));
+				pathTransition.setNode(creatureMap.get(enemy));
+				pathTransition.setPath(path);
+				pathTransition.play();
+				if(enemy instanceof Slime || enemy instanceof Scorpion) {
+					switch(enemy.getDirection()) {
+					case NORTH:{
+						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 0,
+								144, 48, 48);
+						animation.setCycleCount(1);
+						animation.play();
+						break;
+						}
+					case SOUTH:{
+						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 0,
+								0, 48, 48);
+						animation.setCycleCount(1);
+						animation.play();
+						break;
+						}
+					case EAST:{
+						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 0,
+								96, 48, 48);
+						animation.setCycleCount(1);
+						animation.play();
+						break;
+						}
+					case WEST:{
+						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 0,
+								48, 48, 48);
+						animation.setCycleCount(1);
+						animation.play();
+						break;
+						}
+					default:
+						break;
+					}	
+				}
+				else if(enemy instanceof Poe) {
+					Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(1), 10, 10, 0,
+							0, 48, 48);
+					animation.setCycleCount(1);
+					animation.play();
+				}
+				else {
+					switch(enemy.getDirection()) {
+					case NORTH:{
+						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 288,
+								0, 48, 48);
+						animation.setCycleCount(1);
+						animation.play();
+						break;
+						}
+					case SOUTH:{
+						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 0,
+								0, 48, 48);
+						animation.setCycleCount(1);
+						animation.play();
+						break;
+						}
+					case EAST:{
+						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 144,
+								0, 48, 48);
+						animation.setCycleCount(1);
+						animation.play();
+						break;
+						}
+					case WEST:{
+						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(750), 3, 3, 432,
+								0, 48, 48);
+						animation.setCycleCount(1);
+						animation.play();
+						break;
+						}
+					default:
+						break;
+					}
+					
+				}
+				}
+		}
+	}
+
     
     private class ButtonHandler implements EventHandler<ActionEvent>{
 
@@ -495,5 +652,6 @@ public class MainView extends StackPane {
     }
 
 }  
+
 
 

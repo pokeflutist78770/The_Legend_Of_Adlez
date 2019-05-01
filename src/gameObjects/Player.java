@@ -16,7 +16,7 @@ import java.awt.Point;
 public class Player extends Creature implements Serializable{
 	int currentMoney;
 	int maxMoney;
-	Item equippedItem;
+	Item equippedItem = new Dagger(null);
 	List<Item> inventory = new ArrayList<Item>();
 	
 	
