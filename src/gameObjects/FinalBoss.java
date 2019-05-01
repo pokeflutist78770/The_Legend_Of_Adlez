@@ -24,5 +24,6 @@ public class FinalBoss extends Enemy{
 		this.setCurrentHP(255);
 		this.setAttack(10);
 		this.setImage("assets/boss.png");
+
 	}
 }
