@@ -526,9 +526,9 @@ public class MainView extends StackPane {
 			loadMap();
 		}
 		for (Enemy enemy : map.getEnemies()) {
-			Point2D startPos = enemy.getPosition();
+			Point startPos = enemy.getPosition();
 			if (controller.enemyTurn(enemy) == Turn.MOVE) {
-				Point2D pos = enemy.getPosition();
+				Point pos = enemy.getPosition();
 				Path path = new Path();
 				path.getElements().add(new MoveTo(startPos.getX() * 48 + 24, startPos.getY() * 48 + 24));
 				path.getElements().add(new LineTo(pos.getX() * 48 + 24, pos.getY() * 48 + 24));

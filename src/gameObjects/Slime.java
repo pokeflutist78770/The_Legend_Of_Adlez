@@ -1,6 +1,8 @@
 
 package gameObjects;
 
+import java.awt.Point;
+
 import javafx.geometry.Point2D;
 
 /**
@@ -17,7 +19,7 @@ public class Slime extends Enemy {
 	 * @param attack int The attack power of the Slime.
 	 * @param position Point2D The current position of the Slime.
 	 */
-	public Slime(int currentHP, int totalHP, int attack, Point2D position) {
+	public Slime(int currentHP, int totalHP, int attack, Point position) {
 		super(currentHP, totalHP, attack, position);
 	}
 
@@ -26,7 +28,7 @@ public class Slime extends Enemy {
 	 * @param position Point2D The current position of the Slime on the game map.
 	 * @param n int The type of movement pattern that the Slime will have.
 	 */
-	public Slime(Point2D position, int movement) {
+	public Slime(Point position, int movement) {
 		super(position, movement);
 		setCurrentHP(10);
 		setAttack(1);
