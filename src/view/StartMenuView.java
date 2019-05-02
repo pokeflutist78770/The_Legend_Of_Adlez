@@ -258,7 +258,6 @@ public class StartMenuView extends StackPane{
 		@Override
 		public void handle(ActionEvent arg0) {
 			Button button=(Button) arg0.getSource();
-			System.out.println(button.getId());
 			
 			//continue and save file exists
 			if(button.getId().equals("Continue") && !button.isDisabled()) {

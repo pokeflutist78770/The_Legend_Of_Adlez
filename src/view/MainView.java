@@ -258,7 +258,6 @@ public class MainView extends StackPane {
 		
 		// we want to load a save file
 		if (loadFile) {
-			System.out.println("[LOAD FILE]");
 			File file = new File(GameController.SAVE_FILE);
 			try {
 				ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file));
@@ -410,7 +409,6 @@ public class MainView extends StackPane {
 								for (GameObject object: controller.getObstacles()) {
 									if (object instanceof ShopItem) {
 										door = (ShopItem) object;
-										System.out.println("in");
 										break;
 									}
 								}
@@ -518,7 +516,7 @@ public class MainView extends StackPane {
 				
 			case W:
 			case UP:
-				if(GameController.isPaused || GameController.won || controller.died) return;
+				if(GameController.isPaused || controller.won || controller.died) return;
 				
 				if (transaction) {
 					textBox.setImage(null);
@@ -542,7 +540,7 @@ public class MainView extends StackPane {
 				break;
 			case S:
 			case DOWN:
-				if(GameController.isPaused || GameController.won || controller.died) return;
+				if(GameController.isPaused || controller.won || controller.died) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -565,7 +563,7 @@ public class MainView extends StackPane {
 				break;
 			case D:
 			case RIGHT:
-				if(GameController.isPaused || GameController.won || controller.died) return;
+				if(GameController.isPaused || controller.won || controller.died) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -588,7 +586,7 @@ public class MainView extends StackPane {
 				break;
 			case A:
 			case LEFT:
-				if(GameController.isPaused || GameController.won || controller.died) return;
+				if(GameController.isPaused || controller.won || controller.died) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -631,8 +629,6 @@ public class MainView extends StackPane {
 				pathTransition.play();
 			} else
 				keyListener = true;
-			
-			System.out.println("[PLAYER]: :"+player.getPosition());
 		});
 		
 	
@@ -679,9 +675,9 @@ public class MainView extends StackPane {
 			return;
         }
 		
-		wMenu.setVisible(GameController.won);
+		wMenu.setVisible(controller.won);
 		
-		if (GameController.won) {
+		if (controller.won) {
 			window.setEffect(new GaussianBlur());
 			return;
         }
