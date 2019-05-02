@@ -49,7 +49,9 @@ public class LegendOfAdlezView extends Application{
 		primaryStage.show();
 	}
 	
-	
+	/**
+	 * Creates variables for all the sound files.
+	 */
 	private void initializeMusic() {
 		songs=new HashMap<>();
 		soundEffects=new HashMap<>();
@@ -60,6 +62,7 @@ public class LegendOfAdlezView extends Application{
 		songs.put("mountain", new Media(new File("src/assets/mountain.mp3").toURI().toString()));
 		songs.put("dungeon", new Media(new File("src/assets/dungeon.mp3").toURI().toString()));
 		songs.put("desert", new Media(new File("src/assets/desert.mp3").toURI().toString()));
+		songs.put("boss", new Media(new File("src/assets/boss.mp3").toURI().toString()));
 		songs.put("victory", new Media(new File("src/assets/victory.mp3").toURI().toString()));
 		
 		soundEffects.put("shout", new AudioClip("file:src/assets/attack.wav"));
@@ -109,7 +112,6 @@ public class LegendOfAdlezView extends Application{
 			return;
 		}
 		
-		System.out.println(songPlayer.getStatus());
 		
 		if (songPlayer.getStatus().equals(Status.PLAYING)) {
 			songPlayer.stop();
@@ -125,9 +127,11 @@ public class LegendOfAdlezView extends Application{
 		songPlayer.play();
 	}
 	
-	
+	/**
+	 * Changes the view after a refresh
+	 * @param view Pane The new view
+	 */
 	public static void changeView(Pane view) {
-		System.out.println("CHANGE");
 		mainPane.getChildren().clear();
 		mainPane.getChildren().removeAll(mainPane.getChildren());
 		mainPane.getChildren().add(view);

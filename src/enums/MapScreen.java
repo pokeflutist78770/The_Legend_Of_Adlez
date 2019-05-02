@@ -24,12 +24,16 @@ public enum MapScreen implements Serializable{
 		else if(this.toString().equals("MOUNTAIN")) {
 			return "mountain";
 		}
+		else if(this.toString().equals("DUNGEON3")) {
+			return "boss";
+		}
 		else if(this.toString().startsWith("DUNGEON")) {
 			return "dungeon";
 		}
 		else if(this.toString().equals("SHOP")) {
 			return "shop";
 		}
+		
 		
 		return "";
 	}

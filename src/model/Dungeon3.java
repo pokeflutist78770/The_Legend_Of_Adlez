@@ -41,7 +41,6 @@ public class Dungeon3 extends GameMap {
 		objects.add(new GameObject(new Point(0, 11)));
 		objects.add(new GameObject(new Point(0, 12)));
 		objects.add(new GameObject(new Point(0, 13)));
-		objects.add(new GameObject(new Point(1, 13)));
 		objects.add(new GameObject(new Point(17, 0)));
 		objects.add(new GameObject(new Point(17, 1)));
 		objects.add(new GameObject(new Point(17, 2)));
@@ -72,6 +71,7 @@ public class Dungeon3 extends GameMap {
 		objects.add(new GameObject(new Point(14, 0)));
 		objects.add(new GameObject(new Point(15, 0)));
 		objects.add(new GameObject(new Point(16, 0)));
+		objects.add(new GameObject(new Point(1, 13)));
 		objects.add(new GameObject(new Point(3, 13)));
 		objects.add(new GameObject(new Point(4, 13)));
 		objects.add(new GameObject(new Point(5, 13)));
@@ -86,7 +86,7 @@ public class Dungeon3 extends GameMap {
 		objects.add(new GameObject(new Point(14, 13)));
 		objects.add(new GameObject(new Point(15, 13)));
 		objects.add(new GameObject(new Point(16, 13)));
-		objects.add(new GameObject(new Point(2, 12)));
+		objects.add(new GameObject(new Point(1, 12)));
 		objects.add(new GameObject(new Point(3, 12)));
 		objects.add(new GameObject(new Point(4, 12)));
 		objects.add(new GameObject(new Point(5, 12)));
@@ -98,7 +98,7 @@ public class Dungeon3 extends GameMap {
 		objects.add(new GameObject(new Point(11, 12)));
 		objects.add(new GameObject(new Point(12, 12)));
 		objects.add(new GameObject(new Point(13, 12)));
-		objects.add(new GameObject(new Point(14, 12)));
+		//objects.add(new GameObject(new Point(14, 12)));
 		objects.add(new GameObject(new Point(15, 12)));
 		objects.add(new GameObject(new Point(16, 12)));
 		objects.add(new GameObject(new Point(1, 2)));

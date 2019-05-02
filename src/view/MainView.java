@@ -146,9 +146,9 @@ public class MainView extends StackPane {
 			addObject(displaySword);
 			addObject(displayPotion);
 			addObject(displayShopKeeper);
-			
 		}
 		pane.getChildren().addAll(inventory);
+
 	}
 
 	public MainView(boolean loadFile) {
@@ -256,7 +256,6 @@ public class MainView extends StackPane {
 		
 		// we want to load a save file
 		if (loadFile) {
-			System.out.println("[LOAD FILE]");
 			File file = new File(GameController.SAVE_FILE);
 			try {
 				ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file));
@@ -307,6 +306,7 @@ public class MainView extends StackPane {
 		potionStack.getChildren().addAll(new ImageView(new Image("assets/potion.png")), potions);
 		inventory = new HBox();
 		inventory.getChildren().addAll(healthStack, coinStack, potionStack, sword, key);
+
 		loadMap();
 		/*
 		 * Continous loop functioning as the games internal "clock". Screen updates on
@@ -394,7 +394,7 @@ public class MainView extends StackPane {
 							interacted = object;
 							break;
 						}
-					}
+					} 
 					if (interact) {
 						transaction = true;
 						ShopItem shopI = (ShopItem) interacted;
@@ -410,10 +410,12 @@ public class MainView extends StackPane {
 						else {
 							if (player.hasKey() ) {
 								pane.setBackground(new Background(new BackgroundImage(new Image("assets/bossRoomOpen.png"), null, null, null, null)));
-								Door door = null;
+								ShopItem door = null;
 								for (GameObject object: controller.getObstacles()) {
-									if (object instanceof Door)
-										door = (Door) object;
+									if (object instanceof ShopItem) {
+										door = (ShopItem) object;
+										break;
+									}
 								}
 								controller.getObstacles().remove(door);
 							}
@@ -519,7 +521,7 @@ public class MainView extends StackPane {
 				
 			case W:
 			case UP:
-				if(GameController.isPaused || GameController.won || controller.died) return;
+				if(GameController.isPaused || controller.won || controller.died) return;
 				
 				if (transaction) {
 					textBox.setImage(null);
@@ -543,7 +545,7 @@ public class MainView extends StackPane {
 				break;
 			case S:
 			case DOWN:
-				if(GameController.isPaused || GameController.won || controller.died) return;
+				if(GameController.isPaused || controller.won || controller.died) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -566,7 +568,7 @@ public class MainView extends StackPane {
 				break;
 			case D:
 			case RIGHT:
-				if(GameController.isPaused || GameController.won || controller.died) return;
+				if(GameController.isPaused || controller.won || controller.died) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -589,7 +591,7 @@ public class MainView extends StackPane {
 				break;
 			case A:
 			case LEFT:
-				if(GameController.isPaused || GameController.won || controller.died) return;
+				if(GameController.isPaused || controller.won || controller.died) return;
 				if (transaction) {
 					textBox.setImage(null);
 					transaction = false;
@@ -633,6 +635,8 @@ public class MainView extends StackPane {
 			} else
 				keyListener = true;
 		});
+		
+	
 	}
 	
 
@@ -668,6 +672,7 @@ public class MainView extends StackPane {
 		potions.setText(String.valueOf(player.getPotionCount()));
 		sword.setVisible(player.getEquippedItem() instanceof Sword);
 		key.setVisible(player.hasKey());
+
 		kMenu.setVisible(controller.died);
 		
 		if (controller.died) {
@@ -679,15 +684,18 @@ public class MainView extends StackPane {
 			return;
         }
 		
-		wMenu.setVisible(GameController.won);
+		wMenu.setVisible(controller.won);
 		
-		if (GameController.won) {
+		if (controller.won) {
 			window.setEffect(new GaussianBlur());
 			return;
         }
 		
+		
 		pMenu.setVisible(GameController.isPaused);
-
+		kMenu.setVisible(false);
+		
+		
 		if (GameController.isPaused) {
 			keyListener = true;
 			window.setEffect(new GaussianBlur());
@@ -888,12 +896,15 @@ public class MainView extends StackPane {
 				LegendOfAdlezView.changeView(new StartMenuView());
 				// Platform.exit();
 			}
-
-			
 		}
-    	
     }
 	
+	
+	/**
+	 * Method for the player to buy something in the shop and subtracts the amount from the player's cash.
+	 * @param price int The price of item being purchased.
+	 * @param player Player The player to be able to check their current money.
+	 */
     public void buyItem(int price, Player player ) {
     	if(price == 25) {
     		player.setCurrentMoney(player.getCurrentMoney() - 25);

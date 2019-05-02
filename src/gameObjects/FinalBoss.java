@@ -21,7 +21,7 @@ public class FinalBoss extends Enemy{
 	public FinalBoss(Point position, int movement) {
 		super(position, movement);
 		setTotalHP(255);
-		this.setCurrentHP(1);
+		this.setCurrentHP(10);
 		this.setAttack(0);
 		this.setImage("assets/boss.png");
 		super.setAttackSound("boss");

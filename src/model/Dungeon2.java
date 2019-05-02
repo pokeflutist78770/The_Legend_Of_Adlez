@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import enums.MapScreen;
 import gameObjects.GameObject;
+import gameObjects.Key;
 import gameObjects.ShopItem;
 
 import java.awt.Point;
@@ -60,7 +61,6 @@ public class Dungeon2 extends GameMap {
 		objects.add(new GameObject(new Point(17, 12)));
 		objects.add(new GameObject(new Point(17, 13)));
 		objects.add(new GameObject(new Point(1, 0)));
-		objects.add(new GameObject(new Point(2, 0)));
 		objects.add(new GameObject(new Point(3, 0)));
 		objects.add(new GameObject(new Point(4, 0)));
 		objects.add(new GameObject(new Point(5, 0)));
@@ -134,6 +134,7 @@ public class Dungeon2 extends GameMap {
 		objects.add(new GameObject(new Point(11, 12)));
 		objects.add(new GameObject(new Point(12, 12)));
 		objects.add(new GameObject(new Point(13, 12)));
+		objects.add(new GameObject(new Point(15, 12)));
 		objects.add(new GameObject(new Point(16, 12)));
 		objects.add(new GameObject(new Point(4, 3)));
 		objects.add(new GameObject(new Point(6, 3)));
