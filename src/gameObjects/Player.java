@@ -76,6 +76,9 @@ public class Player extends Creature implements Serializable{
 			PotionCount--;
 		}
 	}
+	public int getPotionCount() {
+		return PotionCount;
+	}
 	public void incrementMoney(int amt) {
 		this.currentMoney += amt;
 	}
