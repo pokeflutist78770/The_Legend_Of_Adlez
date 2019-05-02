@@ -15,11 +15,11 @@ import enums.MapScreen;
 import enums.Turn;
 import gameObjects.*;
 
-class TestGameObjects {
+class TestSuite {
 	GameController ctrl;
 	Point pt;
 	@Test
-	void test() {
+	void testGameController() {
 		pt = new Point(5,5);
 		ctrl = new GameController();
 		for(MapScreen screen : MapScreen.values())

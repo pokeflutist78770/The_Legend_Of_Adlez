@@ -26,7 +26,7 @@ import view.LegendOfAdlezView;
 public class GameController implements Serializable{
 	public static boolean isPaused=false;
 	public boolean died = false;
-	public static boolean won = false;
+	public boolean won = false;
 	public static final String SAVE_FILE="save_file.dat";
 	private GameMap map;
 	private Player player;
@@ -185,7 +185,7 @@ public class GameController implements Serializable{
 	 * @param map   MapScreen The current map the player is on.
 	 * @param spawn Point The player's spawn point in the current map.
 	 */
-	private void loadMap(MapScreen map, Point spawn) {
+	public void loadMap(MapScreen map, Point spawn) {
 		currMap = map;
 		if(!maps.containsKey(currMap)) {
 			GameMap newMap = null;
