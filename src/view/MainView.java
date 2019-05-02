@@ -84,12 +84,9 @@ public class MainView extends StackPane {
 	private boolean transaction = false;
 	private int price = 0;
 	private ImageView textBox = new ImageView();
-	StackPane healthStack;
-	Label health;
-	StackPane coinStack;
-	Label coins; 
-	StackPane potionStack;
-	Label potions;
+	HBox inventory;
+	Label health, coins, potions;
+	ImageView sword, key;
 
 	public void loadMap() {
 		currMap = controller.getCurrMap();
@@ -149,17 +146,9 @@ public class MainView extends StackPane {
 			addObject(displaySword);
 			addObject(displayPotion);
 			addObject(displayShopKeeper);
-			
-		} 
-		pane.getChildren().add(healthStack);
-		pane.getChildren().add(coinStack);
-		if (player.hasKey()) {
-			ImageView temp = new ImageView(new Image(("assets/key.png")));
-			temp.setTranslateX(150);
-			pane.getChildren().add(temp);
 		}
-		pane.getChildren().add(potionStack);
-		
+		pane.getChildren().addAll(inventory);
+
 	}
 
 	public MainView(boolean loadFile) {
@@ -307,14 +296,17 @@ public class MainView extends StackPane {
 		health = new Label();
 		coins = new Label();
 		potions = new Label();
-		healthStack = new StackPane();
-		coinStack = new StackPane();
-		potionStack = new StackPane();
-		potionStack.setTranslateX(100);
-		coinStack.setTranslateX(50);
+		sword = new ImageView(new Image("assets/sword.png"));
+		key = new ImageView(new Image("assets/key.png"));
+		StackPane healthStack = new StackPane();
+		StackPane coinStack = new StackPane();
+		StackPane potionStack = new StackPane();
 		healthStack.getChildren().addAll(new ImageView(new Image("assets/heart.png")), health);
 		coinStack.getChildren().addAll(new ImageView(new Image("assets/goldCoin.png")), coins);
 		potionStack.getChildren().addAll(new ImageView(new Image("assets/potion.png")), potions);
+		inventory = new HBox();
+		inventory.getChildren().addAll(healthStack, coinStack, potionStack, sword, key);
+
 		loadMap();
 		/*
 		 * Continous loop functioning as the games internal "clock". Screen updates on
@@ -678,6 +670,9 @@ public class MainView extends StackPane {
 		health.setText(String.valueOf(player.getCurrentHP()));
 		coins.setText(String.valueOf(player.getCurrentMoney()));
 		potions.setText(String.valueOf(player.getPotionCount()));
+		sword.setVisible(player.getEquippedItem() instanceof Sword);
+		key.setVisible(player.hasKey());
+
 		kMenu.setVisible(controller.died);
 		
 		if (controller.died) {

@@ -68,10 +68,6 @@ public class Player extends Creature implements Serializable{
 		return inventory;
 	}
 	
-	
-	public int getPotionCount() {
-		return PotionCount;
-	}
 	public void upPotionCount(){
 		PotionCount++;
 	}
@@ -80,6 +76,9 @@ public class Player extends Creature implements Serializable{
 			this.incrementHP(20);
 			PotionCount--;
 		}
+	}
+	public int getPotionCount() {
+		return PotionCount;
 	}
 	public void incrementMoney(int amt) {
 		this.currentMoney += amt;
