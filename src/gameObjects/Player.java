@@ -67,6 +67,11 @@ public class Player extends Creature implements Serializable{
 	public List<Item> getInventory(){
 		return inventory;
 	}
+	
+	
+	public int getPotionCount() {
+		return PotionCount;
+	}
 	public void upPotionCount(){
 		PotionCount++;
 	}

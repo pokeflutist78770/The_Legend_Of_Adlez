@@ -16,8 +16,7 @@ public class ShopKeeper extends Item {
 	 */
 	public ShopKeeper(Point position) {
 		super(position);
-		this.setImage("assets/ShopKeeper.png");
-		// TODO Auto-generated constructor stub
+		this.setImage("assets/shopKeeper.png");
 	}
 
 }
