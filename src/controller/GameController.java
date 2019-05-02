@@ -34,6 +34,11 @@ public class GameController implements Serializable{
 
 	Map<MapScreen, GameMap> maps;
 
+	
+	/**
+	 * Constructor for controller that places the player at a specific point and
+	 * map. Saves all the maps that have currently been explored.
+	 */
 	public GameController() {
 		player = new Player(new Point(2, 3));
 		maps = new HashMap<MapScreen, GameMap>();
@@ -41,6 +46,15 @@ public class GameController implements Serializable{
 		
 	}
 
+	
+	/**
+	 * Moves a given Creature object in a given direction. Checks to see if they can
+	 * actually move and sets new position.
+	 * 
+	 * @param character Creature The object on the map that needs to be moved.
+	 * @param dir       Direction The direction that the Creature is moving.
+	 * @return boolean Whether or not a move was made.
+	 */
 	public boolean move(Creature character, Direction dir) {
 		Direction currDir = character.getDirection();
 		Point currPos = character.getPosition();
@@ -139,10 +153,22 @@ public class GameController implements Serializable{
 		return false;
 	}
 	
+	
+	/**
+	 * Getter for the maps.
+	 * @return maps Map<MapScreen, GameMap> The maps
+	 */
 	public Map<MapScreen, GameMap> getMaps(){
 		return maps;
 	}
 
+	/**
+	 * Checks the surrounding tiles of a given Enemy to see if the player is around
+	 * them to determine if the enemy should attack.
+	 * 
+	 * @param enemy Enemy The current enemy.
+	 * @return boolean If the player is in a tile adjacent to the given enemy.
+	 */
 	public boolean canAttack(Enemy enemy) {
 		Point enemyPos = enemy.getPosition();
 		Point playerPos = player.getPosition();
@@ -152,6 +178,13 @@ public class GameController implements Serializable{
 				playerPos.equals(new Point(enemyPos.x-1, enemyPos.y)));
 	}
 		
+	
+	/**
+	 * Loads in the map that the player is currently in.
+	 * 
+	 * @param map   MapScreen The current map the player is on.
+	 * @param spawn Point The player's spawn point in the current map.
+	 */
 	private void loadMap(MapScreen map, Point spawn) {
 		currMap = map;
 		if(!maps.containsKey(currMap)) {
@@ -216,6 +249,13 @@ public class GameController implements Serializable{
 		player.setPosition(spawn);
 	}
 
+	
+	/**
+	 * The Enemy's turn. Can either be a move or an attack.
+	 * 
+	 * @param enemy Enemy The current enemy being looked at.
+	 * @return Turn The type of turn that the Enemy took.
+	 */
 	public Turn enemyTurn(Enemy enemy) {
 		Direction tempDir = enemy.getDirection();
 		boolean didAttack = false;
@@ -238,6 +278,13 @@ public class GameController implements Serializable{
 		}
 	}
 	
+	
+	/**
+	 * An attack from the predator to the prey.
+	 * 
+	 * @param predator Creature The object doing the attacking.
+	 * @param prey     Creature The object being attacked.
+	 */
 	public void attack(Creature predator, Creature prey) {
 		prey.decrementHP(predator.getAttack());
 		if(prey.getCurrentHP() == 0) {
@@ -250,6 +297,14 @@ public class GameController implements Serializable{
 		}
 	}
 	
+	
+	/**
+	 * Knockback on the object being attacked. If something was attacked.
+	 * 
+	 * @param predator Creature The object doing the attacking.
+	 * @param prey     Creature The object being attacked.
+	 * @return boolean Whether an attack was made.
+	 */
 	public boolean attemptAttack(Creature predator, Creature prey) {
 		Point predatorPos = predator.getPosition();
 		Point preyPos = prey.getPosition();
@@ -279,36 +334,85 @@ public class GameController implements Serializable{
 		return didAttack;
 	}
 	
+	
+	/**
+	 * Checks if one object collides with another object. Prevents movement if this
+	 * is the case.
+	 * 
+	 * @param object1 GameObject The object that moved.
+	 * @param object2 GameObject The object being moved into.
+	 * @return boolean If a collision happened.
+	 */
 	public boolean collision(GameObject object1, GameObject object2) {
 		return (!object1.equals(object2) &&
 				object1.getPosition().equals(object2.getPosition()));
 	}
 	
+	
+	/**
+	 * Getter for the current GameMap.
+	 * 
+	 * @return GameMap The current map.
+	 */
 	public GameMap getMapLayout(){
 		return maps.get(currMap);
 	}
 
+	
+	/**
+	 * Getter for the player character.
+	 * 
+	 * @return player Player The player.
+	 */
 	public Player getPlayer() {
 		return player;
 	}
 	
+	
+	/**
+	 * Getter for the current map.
+	 * 
+	 * @return currMap MapScreen The map the player is on.
+	 */
 	public MapScreen getCurrMap() {
 		return currMap;
 	}
 
+	
+	/**
+	 * Getter for the list of enemies on the current map.
+	 * 
+	 * @return List<Enemy> The list of enemies on the map.
+	 */
 	public List<Enemy> getEnemies(){
 		return maps.get(currMap).getEnemies();
 	}
 	
+	
+	/**
+	 * Getter for all the obstacles on the current map.
+	 * 
+	 * @return List<GameObject> The list of objects on the map.
+	 */
 	public List<GameObject> getObstacles(){
 		return maps.get(currMap).getObjects();
 	}
 	
+	
+	/**
+	 * Getter for the list of transitions on the current map.
+	 * 
+	 * @return List<Transition> The list of transitions on the map.
+	 */
 	public List<Transition> getTransitions(){
 		return maps.get(currMap).getTransitions();
 
 	}
 
+	
+	/**
+	 * Attack for the player. Checks if the player actually attacked an enemy.
+	 */
 	public void playerAttack() {
 		for(Enemy enemy : getEnemies()) {
 			if(enemy.getActive())

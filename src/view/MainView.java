@@ -890,6 +890,12 @@ public class MainView extends StackPane {
 		}
     }
 	
+	
+	/**
+	 * Method for the player to buy something in the shop and subtracts the amount from the player's cash.
+	 * @param price int The price of item being purchased.
+	 * @param player Player The player to be able to check their current money.
+	 */
     public void buyItem(int price, Player player ) {
     	if(price == 25) {
     		player.setCurrentMoney(player.getCurrentMoney() - 25);

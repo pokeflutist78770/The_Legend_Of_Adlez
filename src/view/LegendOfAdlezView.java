@@ -49,7 +49,9 @@ public class LegendOfAdlezView extends Application{
 		primaryStage.show();
 	}
 	
-	
+	/**
+	 * Creates variables for all the sound files.
+	 */
 	private void initializeMusic() {
 		songs=new HashMap<>();
 		soundEffects=new HashMap<>();
@@ -125,7 +127,10 @@ public class LegendOfAdlezView extends Application{
 		songPlayer.play();
 	}
 	
-	
+	/**
+	 * Changes the view after a refresh
+	 * @param view Pane The new view
+	 */
 	public static void changeView(Pane view) {
 		mainPane.getChildren().clear();
 		mainPane.getChildren().removeAll(mainPane.getChildren());
