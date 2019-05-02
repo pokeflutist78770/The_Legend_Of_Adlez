@@ -117,6 +117,7 @@ public class HomeOutside extends GameMap {
 		transitions.add(new Transition(new Point(18, 8), MapScreen.RIVER, new Point(0, 8)));
 		transitions.add(new Transition(new Point(18, 9), MapScreen.RIVER, new Point(0, 9)));
 		setCloneObjects((ArrayList<GameObject>) objects.clone());
+//		objects.add(new Key(new Point(10, 10)));
 	}
 	public void refresh() {
 		objects = getCloneObjects();

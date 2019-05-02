@@ -88,6 +88,8 @@ public class MainView extends StackPane {
 	Label health;
 	StackPane coinStack;
 	Label coins; 
+	StackPane potionStack;
+	Label potions;
 
 	public void loadMap() {
 		currMap = controller.getCurrMap();
@@ -151,6 +153,13 @@ public class MainView extends StackPane {
 		}
 		pane.getChildren().add(healthStack);
 		pane.getChildren().add(coinStack);
+		if (player.hasKey()) {
+			ImageView temp = new ImageView(new Image(("assets/key.png")));
+			temp.setTranslateX(150);
+			pane.getChildren().add(temp);
+		}
+		pane.getChildren().add(potionStack);
+		
 	}
 
 	public MainView(boolean loadFile) {
@@ -297,11 +306,15 @@ public class MainView extends StackPane {
 		player = controller.getPlayer();
 		health = new Label();
 		coins = new Label();
+		potions = new Label();
 		healthStack = new StackPane();
 		coinStack = new StackPane();
+		potionStack = new StackPane();
+		potionStack.setTranslateX(100);
 		coinStack.setTranslateX(50);
 		healthStack.getChildren().addAll(new ImageView(new Image("assets/heart.png")), health);
 		coinStack.getChildren().addAll(new ImageView(new Image("assets/goldCoin.png")), coins);
+		potionStack.getChildren().addAll(new ImageView(new Image("assets/potion.png")), potions);
 		loadMap();
 		/*
 		 * Continous loop functioning as the games internal "clock". Screen updates on
@@ -664,6 +677,7 @@ public class MainView extends StackPane {
 	public void onUpdate() {
 		health.setText(String.valueOf(player.getCurrentHP()));
 		coins.setText(String.valueOf(player.getCurrentMoney()));
+		potions.setText(String.valueOf(player.getPotionCount()));
 		kMenu.setVisible(controller.died);
 		
 		if (controller.died) {
