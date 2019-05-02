@@ -9,19 +9,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import controller.GameController;
+import enums.Direction;
 import enums.MapScreen;
+import enums.Turn;
+import gameObjects.*;
 
 class TestGameController {
-	GameController ctrl;
-	Point pt;
-	@Test
-	void test() {
-		pt = new Point(5,5);
-		ctrl = new GameController();
-		for(MapScreen screen : MapScreen.values())
-			ctrl.loadMap(screen, pt);
-		
-		
-	}
+	
 
 }

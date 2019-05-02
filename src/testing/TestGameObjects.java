@@ -8,21 +8,45 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import controller.GameController;
 import enums.Attack;
 import enums.Direction;
 import enums.MapScreen;
+import enums.Turn;
 import gameObjects.*;
 
 class TestGameObjects {
-
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
+	GameController ctrl;
+	Point pt;
+	@Test
+	void test() {
+		pt = new Point(5,5);
+		ctrl = new GameController();
+		for(MapScreen screen : MapScreen.values())
+			ctrl.loadMap(screen, pt);
+		Player plyr = new Player(pt);
+		ctrl.move(plyr, Direction.NORTH);
+		ctrl.move(plyr, Direction.NORTH);
+		ctrl.move(plyr, Direction.EAST);
+		ctrl.move(plyr, Direction.EAST);
+		ctrl.move(plyr, Direction.WEST);
+		ctrl.move(plyr, Direction.WEST);
+		ctrl.move(plyr, Direction.SOUTH);
+		ctrl.move(plyr, Direction.SOUTH);
+		Slime slime = new Slime(new Point(5,6),1);
+		Slime slime1 = new Slime(new Point(4,5),1);
+		Slime slime2 = new Slime(new Point(5,4),1);
+		Slime slime3 = new Slime(new Point(6,5),1);
+		Slime slime4 = new Slime(new Point(8,8),1);
+		assertTrue(ctrl.canAttack(slime));
+		assertTrue(ctrl.canAttack(slime1));
+		assertTrue(ctrl.canAttack(slime2));
+		assertTrue(ctrl.canAttack(slime3));
+		assertFalse(ctrl.canAttack(slime4));
+		ctrl.attack(plyr, slime);
+		assertEquals(Turn.ATTACK, ctrl.enemyTurn(slime));
 	}
-
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
+	
 	@Test
 	void testEnemies() {
 		Point pt = new Point(0, 0);
@@ -75,12 +99,12 @@ class TestGameObjects {
 		assertEquals(Direction.SOUTH, test.getDirection());
 		test.setDirection(Direction.NORTH);
 		assertEquals(Direction.NORTH, test.getDirection());
-		assertEquals(25, test.getCurrentHP());
+		assertEquals(50, test.getCurrentHP());
 		assertEquals(50, test.getTotalHP());
-		assertEquals(10, test.getAttack());
+		assertEquals(0, test.getAttack());
 		test.decrementHP(10);
-		assertEquals(15, test.getCurrentHP());
-		test.decrementHP(20);
+		assertEquals(40, test.getCurrentHP());
+		test.decrementHP(50);
 		test.incrementHP(20);
 		assertEquals(20, test.getCurrentHP());
 	}
