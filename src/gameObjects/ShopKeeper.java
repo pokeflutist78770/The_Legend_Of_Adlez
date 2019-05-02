@@ -7,7 +7,8 @@ import java.awt.Point;
 
 /**
  * @author Ben Bauer
- *
+ *ShopKeeper class used to display shopKeeper in
+ *shop
  */
 public class ShopKeeper extends Item {
 

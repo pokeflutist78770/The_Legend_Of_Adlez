@@ -104,6 +104,7 @@ public class GameController implements Serializable{
 			}
 			for(GameObject object : getObstacles()) {
 				if(collision(character, object)) {
+					//check for money pickup
 					if(object instanceof Money) {
 						if(!object.getActive()) {
 							
@@ -116,6 +117,7 @@ public class GameController implements Serializable{
 						}
 						return true;
 					}
+					//check for key pickup
 					if(object instanceof Key) {
 						if(!object.getActive()) {
 							
@@ -226,11 +228,13 @@ public class GameController implements Serializable{
 			maps.put(currMap, newMap);
 		}
 		else {
+			//reactivate enemies
 			for(Enemy enemy : getEnemies()) {
 				enemy.setActive(true);
 				enemy.setDropped(false);
 				enemy.setCurrentHP(enemy.getTotalHP());
 			}
+			//deleting enemy drops
 			ArrayList<GameObject> indexs = new ArrayList<GameObject>();
 			for(GameObject object: getObstacles()) {
 				if(object instanceof Money|| object instanceof Key) {

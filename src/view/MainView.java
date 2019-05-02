@@ -87,7 +87,12 @@ public class MainView extends StackPane {
 	HBox inventory;
 	Label health, coins, potions;
 	ImageView sword, key;
-
+	
+	/**
+	 * loadMap
+	 * method for building all the objects for the current map
+	 * including collisions enemies and transition tiles.
+	 */
 	public void loadMap() {
 		currMap = controller.getCurrMap();
 		LegendOfAdlezView.playBackground(currMap.getMusic());
@@ -350,14 +355,14 @@ public class MainView extends StackPane {
 			default:
 				break;
 
-			case P:{
+			case P:{// player drinks potion
 				if(transaction) {
 					textBox.setImage(null);
 					transaction = false;
 				}
 				player.usePotion();
 				}
-			case B:{
+			case B:{//used to buy items during transactions
 				if(transaction) {
 					textBox.setImage(null);
 					if (player.getCurrentMoney() < price) {
@@ -373,7 +378,7 @@ public class MainView extends StackPane {
 				break;
 			}
 				
-			case SPACE: {
+			case SPACE: {//interact and attack buttons
 				controller.playerAttack();
 				if (transaction) {
 					textBox.setImage(null);
@@ -387,7 +392,7 @@ public class MainView extends StackPane {
 				switch (player.getDirection()) {
 				case NORTH: {
 					Point potentialInteractable = new Point((int) player.getPosition().getX(),
-							(int) player.getPosition().getY() - 1);
+							(int) player.getPosition().getY() - 1);//checks if item north of player is an interactable target
 					for (GameObject object : controller.getObstacles()) {
 						if (object.getPosition().equals(potentialInteractable) && (object instanceof ShopItem)) {
 							interact = true;
@@ -398,17 +403,17 @@ public class MainView extends StackPane {
 					if (interact) {
 						transaction = true;
 						ShopItem shopI = (ShopItem) interacted;
-						if (shopI.getItemNum() == 1) {
+						if (shopI.getItemNum() == 1) {//sword shop interaction
 							textBox = new ImageView(new Image("assets/SwordBuy.png"));
 							pane.getChildren().add(textBox);
 							price = 25;
-						} else if (shopI.getItemNum() == 2){
+						} else if (shopI.getItemNum() == 2){// potion shop interaction
 							textBox = new ImageView(new Image("assets/PotionBuy.png"));
 							pane.getChildren().add(textBox);
 							price = 10;
 						}
 						else {
-							if (player.hasKey() ) {
+							if (player.hasKey() ) {// door interaction after key is retrieved
 								pane.setBackground(new Background(new BackgroundImage(new Image("assets/bossRoomOpen.png"), null, null, null, null)));
 								ShopItem door = null;
 								for (GameObject object: controller.getObstacles()) {
@@ -422,7 +427,7 @@ public class MainView extends StackPane {
 						}
 						break;
 					} else {
-						if (player.getEquippedItem() instanceof Dagger) {
+						if (player.getEquippedItem() instanceof Dagger) {//animation while dagger is equipped
 							Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 2,
 									2, 60, 434, 60, 62);
 							animation.setCycleCount(1);
@@ -430,6 +435,7 @@ public class MainView extends StackPane {
 							interact = true;
 							break;
 						}
+						//regular attack animation
 						Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 5, 5,
 								0, 434, 60, 62);
 						animation.setCycleCount(1);
@@ -445,7 +451,7 @@ public class MainView extends StackPane {
 						break;
 					}
 				}
-				case SOUTH: {
+				case SOUTH: {// just attack animation for south facing 
 					if (player.getEquippedItem() instanceof Dagger) {
 						Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 2, 2,
 								120, 248, 60, 62);
@@ -468,7 +474,7 @@ public class MainView extends StackPane {
 					creatureMap.get(player).setViewport(new Rectangle2D(0, 0, 60, 62));
 					break;
 				}
-				case EAST: {
+				case EAST: {//just attacck animations for east facing attacks
 					if (player.getEquippedItem() instanceof Dagger) {
 						Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 2, 2,
 								60, 372, 60, 62);
@@ -491,7 +497,7 @@ public class MainView extends StackPane {
 					creatureMap.get(player).setViewport(new Rectangle2D(420, 186, 60, 62));
 					break;
 				}
-				case WEST: {
+				case WEST: {// just attack animations for west facing attacks
 					if (player.getEquippedItem() instanceof Dagger) {
 						Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 2, 2,
 								60, 310, 60, 62);
@@ -528,9 +534,9 @@ public class MainView extends StackPane {
 					transaction = false;
 				}
 				moved = controller.move(player, Direction.NORTH);
-				if (!moved) {
+				if (!moved) {//set idle if not moved
 					creatureMap.get(player).setViewport(new Rectangle2D(0, 62, 60, 62));
-				} else {
+				} else {//walking animation north
 					Animation animation = new SpriteAnimation(creatureMap.get(player), Duration.millis(250), 8, 8, 0,
 							62, 60, 62);
 					animation.setCycleCount(1);
@@ -544,7 +550,7 @@ public class MainView extends StackPane {
 				}
 				break;
 			case S:
-			case DOWN:
+			case DOWN://same as up but for down
 				if(GameController.isPaused || controller.won || controller.died) return;
 				if (transaction) {
 					textBox.setImage(null);
@@ -567,7 +573,7 @@ public class MainView extends StackPane {
 				}
 				break;
 			case D:
-			case RIGHT:
+			case RIGHT://same as up but for right
 				if(GameController.isPaused || controller.won || controller.died) return;
 				if (transaction) {
 					textBox.setImage(null);
@@ -590,7 +596,7 @@ public class MainView extends StackPane {
 				}
 				break;
 			case A:
-			case LEFT:
+			case LEFT://same as up but for left
 				if(GameController.isPaused || controller.won || controller.died) return;
 				if (transaction) {
 					textBox.setImage(null);
@@ -617,6 +623,7 @@ public class MainView extends StackPane {
 				GameController.isPaused = !GameController.isPaused;
 			}
 			if (moved) {
+				//path for actual movement across the screen
 				Point pos = player.getPosition();
 				Path path = new Path();
 				path.getElements().add(new MoveTo(startPos.getX() * 48 + 24, startPos.getY() * 48 + 24));
@@ -730,6 +737,7 @@ public class MainView extends StackPane {
 					pathTransition.setNode(creatureMap.get(enemy));
 					pathTransition.setPath(path);
 					pathTransition.play();
+					//slime and scorpion animations
 					if (enemy instanceof Slime || enemy instanceof Scorpion) {
 						switch (enemy.getDirection()) {
 						case NORTH: {
@@ -763,11 +771,13 @@ public class MainView extends StackPane {
 						default:
 							break;
 						}
+						//poe animation even if its not really noticable
 					} else if (enemy instanceof Poe) {
 						Animation animation = new SpriteAnimation(creatureMap.get(enemy), Duration.millis(1), 10, 10, 0,
 								0, 48, 48);
 						animation.setCycleCount(1);
 						animation.play();
+						//boss animations
 					} else {
 						switch (enemy.getDirection()) {
 						case NORTH: {
@@ -804,7 +814,7 @@ public class MainView extends StackPane {
 					}
 				}
 			}
-			//this is where the change should be
+			//setting up drops for each enemy type
 			else {
 				if(enemy instanceof Slime|| enemy instanceof Scorpion || enemy instanceof Poe) {
 					Money drop = null;
@@ -842,6 +852,7 @@ public class MainView extends StackPane {
 			}
 			
 		}
+		//update to delete drop objects
 		ArrayList<GameObject> indexs = new ArrayList<GameObject>();
 		for (GameObject object : controller.getObstacles()) {
 			if (!object.getActive()) {
