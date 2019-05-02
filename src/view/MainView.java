@@ -150,7 +150,7 @@ public class MainView extends StackPane {
 			addObject(displayPotion);
 			addObject(displayShopKeeper);
 			
-		}
+		} 
 		pane.getChildren().add(healthStack);
 		pane.getChildren().add(coinStack);
 		if (player.hasKey()) {
