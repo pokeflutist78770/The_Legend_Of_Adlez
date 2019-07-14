@@ -95,6 +95,8 @@ public class MainView extends StackPane {
 	 */
 	public void loadMap() {
 		currMap = controller.getCurrMap();
+		System.out.println(currMap);
+		System.out.println(currMap.getMusic());
 		LegendOfAdlezView.playBackground(currMap.getMusic());
 		
 		map = controller.getMapLayout();

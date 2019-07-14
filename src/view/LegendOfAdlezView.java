@@ -102,6 +102,10 @@ public class LegendOfAdlezView extends Application{
 	public static void playBackground(String songName) {
 		Media song=songs.get(songName);
 		
+		if(song==null) {
+			return;
+		}
+		
 		if(songPlayer==null) {
 			songPlayer=new MediaPlayer(song);
 			songPlayer.play();
